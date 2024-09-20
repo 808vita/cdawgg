@@ -20,3 +20,55 @@ export const getMultipleCompanyStoresLatLng = (companyNameIndexArray) => {
 
   return multipleCompanyStoresArray;
 };
+
+export const asyncStoreLatLng_LocationHighlighter = async (
+  companyNameIndexArray,
+  mapRef
+) => {
+  if (companyNameIndexArray?.length === 1) {
+    return getMultipleCompanyStoresLatLng(companyNameIndexArray);
+  }
+
+  //userOptedStore stores the first item in the  selectedCompanyArray
+  // after "shift" the remaining items in selectedCompanyArray are competitors
+  const userOptedStore = await companyNameIndexArray.shift();
+
+  console.log(userOptedStore, "shift");
+  console.log(companyNameIndexArray, "after shift");
+
+  const selectedCompanyArray = companyNameIndexArray?.map(
+    (item) => companyNamesArray[item]
+  );
+
+  const userOptedStoreLatLngArray = await getCompanyStoresLatLng(
+    userOptedStore
+  );
+
+  // stores the competitior list
+  const competitorMultipleCompanyStoresArray = await selectedCompanyArray
+    .map((company) => Object?.values(shopsData[company]))
+    .flat();
+
+  // console.log(
+  //   mapRef.distance(index0storesLatLng[0], index0storesLatLng[1]),
+  //   "distance"
+  // );
+
+  const competitorStoresWithDistanceMeasured =
+    competitorMultipleCompanyStoresArray?.map((competitorStore) => {
+      const closestUserOptedDistance = userOptedStoreLatLngArray.map(
+        (optedStore) =>
+          mapRef.distance(
+            { lat: optedStore?.lat, lng: optedStore?.lng },
+            { lat: competitorStore?.lat, lng: competitorStore?.lng }
+          )
+      );
+
+      return { ...competitorStore, closestStore: Math.min(...closestUserOptedDistance) };
+    });
+
+  return [
+    ...userOptedStoreLatLngArray,
+    ...competitorStoresWithDistanceMeasured,
+  ];
+};

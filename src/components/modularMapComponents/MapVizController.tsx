@@ -7,6 +7,7 @@ import {
   useMap,
   useMapEvents,
   Polygon,
+  Circle,
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet-routing-machine";
@@ -29,7 +30,11 @@ import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import { booleanPointInPolygonUtil } from "@/utils/booleanPointInPolygonUtil";
 
-import { getCompanyStoresLatLng, getMultipleCompanyStoresLatLng } from "@/utils/jsonUtils/jsonUtils";
+import {
+  asyncStoreLatLng_LocationHighlighter,
+  getCompanyStoresLatLng,
+  getMultipleCompanyStoresLatLng,
+} from "@/utils/jsonUtils/jsonUtils";
 
 // const markerPath = "/marker-icon.png";
 
@@ -463,14 +468,41 @@ const MapVizController = (props: any) => {
   };
 
   useEffect(() => {
-    // const index0storesLatLng = getCompanyStoresLatLng(1);
+    (async () => {
+      // const index0storesLatLng = getCompanyStoresLatLng(1);
 
-    const index0storesLatLng = getMultipleCompanyStoresLatLng([0,1,2,3]);
+      const selectedStoresArray = [0, 1, 2];
 
-    console.log(index0storesLatLng);
-    // add h3 layer for the marker
-    index0storesLatLng.map((item: any) => h3ComboUtil(item));
-    setWaypoints(index0storesLatLng);
+      // const selectedStoresArray = [0, 1, 2, 3];
+
+      // const selectedStoresArray = [1, 0, 2, 3];
+
+      // const index0storesLatLng =  getMultipleCompanyStoresLatLng(
+      //   selectedStoresArray
+      // );
+
+      // const index0storesLatLng = Promise.all(
+      //   await asyncStoreLatLng_LocationHighlighter(selectedStoresArray, mapRef)
+      // ).then((values) => {
+      //   setWaypoints(values);
+      // });
+
+      const index0storesLatLng = await asyncStoreLatLng_LocationHighlighter(
+        selectedStoresArray,
+        mapRef
+      );
+
+      console.log(index0storesLatLng);
+      // add h3 layer for the marker
+      index0storesLatLng?.map((item: any) => h3ComboUtil(item));
+
+      // console.log(
+      //   mapRef.distance(index0storesLatLng[0], index0storesLatLng[1]),
+      //   "distance"
+      // );
+
+      setWaypoints(index0storesLatLng);
+    })();
   }, []);
 
   useEffect(() => {
@@ -689,6 +721,23 @@ const MapVizController = (props: any) => {
               </h5>
               <br />
             </Popup>
+
+            {/**
+             * raise radius meters to state variable
+             * latLng?.closestStore < 500 --this will display stores in range of lesser than 500meters
+             * latLng?.closestStore ? 500 --this will display stores in range of greater than 500meters
+             */}
+            {/* {latLng?.closestStore !==undefined && latLng?.closestStore < 500 && */}
+
+            {latLng?.closestStore !== undefined &&
+              latLng?.closestStore > 2000 && (
+                <Circle
+                  center={{ lat: latLng?.lat, lng: latLng?.lng }}
+                  radius={2000}
+                  fillOpacity={0.1}
+                  color="green"
+                ></Circle>
+              )}
           </Marker>
         ))
       }
