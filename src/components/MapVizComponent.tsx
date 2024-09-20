@@ -26,7 +26,8 @@ const MapComponentViz: () => JSX.Element = () => {
   return (
     <div className="">
       <MapContainer
-        center={leafletConfig.center as LatLngExpression}
+        // center={leafletConfig.center as LatLngExpression}
+        center={[13.020813, 80.183865]}
         zoom={leafletConfig.zoom}
         minZoom={leafletConfig.minZoom}
         maxZoom={leafletConfig.maxZoom}

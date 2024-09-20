@@ -29,6 +29,8 @@ import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import { booleanPointInPolygonUtil } from "@/utils/booleanPointInPolygonUtil";
 
+import { getCompanyStoresLatLng, getMultipleCompanyStoresLatLng } from "@/utils/jsonUtils/jsonUtils";
+
 // const markerPath = "/marker-icon.png";
 
 /**
@@ -461,6 +463,17 @@ const MapVizController = (props: any) => {
   };
 
   useEffect(() => {
+    // const index0storesLatLng = getCompanyStoresLatLng(1);
+
+    const index0storesLatLng = getMultipleCompanyStoresLatLng([0,1,2,3]);
+
+    console.log(index0storesLatLng);
+    // add h3 layer for the marker
+    index0storesLatLng.map((item: any) => h3ComboUtil(item));
+    setWaypoints(index0storesLatLng);
+  }, []);
+
+  useEffect(() => {
     console.log(waypoints, "useeffect waypoints");
 
     if (polygonBoundaryList.length === 0 && waypoints.length > 0) {
@@ -598,26 +611,6 @@ const MapVizController = (props: any) => {
             </div>
           )}
 
-          {waypoints.length >= 1 && (
-            <div className={`font-thin text-sm md:text-base`}>
-              Selected Cordinates:
-            </div>
-          )}
-
-          {waypoints.map((waypoint: any, idx: any) => (
-            <div
-              key={`waypoints-${idx}`}
-              className="p-2 align-middle text-start text-xs md:text-sm font-thin"
-            >
-              {/* {`${idx} Lat: ${waypoint.lat} , Lng: ${waypoint.lng}`} */}
-              {`${
-                reverseCodedWaypoints?.[idx] == undefined
-                  ? `~Geocoding Please Wait~ Lat:${waypoint.lat} , Lng:${waypoint.lng}`
-                  : reverseCodedWaypoints?.[idx]
-              }`}
-            </div>
-          ))}
-
           {waypoints.length >= 2 && (
             <div className="text-center">
               <button
@@ -671,19 +664,21 @@ const MapVizController = (props: any) => {
             }
           >
             <Tooltip permanent={true}>
-              {idx === 0
-                ? `Starting Point`
-                : idx == waypoints?.length - 1
-                ? `Final Point`
-                : `Point ${idx}`}
+              {`${latLng?.company} - ${latLng?.pincode}`}
             </Tooltip>
             <Popup>
-              <h4 className="font-thin text-lg mt-2 mb-2">{`Address:`}</h4>
+              <h4 className="font-thin text-lg mt-2 mb-2">{`Company:`}</h4>
               {
                 <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
-                  {reverseCodedWaypoints?.[idx] == undefined
-                    ? "~Geocoding Please Wait~"
-                    : reverseCodedWaypoints?.[idx]}
+                  {`${latLng?.company}`}
+                </h5>
+              }
+              <br />
+              <hr />
+              <h4 className="font-thin text-lg mt-2 mb-2">{`District - Pincode:`}</h4>
+              {
+                <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
+                  {`${latLng?.district} - ${latLng?.pincode}`}
                 </h5>
               }
               <br />
@@ -691,19 +686,6 @@ const MapVizController = (props: any) => {
               <h4 className="font-thin text-lg mt-2 mb-2">{`Marker LatLng:`}</h4>
               <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
                 {`Lat:${latLng?.lat} , Lng:${latLng?.lng}`}
-              </h5>
-              <br />
-              <hr />
-              <h4 className="font-thin text-lg mt-2 mb-2">{`H3 index:`}</h4>
-              <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
-                {` ${h3IndexList?.[idx]}`}
-              </h5>
-
-              <br />
-              <hr />
-              <h4 className="font-thin text-lg mt-2 mb-2">{`H3 Center LatLng:`}</h4>
-              <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
-                {` ${hexCenterCoordinatesList?.[idx]}`}
               </h5>
               <br />
             </Popup>
