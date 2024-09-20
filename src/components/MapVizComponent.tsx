@@ -12,6 +12,7 @@ import L, { ControlPosition, LatLngExpression } from "leaflet";
 import { Icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { leafletConfig, markerPath } from "@/utils/leafletConfig";
+import MapVizController from "./modularMapComponents/MapVizController";
 
 // const markerPath = "/marker-icon.png";
 
@@ -60,6 +61,7 @@ const MapComponentViz: () => JSX.Element = () => {
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup>
         </Marker>
+        <MapVizController />
       </MapContainer>
     </div>
   );
