@@ -34,6 +34,7 @@ import {
 } from "@/utils/jsonUtils/jsonUtils";
 
 import PopupTabComponent from "../uiComponents/PopupTabComponent";
+import MenuRadiusSlider from "../uiComponents/MenuRadiusSlider";
 
 // const markerPath = "/marker-icon.png";
 
@@ -100,6 +101,8 @@ const MapVizController = (props: any) => {
   const [hexBoundaryList, setHexBoundaryList] = useState<
     [] | any[] | [L.LatLng[]]
   >([]);
+
+  const [raduis, setRadius] = useState(2000);
 
   /**
    * menu visibility handler
@@ -280,7 +283,7 @@ const MapVizController = (props: any) => {
 
       {showMenu && (
         <div
-          className="min-h-12 w-screen md:w-1/2"
+          className="min-h-12 w-screen md:w-1/2 p-4"
           style={{
             position: "absolute",
             background: "#fff",
@@ -295,6 +298,8 @@ const MapVizController = (props: any) => {
               : "Click Route Button"}
             <hr />
           </div>
+
+          <MenuRadiusSlider setRaduis={setRadius} />
         </div>
       )}
 
@@ -331,10 +336,10 @@ const MapVizController = (props: any) => {
             {/* {latLng?.closestStore !==undefined && latLng?.closestStore < 500 && */}
 
             {waypointData?.closestStore !== undefined &&
-              waypointData?.closestStore > 2000 && (
+              waypointData?.closestStore > raduis && (
                 <Circle
                   center={{ lat: waypointData?.lat, lng: waypointData?.lng }}
-                  radius={2000}
+                  radius={raduis}
                   fillOpacity={0.1}
                   color="green"
                 ></Circle>
