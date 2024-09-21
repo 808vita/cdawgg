@@ -258,16 +258,7 @@ const MapVizController = (props: any) => {
    */
   const doubleClickEventUtil = (e: L.LeafletMouseEvent | any) => {
     let latLng: L.LatLng = e.latlng;
-
-    setWaypoints([...waypoints, L.latLng(latLng.lat, latLng.lng)]);
-
-    if (!showMenu) {
-      showMenuHandler();
-    }
-
-    geocodingUtil(latLng);
-
-    h3ComboUtil(latLng);
+    console.log(latLng, "double click");
   };
 
   /**
@@ -281,28 +272,7 @@ const MapVizController = (props: any) => {
       console.log(e.layerPoint);
     },
     dblclick: (e) => {
-      if (drawEditModeActive) {
-        return;
-      }
-
-      if (
-        serviceMode === serviceModeOptions.active ||
-        serviceMode === serviceModeOptions.confirmed
-      ) {
-        let latLng = e.latlng;
-        let polygonBoundary = polygonBoundaryList[0];
-        let isInsidePolygon = booleanPointInPolygonUtil(
-          latLng,
-          polygonBoundary
-        );
-        console.log(isInsidePolygon, "isInsidePolygon");
-
-        if (isInsidePolygon) {
-          doubleClickEventUtil(e);
-        }
-      } else {
-        doubleClickEventUtil(e);
-      }
+      doubleClickEventUtil(e);
     },
   });
 
