@@ -36,14 +36,16 @@ export const asyncStoreLatLng_LocationHighlighter = async (
     return getMultipleCompanyStoresLatLng(companyNameIndexArray);
   }
 
+  const companyNameIndexArray_copy = [...companyNameIndexArray];
+
   //userOptedStore stores the first item in the  selectedCompanyArray
   // after "shift" the remaining items in selectedCompanyArray are competitors
-  const userOptedStore = await companyNameIndexArray.shift();
+  const userOptedStore = await companyNameIndexArray_copy.shift();
 
   console.log(userOptedStore, "shift");
-  console.log(companyNameIndexArray, "after shift");
+  console.log(companyNameIndexArray_copy, "after shift");
 
-  const selectedCompanyArray = companyNameIndexArray?.map(
+  const selectedCompanyArray = companyNameIndexArray_copy?.map(
     (item) => companyNamesArray[item]
   );
 
@@ -62,7 +64,7 @@ export const asyncStoreLatLng_LocationHighlighter = async (
   // );
 
   const competitorStoresWithDistanceMeasured =
-    competitorMultipleCompanyStoresArray?.map((competitorStore) => {
+    competitorMultipleCompanyStoresArray?.map((competitorStore: any) => {
       const closestUserOptedDistance = userOptedStoreLatLngArray.map(
         (optedStore) =>
           mapRef.distance(
