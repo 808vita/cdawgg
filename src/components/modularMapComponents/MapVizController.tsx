@@ -533,43 +533,9 @@ const MapVizController = (props: any) => {
     console.log(geomanLayers, "geomanLayers");
   }, [waypoints]);
 
-  // useEffect(() => {
-  //   console.log(reverseCodedWaypoints, "useeffect reverseCodedWaypoints");
-  // }, [reverseCodedWaypoints]);
-
   useEffect(() => {
     console.log(hexBoundaryList, "useeffect hexBoundaryList");
   }, [hexBoundaryList]);
-
-  // useEffect(() => {
-  //   console.log(hexCenterCoordinatesList, "useeffect hexCenterCoordinatesList");
-  // }, [hexCenterCoordinatesList]);
-
-  // useEffect(() => {
-  //   console.log(h3IndexList, "useeffect h3IndexList");
-  // }, [h3IndexList]);
-
-  useEffect(() => {
-    console.log(polygonBoundaryList, "useeffect polygonBoundaryList");
-
-    if (polygonBoundaryList.length > 0) {
-      //get hexagons within polygon
-      getHexagonsWithinPolygon(polygonBoundaryList[0]);
-
-      //setting service mode state
-      setServiceMode(serviceModeOptions.active);
-    }
-
-    if (emptyPolygonWaypointBool()) {
-      //setting service mode state
-
-      setServiceMode(serviceModeOptions.notSet);
-    }
-  }, [polygonBoundaryList]);
-
-  useEffect(() => {
-    console.log(polygon2HexBoundaryList, "useeffect polygon2HexBoundaryList");
-  }, [polygon2HexBoundaryList]);
 
   return (
     <>
