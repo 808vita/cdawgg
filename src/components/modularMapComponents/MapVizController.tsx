@@ -26,9 +26,6 @@ import {
   hexBoundaryUtil,
   hexCenterCoordinatesUtil,
 } from "@/utils/hexUtils";
-import "@geoman-io/leaflet-geoman-free";
-import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
-import { booleanPointInPolygonUtil } from "@/utils/booleanPointInPolygonUtil";
 
 import {
   asyncStoreLatLng_LocationHighlighter,
