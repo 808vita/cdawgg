@@ -454,20 +454,7 @@ const MapVizController = (props: any) => {
     setPolygon2HexBoundaryList([]);
   });
 
-  /**
-   *
-   * @returns boolean
-   *
-   * check if polygon boudary list and waypoints states are empty
-   *
-   * return boolean value
-   */
-  const emptyPolygonWaypointBool = () => {
-    let emptyPolygonWaypointBool =
-      polygonBoundaryList.length === 0 && waypoints.length === 0;
 
-    return emptyPolygonWaypointBool;
-  };
 
   useEffect(() => {
     (async () => {
