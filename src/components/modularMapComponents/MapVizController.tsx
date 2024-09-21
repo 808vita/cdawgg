@@ -609,41 +609,6 @@ const MapVizController = (props: any) => {
               : "Click Route Button"}
             <hr />
           </div>
-          {serviceMode === serviceModeOptions.notSet && (
-            <div>
-              <div className={`font-thin text-sm md:text-base p-2`}>
-                Activate service area bound routing by placing a Rect/ Polygon.
-              </div>
-
-              <div className={`font-thin text-sm md:text-base pl-2 pr-2 pb-4`}>
-                Or directly place markers to route without service area bounds.
-              </div>
-            </div>
-          )}
-
-          {serviceMode === serviceModeOptions.active && (
-            <div>
-              <div className={`font-bold text-sm md:text-base p-2`}>
-                Service Area Routing Active
-              </div>
-            </div>
-          )}
-
-          {serviceMode === serviceModeOptions.confirmed && (
-            <div>
-              <div className={`font-bold text-sm md:text-base p-2`}>
-                Service Area Routing Active (confirmed)
-              </div>
-            </div>
-          )}
-
-          {serviceMode === serviceModeOptions.notActive && (
-            <div>
-              <div className={`font-bold text-sm md:text-base p-2`}>
-                Normal Routing (No Constrains)
-              </div>
-            </div>
-          )}
         </div>
       )}
 
