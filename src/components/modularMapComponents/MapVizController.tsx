@@ -36,6 +36,8 @@ import {
   getMultipleCompanyStoresLatLng,
 } from "@/utils/jsonUtils/jsonUtils";
 
+import PopupTabComponent from "../uiComponents/PopupTabComponent";
+
 // const markerPath = "/marker-icon.png";
 
 /**
@@ -682,10 +684,10 @@ const MapVizController = (props: any) => {
       {
         // showMenu &&
 
-        waypoints.map((latLng: any, idx: any) => (
+        waypoints.map((waypointData: any, idx: any) => (
           <Marker
             key={`maker-${idx}`}
-            position={[latLng.lat, latLng.lng]}
+            position={[waypointData.lat, waypointData.lng]}
             icon={
               new Icon({
                 iconUrl: markerPath,
@@ -696,30 +698,11 @@ const MapVizController = (props: any) => {
             }
           >
             <Tooltip permanent={true}>
-              {`${latLng?.company} - ${latLng?.pincode}`}
+              {`${waypointData?.company} - ${waypointData?.pincode}`}
             </Tooltip>
             <Popup>
-              <h4 className="font-thin text-lg mt-2 mb-2">{`Company:`}</h4>
-              {
-                <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
-                  {`${latLng?.company}`}
-                </h5>
-              }
-              <br />
-              <hr />
-              <h4 className="font-thin text-lg mt-2 mb-2">{`District - Pincode:`}</h4>
-              {
-                <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
-                  {`${latLng?.district} - ${latLng?.pincode}`}
-                </h5>
-              }
-              <br />
-              <hr />
-              <h4 className="font-thin text-lg mt-2 mb-2">{`Marker LatLng:`}</h4>
-              <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
-                {`Lat:${latLng?.lat} , Lng:${latLng?.lng}`}
-              </h5>
-              <br />
+             
+              <PopupTabComponent waypointData={waypointData}/>
             </Popup>
 
             {/**
@@ -729,10 +712,10 @@ const MapVizController = (props: any) => {
              */}
             {/* {latLng?.closestStore !==undefined && latLng?.closestStore < 500 && */}
 
-            {latLng?.closestStore !== undefined &&
-              latLng?.closestStore > 2000 && (
+            {waypointData?.closestStore !== undefined &&
+              waypointData?.closestStore > 2000 && (
                 <Circle
-                  center={{ lat: latLng?.lat, lng: latLng?.lng }}
+                  center={{ lat: waypointData?.lat, lng: waypointData?.lng }}
                   radius={2000}
                   fillOpacity={0.1}
                   color="green"
