@@ -35,6 +35,7 @@ import {
 
 import PopupTabComponent from "../uiComponents/PopupTabComponent";
 import MenuRadiusSlider from "../uiComponents/MenuRadiusSlider";
+import MenuShowMarkerLabels from "../uiComponents/MenuShowMarkerLabels";
 
 // const markerPath = "/marker-icon.png";
 
@@ -103,6 +104,7 @@ const MapVizController = (props: any) => {
   >([]);
 
   const [raduis, setRadius] = useState(2000);
+  const [showMarkerLabels, setShowMarkerLabels] = useState(true);
 
   /**
    * menu visibility handler
@@ -291,15 +293,16 @@ const MapVizController = (props: any) => {
           }}
         >
           <div className={`p-3 align-middle text-center text-lg font-thin`}>
-            {waypoints.length == 0
-              ? "Double Click To Mark"
-              : waypoints.length == 1
-              ? "Need One More Location"
-              : "Click Route Button"}
+            Identify Location Gaps
             <hr />
           </div>
 
           <MenuRadiusSlider setRaduis={setRadius} />
+
+          <MenuShowMarkerLabels
+            showMarkerLabels={showMarkerLabels}
+            setShowMarkerLabels={setShowMarkerLabels}
+          />
         </div>
       )}
 
@@ -321,9 +324,11 @@ const MapVizController = (props: any) => {
               })
             }
           >
-            <Tooltip permanent={true}>
-              {`${waypointData?.company} - ${waypointData?.pincode}`}
-            </Tooltip>
+            {showMarkerLabels && (
+              <Tooltip permanent={true}>
+                {`${waypointData?.company} - ${waypointData?.pincode}`}
+              </Tooltip>
+            )}
             <Popup>
               <PopupTabComponent waypointData={waypointData} />
             </Popup>
