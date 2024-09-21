@@ -348,12 +348,6 @@ const MapVizController = (props: any) => {
     removalMode: displayToolbar() && polygonBoundaryList.length == 1 && true,
   });
 
-  const latlngObj2latLngList = (polygonBoundaries: L.LatLng[]) => {
-    let latLngList = polygonBoundaries.map((pair) => [pair?.lat, pair?.lng]);
-    return latLngList;
-  };
-
-
   //Called when a shape is drawn/finished. Payload includes shape type and the drawn layer.
   // re write polygon state triggered by various events
   mapRef.on("pm:create", (e) => {
@@ -433,8 +427,6 @@ const MapVizController = (props: any) => {
     //empty out polygon 2 hex state
     setPolygon2HexBoundaryList([]);
   });
-
-
 
   useEffect(() => {
     (async () => {
