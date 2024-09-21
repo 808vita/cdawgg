@@ -328,26 +328,6 @@ const MapVizController = (props: any) => {
     return displayBoolean;
   };
 
-  // add Leaflet-Geoman controls with some options to the map
-  mapRef.pm.addControls({
-    position: "bottomleft",
-    drawCircleMarker: false,
-    rotateMode: false,
-    // drawMarker: waypoints.length > 0 ? false : true,
-    drawMarker: false,
-    drawPolyline: false,
-    drawCircle: false,
-    cutPolygon: false,
-    drawText: false,
-
-    //conditionally show toolbar options based on polygonBoundaryList state
-    drawRectangle: displayToolbar() && polygonBoundaryList.length == 0 && true,
-    drawPolygon: displayToolbar() && polygonBoundaryList.length == 0 && true,
-    editMode: displayToolbar() && polygonBoundaryList.length == 1 && true,
-    dragMode: displayToolbar() && polygonBoundaryList.length == 1 && true,
-    removalMode: displayToolbar() && polygonBoundaryList.length == 1 && true,
-  });
-
   //Called when a shape is drawn/finished. Payload includes shape type and the drawn layer.
   // re write polygon state triggered by various events
   mapRef.on("pm:create", (e) => {
