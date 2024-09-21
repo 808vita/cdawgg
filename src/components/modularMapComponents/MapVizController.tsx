@@ -105,53 +105,6 @@ const MapVizController = (props: any) => {
   >([]);
 
   /**
-   * polygon boundary gets stored here
-   * list of latlng boundary data
-   *  [[lat,lng]]
-   */
-  const [polygonBoundaryList, setPolygonBoundaryList] = useState<
-    [] | any[] | [L.LatLng[]]
-  >([]);
-
-  const [polygon2HexBoundaryList, setPolygon2HexBoundaryList] = useState<
-    [] | any[] | [L.LatLng[]]
-  >([]);
-
-  /**
-   * polygon2hex visibility
-   */
-  const [showPolygon2Hex, setShowPolygon2Hex] = useState<boolean>(true);
-
-  /**
-   * polygon2hex visibility
-   */
-  const [drawEditModeActive, setDrawEditModeActive] = useState<boolean>(false);
-
-  /**
-   * service mode options for state
-   *
-   * active - if rect /poly is placed
-   *
-   * not active - if marker is placed with no rect /poly
-   *
-   * not set - if no marker or rect / poly are placed
-   *
-   * confirmed - if rect / poly is placed and markers are placed
-   */
-  const serviceModeOptions = {
-    active: "active",
-    confirmed: "confirmed",
-    notActive: "notActive",
-    notSet: "notSet",
-  };
-  /**
-   * polygon2hex visibility
-   */
-  const [serviceMode, setServiceMode] = useState<string>(
-    serviceModeOptions.notSet
-  );
-
-  /**
    * menu visibility handler
    */
   const showMenuHandler = () => {
@@ -207,7 +160,6 @@ const MapVizController = (props: any) => {
     setHexCenterCoordinatesList([]);
     setHexBoundaryList([]);
   };
-
 
   /**
    *
