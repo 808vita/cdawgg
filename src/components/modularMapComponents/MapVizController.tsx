@@ -353,26 +353,6 @@ const MapVizController = (props: any) => {
     return latLngList;
   };
 
-  const getHexagonsWithinPolygon = (polygonBoundaries: L.LatLng[], res = 9) => {
-    let polygon: number[][] | number[][][] =
-      latlngObj2latLngList(polygonBoundaries);
-
-    try {
-      const hexagons = h3.polygonToCells(polygon, res);
-
-      // Get the outline of a set of hexagons,
-      // do not want geojson - so passing false
-      const coordinates = h3.cellsToMultiPolygon(hexagons, false);
-
-      console.log(polygon, "polygon hex");
-      console.log(hexagons, "hexagons hex");
-      console.log(coordinates, "coordinates hex");
-
-      setPolygon2HexBoundaryList(coordinates);
-    } catch (error) {
-      console.log(error, "oof");
-    }
-  };
 
   //Called when a shape is drawn/finished. Payload includes shape type and the drawn layer.
   // re write polygon state triggered by various events
