@@ -693,7 +693,9 @@ const MapVizController = (props: any) => {
                 iconUrl: markerPath,
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
-                className: waypointData?.userOpted ? "hue-rotate-0" :  "hue-rotate-90" ,
+                className: waypointData?.userOpted
+                  ? "hue-rotate-0"
+                  : "hue-rotate-90",
               })
             }
           >
@@ -701,8 +703,7 @@ const MapVizController = (props: any) => {
               {`${waypointData?.company} - ${waypointData?.pincode}`}
             </Tooltip>
             <Popup>
-             
-              <PopupTabComponent waypointData={waypointData}/>
+              <PopupTabComponent waypointData={waypointData} />
             </Popup>
 
             {/**
@@ -738,26 +739,6 @@ const MapVizController = (props: any) => {
             }
           />
         ))}
-
-      {showPolygon2Hex &&
-        polygon2HexBoundaryList?.length > 0 &&
-        polygon2HexBoundaryList?.map((singileHexCoordinates, idx) => {
-          console.log(singileHexCoordinates, "singileHexCoordinates");
-          return (
-            <Polygon
-              key={`polygon2Hex-${idx}`}
-              pathOptions={{ color: "black" }}
-              positions={
-                singileHexCoordinates as
-                  | L.LatLngExpression[]
-                  | L.LatLngExpression[][]
-                  | L.LatLngExpression[][][]
-              }
-            >
-              <Tooltip>{`Service Area`}</Tooltip>
-            </Polygon>
-          );
-        })}
     </>
   );
 };
