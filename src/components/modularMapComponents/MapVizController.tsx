@@ -208,20 +208,6 @@ const MapVizController = (props: any) => {
     setHexBoundaryList([]);
   };
 
-  /**
-   * clearbuttonhandler
-   *
-   * triggered using clear button from menu
-   *
-   * on trigger- checks if routeControl2 is not null -> then clears the map using clearutil
-   *
-   * always resets the waypoints and reverseCodedWaypoints
-   */
-  const clearButtonHandler = () => {
-    if (routeControl2 !== null) clearUtil();
-
-    resetWaypointStates();
-  };
 
   /**
    *
