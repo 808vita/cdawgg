@@ -509,28 +509,6 @@ const MapVizController = (props: any) => {
 
   useEffect(() => {
     console.log(waypoints, "useeffect waypoints");
-
-    if (polygonBoundaryList.length === 0 && waypoints.length > 0) {
-      //setting service mode state
-      setServiceMode(serviceModeOptions.notActive);
-    }
-    if (emptyPolygonWaypointBool()) {
-      //setting service mode state
-      setServiceMode(serviceModeOptions.notSet);
-    }
-
-    if (polygonBoundaryList.length > 0 && waypoints.length > 0) {
-      //setting service mode state
-      setServiceMode(serviceModeOptions.confirmed);
-    }
-
-    if (polygonBoundaryList.length > 0 && waypoints.length === 0) {
-      //setting service mode state
-      setServiceMode(serviceModeOptions.active);
-    }
-
-    let geomanLayers = mapRef.pm.getGeomanLayers();
-    console.log(geomanLayers, "geomanLayers");
   }, [waypoints]);
 
   useEffect(() => {
