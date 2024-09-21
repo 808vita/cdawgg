@@ -21,6 +21,13 @@ export const getMultipleCompanyStoresLatLng = (companyNameIndexArray) => {
   return multipleCompanyStoresArray;
 };
 
+export const arrayInsertorUserOptedKeyValue = (userOptedStoreLatLngArray) => {
+  return userOptedStoreLatLngArray.map((item) => ({
+    ...item,
+    userOpted: true,
+  }));
+};
+
 export const asyncStoreLatLng_LocationHighlighter = async (
   companyNameIndexArray,
   mapRef
@@ -40,8 +47,8 @@ export const asyncStoreLatLng_LocationHighlighter = async (
     (item) => companyNamesArray[item]
   );
 
-  const userOptedStoreLatLngArray = await getCompanyStoresLatLng(
-    userOptedStore
+  const userOptedStoreLatLngArray = arrayInsertorUserOptedKeyValue(
+    await getCompanyStoresLatLng(userOptedStore)
   );
 
   // stores the competitior list
@@ -64,7 +71,10 @@ export const asyncStoreLatLng_LocationHighlighter = async (
           )
       );
 
-      return { ...competitorStore, closestStore: Math.min(...closestUserOptedDistance) };
+      return {
+        ...competitorStore,
+        closestStore: Math.min(...closestUserOptedDistance),
+      };
     });
 
   return [

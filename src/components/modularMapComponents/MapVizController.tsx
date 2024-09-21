@@ -693,7 +693,7 @@ const MapVizController = (props: any) => {
                 iconUrl: markerPath,
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
-                className: "hue-rotate-90",
+                className: waypointData?.userOpted ? "hue-rotate-0" :  "hue-rotate-90" ,
               })
             }
           >
