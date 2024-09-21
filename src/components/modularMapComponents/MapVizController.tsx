@@ -644,40 +644,6 @@ const MapVizController = (props: any) => {
               </div>
             </div>
           )}
-
-          {waypoints.length >= 2 && (
-            <div className="text-center">
-              <button
-                className="bg-emerald-500 pt-2 pb-2 pr-4 pl-4 mt-2 mb-4 w-52"
-                onClick={async () => {
-                  if (routeControl2 !== null) {
-                    clearUtil();
-                  }
-
-                  routingUtil();
-
-                  showMenuHandler();
-                }}
-              >
-                <p className="font-thin text-base md:text-xl text-white">
-                  Route
-                </p>
-              </button>
-            </div>
-          )}
-
-          {waypoints.length >= 1 && (
-            <div className="text-center">
-              <button
-                className="bg-red-300 pt-2 pb-2 pr-4 pl-4 mb-4 w-52"
-                onClick={clearButtonHandler}
-              >
-                <p className="font-thin text-base md:text-xl text-white">
-                  Clear
-                </p>
-              </button>
-            </div>
-          )}
         </div>
       )}
 
