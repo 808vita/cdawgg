@@ -34,9 +34,9 @@ export default function PopupTabComponent({ waypointData }) {
     {
       id: "ratings",
       label: "Ratings",
-      content:<>
-
-<h4 className="font-thin text-lg mt-2 mb-2">{`Rating`}</h4>
+      content: (
+        <>
+          <h4 className="font-thin text-lg mt-2 mb-2">{`Rating`}</h4>
           {
             <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
               {`${waypointData?.rating}`}
@@ -45,7 +45,7 @@ export default function PopupTabComponent({ waypointData }) {
           <br />
           <hr />
 
-      <h4 className="font-thin text-lg mt-2 mb-2">{`Total Reviews`}</h4>
+          <h4 className="font-thin text-lg mt-2 mb-2">{`Total Reviews`}</h4>
           {
             <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
               {`${waypointData?.reviews}`}
@@ -54,8 +54,42 @@ export default function PopupTabComponent({ waypointData }) {
           <br />
           <hr />
 
-      </>
-        
+          <h5 className="font-thin text mt-1 mb-1">{`5 Star Reviews`}</h5>
+          {
+            <h6 className="font-thin text bg-blue-200 p-1 text-center">
+              {`${waypointData?.reviews_stats?.["5_star"]}`}
+            </h6>
+          }
+
+          <h5 className="font-thin text mt-1 mb-1">{`4 Star Reviews`}</h5>
+          {
+            <h6 className="font-thin text bg-blue-200 p-1 text-center">
+              {`${waypointData?.reviews_stats?.["4_star"]}`}
+            </h6>
+          }
+
+          <h5 className="font-thin text mt-1 mb-1">{`3 Star Reviews`}</h5>
+          {
+            <h6 className="font-thin text bg-blue-200 p-1 text-center">
+              {`${waypointData?.reviews_stats?.["3_star"]}`}
+            </h6>
+          }
+
+          <h5 className="font-thin text mt-1 mb-1">{`2 Star Reviews`}</h5>
+          {
+            <h6 className="font-thin text bg-blue-200 p-1 text-center">
+              {`${waypointData?.reviews_stats?.["2_star"]}`}
+            </h6>
+          }
+
+          <h5 className="font-thin text mt-1 mb-1">{`1 Star Reviews`}</h5>
+          {
+            <h6 className="font-thin text bg-blue-200 p-1 text-center">
+              {`${waypointData?.reviews_stats?.["1_star"]}`}
+            </h6>
+          }
+        </>
+      ),
     },
     {
       id: "ai_insights",
