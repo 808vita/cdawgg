@@ -2,6 +2,19 @@ import shopsData from "../../data/overview_data_business_name_placeid_dict.json"
 
 export const companyNamesArray = Object.keys(shopsData);
 
+export const makeCompanyNamesToIndexObj = () => {
+  let companyObj = {};
+  companyNamesArray.forEach((company, index) => {
+    companyObj[company] = index;
+  });
+  return companyObj;
+};
+
+export const companyNamesToIndexObj = makeCompanyNamesToIndexObj();
+
+export const companyNamesToIndexArray = Object.values(companyNamesToIndexObj)
+
+
 export const getCompanyStoresLatLng = (companyNameIndex) => {
   const selectedCompany = companyNamesArray[companyNameIndex];
   const storesLatLngArray = Object?.values(shopsData[selectedCompany]);

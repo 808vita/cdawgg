@@ -29,6 +29,8 @@ import {
 
 import {
   asyncStoreLatLng_LocationHighlighter,
+  companyNamesArray,
+  companyNamesToIndexArray,
   getCompanyStoresLatLng,
   getMultipleCompanyStoresLatLng,
 } from "@/utils/jsonUtils/jsonUtils";
@@ -36,6 +38,7 @@ import {
 import PopupTabComponent from "../uiComponents/PopupTabComponent";
 import MenuRadiusSlider from "../uiComponents/MenuRadiusSlider";
 import MenuShowMarkerLabels from "../uiComponents/MenuShowMarkerLabels";
+import MenuStoreDropdown from "../uiComponents/MenuStoreDropdown";
 
 // const markerPath = "/marker-icon.png";
 
@@ -103,8 +106,14 @@ const MapVizController = (props: any) => {
     [] | any[] | [L.LatLng[]]
   >([]);
 
-  const [raduis, setRadius] = useState(2000);
+  const [radius, setRadius] = useState(2000);
   const [showMarkerLabels, setShowMarkerLabels] = useState(true);
+  const [dropdownSelectedKeys, setDropdownSelectedKeys] = React.useState(
+    new Set([companyNamesArray[0]])
+  );
+  const [stateCompanySelectorArray, setStateCompanySelectorArray] = useState(
+    companyNamesToIndexArray
+  );
 
   /**
    * menu visibility handler
@@ -176,6 +185,9 @@ const MapVizController = (props: any) => {
    * generate hex boundary [[lat,lng]] using h3index string and store to state.
    */
   const h3ComboUtil = (latLng: L.LatLng) => {
+    // modified version for mapvize
+    // setting setH3IndexList empty before each generation
+    setH3IndexList([]);
     const h3Index: string = h3indexUtil(latLng, setH3IndexList, 11);
 
     const hexCenterCoordinates: h3.CoordPair = hexCenterCoordinatesUtil(
@@ -220,7 +232,7 @@ const MapVizController = (props: any) => {
     (async () => {
       // const index0storesLatLng = getCompanyStoresLatLng(1);
 
-      const selectedStoresArray = [0, 1, 2];
+      const selectedStoresArray = stateCompanySelectorArray;
 
       // const selectedStoresArray = [0, 1, 2, 3];
 
@@ -252,7 +264,7 @@ const MapVizController = (props: any) => {
 
       setWaypoints(index0storesLatLng);
     })();
-  }, []);
+  }, stateCompanySelectorArray);
 
   useEffect(() => {
     console.log(waypoints, "useeffect waypoints");
@@ -297,7 +309,16 @@ const MapVizController = (props: any) => {
             <hr />
           </div>
 
-          <MenuRadiusSlider setRaduis={setRadius} />
+          <div className="pb-3">
+            <h4>Select Your Company</h4>
+            <MenuStoreDropdown
+              dropdownSelectedKeys={dropdownSelectedKeys}
+              setDropdownSelectedKeys={setDropdownSelectedKeys}
+              setStateCompanySelectorArray={setStateCompanySelectorArray}
+            />
+          </div>
+
+          <MenuRadiusSlider radius={radius} setRadius={setRadius} />
 
           <MenuShowMarkerLabels
             showMarkerLabels={showMarkerLabels}
@@ -341,10 +362,10 @@ const MapVizController = (props: any) => {
             {/* {latLng?.closestStore !==undefined && latLng?.closestStore < 500 && */}
 
             {waypointData?.closestStore !== undefined &&
-              waypointData?.closestStore > raduis && (
+              waypointData?.closestStore > radius && (
                 <Circle
                   center={{ lat: waypointData?.lat, lng: waypointData?.lng }}
-                  radius={raduis}
+                  radius={radius}
                   fillOpacity={0.1}
                   color="green"
                 ></Circle>

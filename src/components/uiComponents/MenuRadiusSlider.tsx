@@ -1,6 +1,6 @@
 import { Slider } from "@nextui-org/react";
 
-export default function MenuRadiusSlider({ setRaduis }) {
+export default function MenuRadiusSlider({ radius, setRadius }) {
   return (
     <div className="flex flex-col gap-6 w-full max-w-md">
       <Slider
@@ -12,9 +12,10 @@ export default function MenuRadiusSlider({ setRaduis }) {
         maxValue={5}
         minValue={0.5}
         defaultValue={2}
+        value={radius / 1000}
         className="max-w-md"
         getValue={(value) => `${value} km`}
-        onChangeEnd={(e) => setRaduis((e as number) * 1000)}
+        onChangeEnd={(e) => setRadius((e as number) * 1000)}
       />
     </div>
   );
