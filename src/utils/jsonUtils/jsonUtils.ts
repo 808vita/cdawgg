@@ -1,4 +1,5 @@
 import shopsData from "../../data/overview_data_business_name_placeid_dict.json";
+import reviewsData from "../..//data/overview_with_reviews_data_business_name_placeid_dict.json";
 
 export const companyNamesArray = Object.keys(shopsData);
 
@@ -12,8 +13,7 @@ export const makeCompanyNamesToIndexObj = () => {
 
 export const companyNamesToIndexObj = makeCompanyNamesToIndexObj();
 
-export const companyNamesToIndexArray = Object.values(companyNamesToIndexObj)
-
+export const companyNamesToIndexArray = Object.values(companyNamesToIndexObj);
 
 export const getCompanyStoresLatLng = (companyNameIndex) => {
   const selectedCompany = companyNamesArray[companyNameIndex];
@@ -97,3 +97,10 @@ export const asyncStoreLatLng_LocationHighlighter = async (
     ...competitorStoresWithDistanceMeasured,
   ];
 };
+
+export const reviewsDataArraySeperateObj = Object.values(reviewsData);
+
+export const combinedReviewsDataObj = Object.assign(
+  {},
+  ...reviewsDataArraySeperateObj
+);
