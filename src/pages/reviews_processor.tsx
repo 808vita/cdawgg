@@ -39,6 +39,18 @@ const ReviewsProcessor = () => {
     []
   );
 
+  const [topLevelLoadingstate, setTopLevelLoadingState] = useState({
+    placeId_index: "",
+  });
+
+  const handleSetTopLevelLoadingState = useCallback((data = "") => {
+    setTopLevelLoadingState(
+      produce((draft) => {
+        draft["placeId_index"] = data;
+      })
+    );
+  }, []);
+
   const [spinnerLoading, setSpinnerLoading] = useState(false);
 
   const [currentSelectedReviewsState, setCurrentSelectedReviewsState] =
@@ -148,10 +160,14 @@ const ReviewsProcessor = () => {
 
   const iterateCallGeminiHandler = (mode, placeIdArray) => {
     console.log("starting iterator... ", mode, placeIdArray);
+    handleSetTopLevelLoadingState("starting");
     let index = 0;
 
     let interval = setInterval(function () {
       console.log("index", index, placeIdArray[index]);
+      handleSetTopLevelLoadingState(
+        "processing _" + placeIdArray[index] + "_ " + index
+      );
 
       const selectedObj = combinedReviewsDataObj[placeIdArray[index]][mode];
       const keysArray = Object.keys(selectedObj);
@@ -191,6 +207,7 @@ const ReviewsProcessor = () => {
         // change the conditional to check for the length of the array
         clearInterval(interval);
         console.log("interval cleared", mode);
+        handleSetTopLevelLoadingState("");
       }
     }, 60000);
     // change interval to 60000 or higher 60 secs or higher
@@ -202,15 +219,21 @@ const ReviewsProcessor = () => {
         promptSelectorState={promptSelectorState}
         setPromptSelectorState={setPromptSelectorState}
       />
-      <Button
-        size="lg"
-        className="m-4"
-        onClick={() =>
-          iterateCallGeminiHandler(handlerModeOptions.bundled, placeIdArray)
-        }
-      >
-        Bundled Reviews Processor
-      </Button>
+      {topLevelLoadingstate.placeId_index === "" && !spinnerLoading ? (
+        <Button
+          size="lg"
+          className="m-4"
+          onClick={() =>
+            iterateCallGeminiHandler(handlerModeOptions.bundled, placeIdArray)
+          }
+        >
+          Bundled Reviews Processor
+        </Button>
+      ) : (
+        <Button color="secondary" isLoading>
+          {topLevelLoadingstate.placeId_index}
+        </Button>
+      )}
       {spinnerLoading && <Spinner />}
       <Button
         size="lg"
@@ -235,8 +258,3 @@ const ReviewsProcessor = () => {
 };
 
 export default ReviewsProcessor;
-function useImmer(
-  arg0: { id: string; title: string; done: boolean }[]
-): [any, any] {
-  throw new Error("Function not implemented.");
-}
