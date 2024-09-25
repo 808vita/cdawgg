@@ -61,13 +61,13 @@ export async function backend_call_genani(
   }
 
   console.log({ response }, "from v2", selectedGenType);
-  console.log(JSON.parse(response), "from v2", selectedGenType);
+ 
 
   if (response.error) {
     console.log(response);
     return response;
   }
-
+  console.log(JSON.parse(response), "from v2", selectedGenType);
   console.log(response);
 
   // return "oof";

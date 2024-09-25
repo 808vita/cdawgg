@@ -104,3 +104,5 @@ export const combinedReviewsDataObj = Object.assign(
   {},
   ...reviewsDataArraySeperateObj
 );
+
+export const placeIdArray = Object.keys(combinedReviewsDataObj)

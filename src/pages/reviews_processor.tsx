@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { Button } from "@nextui-org/react";
 import {
   combinedReviewsDataObj,
+  placeIdArray,
   reviewsDataArraySeperateObj,
 } from "@/utils/jsonUtils/jsonUtils";
 import { backend_call_genani } from "@/utils/fetchHandlers/fetch_gemini_api_call";
@@ -29,26 +31,152 @@ const ReviewsProcessor = () => {
     Object.keys(combinedReviewsDataObj).length,
     "combinedReviewsDataObj"
   );
+  console.log(placeIdArray, "placeIdArray");
 
-  const testGeminiApiHandler = async () => {
-    if (currentSelectedReviewsState !== "") {
+  let processedBundledReviewsDict = {};
+  let errorsBundledReviewsArray = [];
+
+  const testGeminiApiHandler = async (
+    mode,
+    placeid,
+    processingKey,
+    reviewDataString
+  ) => {
+    if (reviewDataString !== "") {
       const responseFromGemini = await backend_call_genani(
-        currentSelectedReviewsState,
+        reviewDataString,
         promptSelectionObject.testPrompt
       );
 
       if (!responseFromGemini?.error) {
         // set the sucess content to the correct state
         console.log(responseFromGemini, "responseFromGemini");
+
+        if (mode === handlerModeOptions.bundled) {
+          processedBundledReviewsDict[placeid][processingKey] =
+            responseFromGemini?.test_content;
+        }
+
+        // let jsonData = JSON.stringify(responseFromGemini);
+        // downloadJsonStringed(
+        //   jsonData,
+        //   "responseFromGemini.json",
+        //   "application/json"
+        // )
+      }
+
+      if (responseFromGemini?.error) {
+        if (mode === handlerModeOptions.bundled) {
+          errorsBundledReviewsArray.push(placeid);
+        }
       }
     }
   };
+  function downloadJsonStringed(jsonContent, fileName, contentType) {
+    let a = document.createElement("a");
+    let file = new Blob([jsonContent], { type: contentType });
+    // 'text/plain'
+    // 'application/json'
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+  }
+  // let data = { oof: "cat", cat: "oof" };
+  // let jsonData = JSON.stringify(data);
+  // useEffect(() => {
+  //   testGeminiApiHandler();
+  //   const oof = ["cat", "dog", "meow"];
+  //   let text = oof.toString();
+  //   console.log(text, "oof.toString");
+  //   // download(jsonData, 'json.txt', 'text/plain');
+  //   downloadJsonStringed(jsonData, "json.json", "application/json");
+  // }, []);
 
-  useEffect(() => {
-    testGeminiApiHandler();
-  }, []);
+  const handlerModeOptions = {
+    bundled: "bundled_reviews",
+    month_split: "month_split_reviews",
+  };
 
-  return <div>reviews_processor</div>;
+  const iterateCallGeminiHandler = (mode, placeIdArray) => {
+    let index = 0;
+
+    let interval = setInterval(function () {
+      console.log("index", index, placeIdArray[index]);
+
+      const selectedObj = combinedReviewsDataObj[placeIdArray[index]][mode];
+      const keysArray = Object.keys(selectedObj);
+
+      console.log("index", index, selectedObj);
+      console.log("keysArray", keysArray);
+
+      keysArray.map((processingKey) => {
+        // console.log(
+        //   selectedObj[processingKey].toString(),
+        //   processingKey,
+        //   "keysArray processingKey"
+        // );
+
+        if (mode === handlerModeOptions.bundled) {
+          processedBundledReviewsDict[placeIdArray[index]] = {};
+        }
+
+        testGeminiApiHandler(
+          mode,
+          placeIdArray[index],
+          processingKey,
+          selectedObj[processingKey].toString()
+        );
+      });
+
+      if (mode === handlerModeOptions.bundled) {
+        console.log(mode, index);
+      } else if (mode === handlerModeOptions.month_split) {
+        console.log(mode);
+      }
+
+      index++;
+      // if (index === placeIdArray.length) {
+      if (index === 3) {
+        // for testing - a limited number
+        // change the conditional to check for the length of the array 
+        clearInterval(interval);
+        console.log("interval cleared", mode);
+      }
+    }, 1000);
+    // change interval to 60000 or higher 60 secs or higher
+  };
+
+  return (
+    <div>
+      <Button
+        size="lg"
+        className="m-4"
+        onClick={() =>
+          iterateCallGeminiHandler(handlerModeOptions.bundled, placeIdArray)
+        }
+      >
+        Bundled Reviews Processor
+      </Button>
+      <Button
+        size="lg"
+        className="m-4"
+        onClick={async () => {
+          let jsonData = JSON.stringify(processedBundledReviewsDict);
+          downloadJsonStringed(
+            jsonData,
+            "processedBundledReviewsDict.json",
+            "application/json"
+          );
+          console.log("error array",errorsBundledReviewsArray)
+        }}
+      >
+        Download Bundled Reviews Processor
+      </Button>
+      <Button size="lg" className="m-4" onClick={() => {}}>
+        Month Split Reviews
+      </Button>
+    </div>
+  );
 };
 
 export default ReviewsProcessor;
