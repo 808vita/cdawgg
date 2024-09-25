@@ -1,14 +1,46 @@
-import React, { useEffect, useState } from "react";
-import { Button } from "@nextui-org/react";
+import React, { useEffect, useState, useCallback } from "react";
+import { Button, Spinner } from "@nextui-org/react";
 import {
   combinedReviewsDataObj,
   placeIdArray,
   reviewsDataArraySeperateObj,
 } from "@/utils/jsonUtils/jsonUtils";
 import { backend_call_genani } from "@/utils/fetchHandlers/fetch_gemini_api_call";
-import { promptSelectionObject } from "@/utils/helpers/promptSelection";
+import {
+  availablePromptsArray,
+  promptSelectionObject,
+} from "@/utils/helpers/promptSelection";
+import ReviewProcessorRadioSelector from "@/components/uiComponents/ReviewProcessorRadioSelector";
+import { produce } from "immer";
+
+const loadingStateTemplate = {};
+
+placeIdArray.map((item, index) => (loadingStateTemplate[item] = {}));
+
+let processedBundledReviewsDict = {};
+let errorsBundledReviewsArray = [];
 
 const ReviewsProcessor = () => {
+  const [promptSelectorState, setPromptSelectorState] = useState(
+    availablePromptsArray[0]
+  );
+
+  const [loadingStates, setloadingStates] = useState(loadingStateTemplate);
+
+  const handleSetLoadingStates = useCallback(
+    (placeid, processingKey, boolVal) => {
+      setloadingStates(
+        produce((draft) => {
+          const record = draft[placeid];
+          record[processingKey] = boolVal;
+        })
+      );
+    },
+    []
+  );
+
+  const [spinnerLoading, setSpinnerLoading] = useState(false);
+
   const [currentSelectedReviewsState, setCurrentSelectedReviewsState] =
     useState(
       `    
@@ -33,9 +65,6 @@ const ReviewsProcessor = () => {
   );
   console.log(placeIdArray, "placeIdArray");
 
-  let processedBundledReviewsDict = {};
-  let errorsBundledReviewsArray = [];
-
   const testGeminiApiHandler = async (
     mode,
     placeid,
@@ -45,7 +74,11 @@ const ReviewsProcessor = () => {
     if (reviewDataString !== "") {
       const responseFromGemini = await backend_call_genani(
         reviewDataString,
-        promptSelectionObject.identifyProductsPrompt
+        // promptSelectionObject.identifyProductsPrompt
+        promptSelectionObject[promptSelectorState],
+        placeid,
+        processingKey,
+        handleSetLoadingStates
       );
 
       if (!responseFromGemini?.error) {
@@ -53,8 +86,10 @@ const ReviewsProcessor = () => {
         console.log(responseFromGemini, "responseFromGemini");
 
         if (mode === handlerModeOptions.bundled) {
-          processedBundledReviewsDict[placeid][processingKey] =
-            responseFromGemini?.test_content;
+          processedBundledReviewsDict[placeid][processingKey] = [
+            //@ts-ignore
+            ...new Set(responseFromGemini?.test_content),
+          ];
         }
 
         // let jsonData = JSON.stringify(responseFromGemini);
@@ -91,6 +126,20 @@ const ReviewsProcessor = () => {
   //   // download(jsonData, 'json.txt', 'text/plain');
   //   downloadJsonStringed(jsonData, "json.json", "application/json");
   // }, []);
+
+  useEffect(() => {
+    console.log(loadingStates, "loadingStates");
+
+    const loadingArray = Object.values(loadingStates)
+      .map((item) => Object.values(item))
+      .flat();
+    console.log(loadingArray, "loadingArray");
+    if (loadingArray.includes(true)) {
+      setSpinnerLoading(true);
+    } else {
+      setSpinnerLoading(false);
+    }
+  }, [loadingStates]);
 
   const handlerModeOptions = {
     bundled: "bundled_reviews",
@@ -138,7 +187,7 @@ const ReviewsProcessor = () => {
       // if (index === placeIdArray.length) {
       if (index === 3) {
         // for testing - a limited number
-        // change the conditional to check for the length of the array 
+        // change the conditional to check for the length of the array
         clearInterval(interval);
         console.log("interval cleared", mode);
       }
@@ -148,6 +197,10 @@ const ReviewsProcessor = () => {
 
   return (
     <div>
+      <ReviewProcessorRadioSelector
+        promptSelectorState={promptSelectorState}
+        setPromptSelectorState={setPromptSelectorState}
+      />
       <Button
         size="lg"
         className="m-4"
@@ -157,6 +210,7 @@ const ReviewsProcessor = () => {
       >
         Bundled Reviews Processor
       </Button>
+      {spinnerLoading && <Spinner />}
       <Button
         size="lg"
         className="m-4"
@@ -164,10 +218,10 @@ const ReviewsProcessor = () => {
           let jsonData = JSON.stringify(processedBundledReviewsDict);
           downloadJsonStringed(
             jsonData,
-            "processedBundledReviewsDict.json",
+            promptSelectorState + "_processedBundledReviewsDict.json",
             "application/json"
           );
-          console.log("error array",errorsBundledReviewsArray)
+          console.log("error array", errorsBundledReviewsArray);
         }}
       >
         Download Bundled Reviews Processor
@@ -180,3 +234,8 @@ const ReviewsProcessor = () => {
 };
 
 export default ReviewsProcessor;
+function useImmer(
+  arg0: { id: string; title: string; done: boolean }[]
+): [any, any] {
+  throw new Error("Function not implemented.");
+}

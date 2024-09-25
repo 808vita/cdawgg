@@ -6,12 +6,12 @@ export const systemPromptsObject = {
     ${identifyProductsPromptWithoutGuard}`,
   },
 
-  identifyIssuesPromptWithoutGuard: {
+  identifyIssuesPrompt: {
     text: `${systemSafeGuardInstructions}
     ${identifyIssuesPromptWithoutGuard}`,
   },
 
-  identifyGoodHighlightsPromptWithoutGuard: {
+  identifyGoodHighlightsPrompt: {
     text: `${systemSafeGuardInstructions}
     ${identifyGoodHighlightsPromptWithoutGuard}`,
   },

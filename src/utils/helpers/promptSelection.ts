@@ -3,9 +3,8 @@
  */
 export const promptSelectionObject = {
   identifyProductsPrompt: "identifyProductsPrompt",
-  identifyIssuesPromptWithoutGuard: "identifyIssuesPromptWithoutGuard",
-  identifyGoodHighlightsPromptWithoutGuard:
-    "identifyGoodHighlightsPromptWithoutGuard",
+  identifyIssuesPrompt: "identifyIssuesPrompt",
+  identifyGoodHighlightsPrompt: "identifyGoodHighlightsPrompt",
 };
 
 /**
