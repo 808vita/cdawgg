@@ -147,6 +147,7 @@ const ReviewsProcessor = () => {
   };
 
   const iterateCallGeminiHandler = (mode, placeIdArray) => {
+    console.log("starting iterator... ", mode, placeIdArray);
     let index = 0;
 
     let interval = setInterval(function () {
@@ -184,14 +185,14 @@ const ReviewsProcessor = () => {
       }
 
       index++;
-      // if (index === placeIdArray.length) {
-      if (index === 3) {
+      if (index === placeIdArray.length) {
+        // if (index === 3) {
         // for testing - a limited number
         // change the conditional to check for the length of the array
         clearInterval(interval);
         console.log("interval cleared", mode);
       }
-    }, 1000);
+    }, 60000);
     // change interval to 60000 or higher 60 secs or higher
   };
 
