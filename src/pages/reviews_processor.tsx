@@ -45,7 +45,7 @@ const ReviewsProcessor = () => {
     if (reviewDataString !== "") {
       const responseFromGemini = await backend_call_genani(
         reviewDataString,
-        promptSelectionObject.testPrompt
+        promptSelectionObject.identifyProductsPrompt
       );
 
       if (!responseFromGemini?.error) {

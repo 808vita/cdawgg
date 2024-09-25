@@ -1,9 +1,19 @@
-import { systemSafeGuardInstructions, testPromptWithoutGuard } from "./prompts";
+import { systemSafeGuardInstructions, identifyProductsPromptWithoutGuard, identifyIssuesPromptWithoutGuard, identifyGoodHighlightsPromptWithoutGuard } from "./prompts";
 
 export const systemPromptsObject = {
-  testPrompt: {
+  identifyProductsPrompt: {
     text: `${systemSafeGuardInstructions}
-    ${testPromptWithoutGuard}`,
+    ${identifyProductsPromptWithoutGuard}`,
+  },
+
+  identifyIssuesPromptWithoutGuard: {
+    text: `${systemSafeGuardInstructions}
+    ${identifyIssuesPromptWithoutGuard}`,
+  },
+
+  identifyGoodHighlightsPromptWithoutGuard: {
+    text: `${systemSafeGuardInstructions}
+    ${identifyGoodHighlightsPromptWithoutGuard}`,
   },
 };
 
