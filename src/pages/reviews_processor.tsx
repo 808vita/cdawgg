@@ -20,6 +20,8 @@ placeIdArray.map((item, index) => (loadingStateTemplate[item] = {}));
 let processedBundledReviewsDict = {};
 let errorsBundledReviewsArray = [];
 
+let processedMonthSplitReviewsDict = {};
+
 const ReviewsProcessor = () => {
   const [promptSelectorState, setPromptSelectorState] = useState(
     availablePromptsArray[0]
@@ -99,6 +101,12 @@ const ReviewsProcessor = () => {
 
         if (mode === handlerModeOptions.bundled) {
           processedBundledReviewsDict[placeid][processingKey] = [
+            //@ts-ignore
+            ...new Set(responseFromGemini?.test_content),
+          ];
+        }
+        if (mode === handlerModeOptions.month_split) {
+          processedMonthSplitReviewsDict[placeid][processingKey] = [
             //@ts-ignore
             ...new Set(responseFromGemini?.test_content),
           ];
@@ -186,6 +194,10 @@ const ReviewsProcessor = () => {
           processedBundledReviewsDict[placeIdArray[index]] = {};
         }
 
+        if (mode === handlerModeOptions.month_split) {
+          processedMonthSplitReviewsDict[placeIdArray[index]] = {};
+        }
+
         testGeminiApiHandler(
           mode,
           placeIdArray[index],
@@ -202,7 +214,7 @@ const ReviewsProcessor = () => {
 
       index++;
       if (index === placeIdArray.length) {
-        // if (index === 3) {
+      // if (index === 3) {
         // for testing - a limited number
         // change the conditional to check for the length of the array
         clearInterval(interval);
@@ -250,8 +262,38 @@ const ReviewsProcessor = () => {
       >
         Download Bundled Reviews Processor
       </Button>
-      <Button size="lg" className="m-4" onClick={() => {}}>
-        Month Split Reviews
+      {topLevelLoadingstate.placeId_index === "" && !spinnerLoading ? (
+        <Button
+          size="lg"
+          className="m-4"
+          onClick={() =>
+            iterateCallGeminiHandler(
+              handlerModeOptions.month_split,
+              placeIdArray
+            )
+          }
+        >
+          Month split Reviews Processor
+        </Button>
+      ) : (
+        <Button color="secondary" isLoading>
+          {topLevelLoadingstate.placeId_index}
+        </Button>
+      )}
+      <Button
+        size="lg"
+        className="m-4"
+        onClick={async () => {
+          let jsonData = JSON.stringify(processedMonthSplitReviewsDict);
+          downloadJsonStringed(
+            jsonData,
+            promptSelectorState + "processedMonthSplitReviewsDict.json",
+            "application/json"
+          );
+          console.log("error array", errorsBundledReviewsArray);
+        }}
+      >
+        Download month_split Reviews Processor
       </Button>
     </div>
   );
