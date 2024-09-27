@@ -5,70 +5,46 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
+  Select,
+  SelectItem,
 } from "@nextui-org/react";
 import {
   companyNamesArray,
+  companyNamesObjectWithBranchArray,
   companyNamesToIndexArray,
   companyNamesToIndexObj,
 } from "@/utils/jsonUtils/jsonUtils";
 
 export default function MenuBranchDropdown({
+  branchDropdownSelectedKeys,
+  setBranchDropdownSelectedKeys,
   dropdownSelectedKeys,
-  setDropdownSelectedKeys,
-  setStateCompanySelectorArray,
 }) {
   useEffect(() => {
-    console.log(companyNamesToIndexObj, "obj");
-    console.log(dropdownSelectedKeys, "dropdownSelectedKeys");
-    console.log(Array.from(dropdownSelectedKeys)[0], "dropdownSelectedKeys");
-    console.log(
-      companyNamesToIndexObj[Array.from(dropdownSelectedKeys)[0] as number],
-      "dropdownSelectedKeys"
-    );
-
-    console.log(companyNamesToIndexArray, "companyNamesToIndexArray");
-
-    let newArray = [...companyNamesToIndexArray];
-    console.log(newArray, "newArray");
-
-    newArray.unshift(
-      newArray.splice(
-        newArray.findIndex(
-          (elt) =>
-            elt ===
-            companyNamesToIndexObj[
-              Array.from(dropdownSelectedKeys)[0] as number
-            ]
-        ),
-        1
-      )[0]
-    );
-
-    console.log(newArray, "newArray");
-    setStateCompanySelectorArray(newArray);
-  }, [dropdownSelectedKeys]);
+    console.log(branchDropdownSelectedKeys, "branchDropdownSelectedKeys");
+  }, [branchDropdownSelectedKeys]);
 
   return (
-    <Dropdown backdrop="blur">
-      <DropdownTrigger>
-        <Button variant="bordered" className="capitalize">
-          {dropdownSelectedKeys}
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu
-        aria-label="Select Store"
-        variant="flat"
-        disallowEmptySelection
+    <div className="flex w-full max-w-xs flex-col gap-2">
+      <Select
+        label="Selected Branch"
+        variant="bordered"
+        placeholder="Select Branch"
+        selectedKeys={branchDropdownSelectedKeys}
+        className="max-w-xs"
+        onSelectionChange={setBranchDropdownSelectedKeys}
         selectionMode="single"
-        // @ts-ignore
-        dropdownSelectedKeys={dropdownSelectedKeys}
-        // @ts-ignore
-        onSelectionChange={setDropdownSelectedKeys}
       >
-        {companyNamesArray.map((company, index) => (
-          <DropdownItem key={company}>{company}</DropdownItem>
-        ))}
-      </DropdownMenu>
-    </Dropdown>
+        {dropdownSelectedKeys &&
+          companyNamesObjectWithBranchArray[
+            Array.from(dropdownSelectedKeys)[0] as string
+          ].map((company, index) => (
+            <SelectItem key={company}>{company}</SelectItem>
+          ))}
+      </Select>
+      <p className="text-small text-default-500">
+        Selected: {branchDropdownSelectedKeys}
+      </p>
+    </div>
   );
 }

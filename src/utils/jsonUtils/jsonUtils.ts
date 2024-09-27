@@ -2,6 +2,21 @@ import shopsData from "../../data/overview_data_business_name_placeid_dict.json"
 import reviewsData from "../..//data/overview_with_reviews_data_business_name_placeid_dict.json";
 
 export const companyNamesArray = Object.keys(shopsData);
+export const companyNamesObjectWithBranchArray = (() => {
+  let companyBranches = {};
+
+  companyNamesArray.map((item) => {
+    companyBranches[item] = Object.keys(shopsData[item]);
+  });
+
+  return companyBranches;
+})();
+
+export const getStoreLatLng = (company, branch) => {
+  const branchData = shopsData[company][branch];
+  const latlng: [number,number] = [branchData?.lat, branchData?.lng]
+  return latlng;
+};
 
 export const makeCompanyNamesToIndexObj = () => {
   let companyObj = {};
@@ -105,4 +120,4 @@ export const combinedReviewsDataObj = Object.assign(
   ...reviewsDataArraySeperateObj
 );
 
-export const placeIdArray = Object.keys(combinedReviewsDataObj)
+export const placeIdArray = Object.keys(combinedReviewsDataObj);

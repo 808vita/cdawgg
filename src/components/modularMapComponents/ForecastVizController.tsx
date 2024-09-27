@@ -30,9 +30,11 @@ import {
 import {
   asyncStoreLatLng_LocationHighlighter,
   companyNamesArray,
+  companyNamesObjectWithBranchArray,
   companyNamesToIndexArray,
   getCompanyStoresLatLng,
   getMultipleCompanyStoresLatLng,
+  getStoreLatLng,
 } from "@/utils/jsonUtils/jsonUtils";
 
 import PopupTabComponent from "../uiComponents/PopupTabComponent";
@@ -112,8 +114,11 @@ const ForecastVizController = (props: any) => {
   const [radius, setRadius] = useState(2000);
   const [showMarkerLabels, setShowMarkerLabels] = useState(true);
   const [showOnlyGapMarkers, setShowOnlyGapMarkers] = useState(false);
-  const [dropdownSelectedKeys, setDropdownSelectedKeys] = React.useState(
+  const [dropdownSelectedKeys, setDropdownSelectedKeys] = useState(
     new Set([companyNamesArray[0]])
+  );
+  const [branchDropdownSelectedKeys, setBranchDropdownSelectedKeys] = useState(
+    new Set([companyNamesObjectWithBranchArray[companyNamesArray[0]][0]])
   );
   const [stateCompanySelectorArray, setStateCompanySelectorArray] = useState(
     companyNamesToIndexArray
@@ -275,6 +280,39 @@ const ForecastVizController = (props: any) => {
   }, [waypoints]);
 
   useEffect(() => {
+    console.log(
+      dropdownSelectedKeys,
+      " dropdownSelectedKeys -- branchDropdownSelectedKeys "
+    );
+
+    setBranchDropdownSelectedKeys(
+      new Set([
+        companyNamesObjectWithBranchArray[
+          Array.from(dropdownSelectedKeys)[0] as string
+        ][0],
+      ])
+    );
+  }, [dropdownSelectedKeys]);
+
+  useEffect(() => {
+    console.log(branchDropdownSelectedKeys, "branchDropdownSelectedKeyss");
+    let company = Array.from(dropdownSelectedKeys)?.[0] as string;
+    let branchId = Array.from(branchDropdownSelectedKeys)?.[0] as string;
+    if (!branchId || !company) {
+      console.log(company, "company");
+      console.log(branchId, "branch");
+      console.log("returned without latlng call");
+    }
+
+    let branchLatLng = getStoreLatLng(company, branchId);
+    console.log(branchLatLng, "branchLatLng");
+
+    if (branchLatLng[0]) {
+      mapRef.setView(branchLatLng, 16);
+    }
+  }, [branchDropdownSelectedKeys]);
+
+  useEffect(() => {
     console.log(hexBoundaryList, "useeffect hexBoundaryList");
   }, [hexBoundaryList]);
 
@@ -324,9 +362,9 @@ const ForecastVizController = (props: any) => {
           <div className="pb-3">
             <h4>Select Branch</h4>
             <MenuBranchDropdown
+              branchDropdownSelectedKeys={branchDropdownSelectedKeys}
+              setBranchDropdownSelectedKeys={setBranchDropdownSelectedKeys}
               dropdownSelectedKeys={dropdownSelectedKeys}
-              setDropdownSelectedKeys={setDropdownSelectedKeys}
-              setStateCompanySelectorArray={setStateCompanySelectorArray}
             />
           </div>
 
