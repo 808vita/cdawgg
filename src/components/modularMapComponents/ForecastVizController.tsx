@@ -113,7 +113,7 @@ const ForecastVizController = (props: any) => {
 
   const [radius, setRadius] = useState(2000);
   const [showMarkerLabels, setShowMarkerLabels] = useState(true);
-  const [showOnlyGapMarkers, setShowOnlyGapMarkers] = useState(false);
+
   const [dropdownSelectedKeys, setDropdownSelectedKeys] = useState(
     new Set([companyNamesArray[0]])
   );
@@ -374,37 +374,20 @@ const ForecastVizController = (props: any) => {
             showMarkerLabels={showMarkerLabels}
             setShowMarkerLabels={setShowMarkerLabels}
           />
-          <br />
-          <MenuShowOnlyGapMarkers
-            showOnlyGapMarkers={showOnlyGapMarkers}
-            setShowOnlyGapMarkers={setShowOnlyGapMarkers}
-          />
         </div>
       )}
 
       {
         // showMenu &&
 
-        waypoints.map((waypointData: any, idx: any) =>
-          showOnlyGapMarkers ? (
-            waypointData?.closestStore !== undefined &&
-            waypointData?.closestStore > radius && (
-              <MapVizMarkerComponent
-                key={`marker-${idx}`}
-                waypointData={waypointData}
-                showMarkerLabels={showMarkerLabels}
-                radius={radius}
-              />
-            )
-          ) : (
-            <MapVizMarkerComponent
-              key={`marker-${idx}`}
-              waypointData={waypointData}
-              showMarkerLabels={showMarkerLabels}
-              radius={radius}
-            />
-          )
-        )
+        waypoints.map((waypointData: any, idx: any) => (
+          <MapVizMarkerComponent
+            key={`marker-${idx}`}
+            waypointData={waypointData}
+            showMarkerLabels={showMarkerLabels}
+            radius={radius}
+          />
+        ))
       }
 
       {hexBoundaryList?.length > 0 &&
