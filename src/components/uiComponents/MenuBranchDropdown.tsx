@@ -13,6 +13,7 @@ import {
   companyNamesObjectWithBranchArray,
   companyNamesToIndexArray,
   companyNamesToIndexObj,
+  getStoreBranchData,
 } from "@/utils/jsonUtils/jsonUtils";
 
 export default function MenuBranchDropdown({
@@ -38,12 +39,12 @@ export default function MenuBranchDropdown({
         {dropdownSelectedKeys &&
           companyNamesObjectWithBranchArray[
             Array.from(dropdownSelectedKeys)[0] as string
-          ].map((company, index) => (
-            <SelectItem key={company}>{company}</SelectItem>
+          ].map((branchId, index) => (
+            <SelectItem key={branchId}>{branchId}</SelectItem>
           ))}
       </Select>
       <p className="text-small text-default-500">
-        Selected: {branchDropdownSelectedKeys}
+        Selected: {["district","pincode"].map(item => getStoreBranchData(Array.from(dropdownSelectedKeys)[0],Array.from(branchDropdownSelectedKeys)[0])?.[item]+" ")}
       </p>
     </div>
   );
