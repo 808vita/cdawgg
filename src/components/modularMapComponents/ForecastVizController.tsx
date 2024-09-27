@@ -39,6 +39,8 @@ import PopupTabComponent from "../uiComponents/PopupTabComponent";
 import MenuRadiusSlider from "../uiComponents/MenuRadiusSlider";
 import MenuShowMarkerLabels from "../uiComponents/MenuShowMarkerLabels";
 import MenuStoreDropdown from "../uiComponents/MenuStoreDropdown";
+import MapVizMarkerComponent from "../uiComponents/MapVizMarkerComponent";
+import MenuShowOnlyGapMarkers from "../uiComponents/MenushowOnlyGapMarkers";
 import MenuBranchDropdown from "../uiComponents/MenuBranchDropdown";
 
 // const markerPath = "/marker-icon.png";
@@ -109,6 +111,7 @@ const ForecastVizController = (props: any) => {
 
   const [radius, setRadius] = useState(2000);
   const [showMarkerLabels, setShowMarkerLabels] = useState(true);
+  const [showOnlyGapMarkers, setShowOnlyGapMarkers] = useState(false);
   const [dropdownSelectedKeys, setDropdownSelectedKeys] = React.useState(
     new Set([companyNamesArray[0]])
   );
@@ -333,57 +336,37 @@ const ForecastVizController = (props: any) => {
             showMarkerLabels={showMarkerLabels}
             setShowMarkerLabels={setShowMarkerLabels}
           />
+          <br />
+          <MenuShowOnlyGapMarkers
+            showOnlyGapMarkers={showOnlyGapMarkers}
+            setShowOnlyGapMarkers={setShowOnlyGapMarkers}
+          />
         </div>
       )}
 
       {
         // showMenu &&
 
-        waypoints.map((waypointData: any, idx: any) => (
-          <Marker
-            key={`maker-${idx}`}
-            position={[waypointData.lat, waypointData.lng]}
-            icon={
-              new Icon({
-                iconUrl: markerPath,
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                className: waypointData?.userOpted
-                  ? "hue-rotate-0"
-                  : "hue-rotate-90",
-              })
-            }
-          >
-            {showMarkerLabels && (
-              <Tooltip permanent={true}>
-                {`${waypointData?.company} - ${waypointData?.pincode}`}
-              </Tooltip>
-            )}
-            <Popup>
-              <PopupTabComponent waypointData={waypointData} />
-            </Popup>
-
-            {/**
-             * raise radius meters to state variable
-             * latLng?.closestStore < 500 --this will display stores in range of lesser than 500meters
-             * latLng?.closestStore ? 500 --this will display stores in range of greater than 500meters
-             */}
-            {/* {latLng?.closestStore !==undefined && latLng?.closestStore < 500 && */}
-
-            {waypointData?.closestStore !== undefined &&
-              waypointData?.closestStore > radius && (
-                <Circle
-                  center={{
-                    lat: waypointData?.lat,
-                    lng: waypointData?.lng,
-                  }}
-                  radius={radius}
-                  fillOpacity={0.1}
-                  color="green"
-                ></Circle>
-              )}
-          </Marker>
-        ))
+        waypoints.map((waypointData: any, idx: any) =>
+          showOnlyGapMarkers ? (
+            waypointData?.closestStore !== undefined &&
+            waypointData?.closestStore > radius && (
+              <MapVizMarkerComponent
+                key={`marker-${idx}`}
+                waypointData={waypointData}
+                showMarkerLabels={showMarkerLabels}
+                radius={radius}
+              />
+            )
+          ) : (
+            <MapVizMarkerComponent
+              key={`marker-${idx}`}
+              waypointData={waypointData}
+              showMarkerLabels={showMarkerLabels}
+              radius={radius}
+            />
+          )
+        )
       }
 
       {hexBoundaryList?.length > 0 &&
