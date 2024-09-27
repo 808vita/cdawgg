@@ -14,8 +14,13 @@ export const companyNamesObjectWithBranchArray = (() => {
 
 export const getStoreLatLng = (company, branch) => {
   const branchData = shopsData[company][branch];
-  const latlng: [number,number] = [branchData?.lat, branchData?.lng]
+  const latlng: [number, number] = [branchData?.lat, branchData?.lng];
   return latlng;
+};
+
+export const getStoreBranchData = (company, branch) => {
+  const branchData = shopsData[company][branch];
+  return branchData;
 };
 
 export const makeCompanyNamesToIndexObj = () => {
@@ -121,3 +126,68 @@ export const combinedReviewsDataObj = Object.assign(
 );
 
 export const placeIdArray = Object.keys(combinedReviewsDataObj);
+
+export const asyncBranchLatLng_LocationHighlighter = async (
+  companyNameIndexArray,
+  company,
+  branchId,
+  mapRef
+) => {
+  const selectedCompanyWithAllBranchesDataArray =
+    getMultipleCompanyStoresLatLng(companyNameIndexArray);
+
+  const companyNameIndexArray_copy = [...companyNameIndexArray];
+
+  //userOptedStore stores the first item in the  selectedCompanyArray
+  // after "shift" the remaining items in selectedCompanyArray are competitors
+  const userOptedStore = await companyNameIndexArray_copy.shift();
+
+  console.log(userOptedStore, "shift");
+  console.log(companyNameIndexArray_copy, "after shift");
+
+  const selectedCompanyArray = companyNameIndexArray_copy?.map(
+    (item) => companyNamesArray[item]
+  );
+
+  const userOptedStoreLatLngArray = arrayInsertorUserOptedKeyValue([
+    await getStoreBranchData(company, branchId),
+  ]);
+
+  // stores the competitior list
+  const competitorMultipleCompanyStoresArray = await selectedCompanyArray
+    .map((company) => Object?.values(shopsData[company]))
+    .flat();
+
+  selectedCompanyWithAllBranchesDataArray.map(
+    (item) =>
+      item.place_id !== branchId &&
+      competitorMultipleCompanyStoresArray.push(item)
+  );
+
+  // console.log(
+  //   mapRef.distance(index0storesLatLng[0], index0storesLatLng[1]),
+  //   "distance"
+  // );
+
+  const competitorStoresWithDistanceMeasured =
+    competitorMultipleCompanyStoresArray?.map((competitorStore: any) => {
+      const closestUserOptedDistance = userOptedStoreLatLngArray.map(
+        (optedStore) =>
+          mapRef.distance(
+            { lat: optedStore?.lat, lng: optedStore?.lng },
+            { lat: competitorStore?.lat, lng: competitorStore?.lng }
+          )
+      );
+
+      return {
+        ...competitorStore,
+        // closestStore: Math.min(...closestUserOptedDistance),
+        closestStore: closestUserOptedDistance[0],
+      };
+    });
+
+  return  [
+    ...userOptedStoreLatLngArray,
+    ...competitorStoresWithDistanceMeasured,
+  ];
+};

@@ -28,6 +28,7 @@ import {
 } from "@/utils/hexUtils";
 
 import {
+  asyncBranchLatLng_LocationHighlighter,
   asyncStoreLatLng_LocationHighlighter,
   companyNamesArray,
   companyNamesObjectWithBranchArray,
@@ -44,6 +45,7 @@ import MenuStoreDropdown from "../uiComponents/MenuStoreDropdown";
 import MapVizMarkerComponent from "../uiComponents/MapVizMarkerComponent";
 import MenuShowOnlyGapMarkers from "../uiComponents/MenushowOnlyGapMarkers";
 import MenuBranchDropdown from "../uiComponents/MenuBranchDropdown";
+import ForecastVizMarkerComponent from "../uiComponents/ForecastVizMarkerComponent";
 
 // const markerPath = "/marker-icon.png";
 
@@ -242,7 +244,8 @@ const ForecastVizController = (props: any) => {
       // const index0storesLatLng = getCompanyStoresLatLng(1);
 
       const selectedStoresArray = stateCompanySelectorArray;
-
+      let company = Array.from(dropdownSelectedKeys)?.[0] as string;
+      let branchId = Array.from(branchDropdownSelectedKeys)?.[0] as string;
       // const selectedStoresArray = [0, 1, 2, 3];
 
       // const selectedStoresArray = [1, 0, 2, 3];
@@ -257,8 +260,15 @@ const ForecastVizController = (props: any) => {
       //   setWaypoints(values);
       // });
 
-      const index0storesLatLng = await asyncStoreLatLng_LocationHighlighter(
+      // const index0storesLatLng = await asyncStoreLatLng_LocationHighlighter(
+      //   selectedStoresArray,
+      //   mapRef
+      // );
+
+      const index0storesLatLng = await asyncBranchLatLng_LocationHighlighter(
         selectedStoresArray,
+        company,
+        branchId,
         mapRef
       );
 
@@ -273,7 +283,7 @@ const ForecastVizController = (props: any) => {
 
       setWaypoints(index0storesLatLng);
     })();
-  }, stateCompanySelectorArray);
+  }, [...stateCompanySelectorArray, branchDropdownSelectedKeys]);
 
   useEffect(() => {
     console.log(waypoints, "useeffect waypoints");
@@ -381,7 +391,7 @@ const ForecastVizController = (props: any) => {
         // showMenu &&
 
         waypoints.map((waypointData: any, idx: any) => (
-          <MapVizMarkerComponent
+          <ForecastVizMarkerComponent
             key={`marker-${idx}`}
             waypointData={waypointData}
             showMarkerLabels={showMarkerLabels}
