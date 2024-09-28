@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { useMap, useMapEvents, Polygon } from "react-leaflet";
+import { useMap, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet-routing-machine";
 import "leaflet-control-geocoder";
@@ -8,15 +8,6 @@ import "leaflet-control-geocoder";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 
 import "leaflet/dist/leaflet.css";
-
-import { routingUtilExported } from "@/utils/routingUtil";
-import { geocodingUtilExported } from "@/utils/geocodingUtil";
-import * as h3 from "h3-js";
-import {
-  h3indexUtil,
-  hexBoundaryUtil,
-  hexCenterCoordinatesUtil,
-} from "@/utils/hexUtils";
 
 import {
   asyncBranchLatLng_LocationHighlighter,
@@ -33,16 +24,6 @@ import MenuStoreDropdown from "../uiComponents/MenuStoreDropdown";
 import MenuBranchDropdown from "../uiComponents/MenuBranchDropdown";
 import ForecastVizMarkerComponent from "../uiComponents/ForecastVizMarkerComponent";
 import { uniqueArrayPlaceIdObjectsOnly } from "@/utils/forecastVizHelpers/forecastVizHelpers";
-
-// const markerPath = "/marker-icon.png";
-
-/**
- * routeControl2 with current setup is working
- *
- * run operations on this variable to remove waypoints markers, routing points
- *
- */
-let routeControl2: L.Routing.Control | null = null;
 
 /**
  *
@@ -65,13 +46,6 @@ const ForecastVizController = (props: any) => {
    * later used for reverse geocoidng and routing machine
    */
   const [waypoints, setWaypoints] = useState<L.LatLng[] | [] | any[]>([]);
-
-  /**
-   * reverse geocoded strings are stored here
-   */
-  const [reverseCodedWaypoints, setReverseCodedWaypoints] = useState<
-    [] | any[] | string[]
-  >([]);
 
   /**
    * routing menu visiblity state
