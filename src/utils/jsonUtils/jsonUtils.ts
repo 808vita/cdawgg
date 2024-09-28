@@ -1,6 +1,15 @@
 import shopsData from "../../data/overview_data_business_name_placeid_dict.json";
 import reviewsData from "../..//data/overview_with_reviews_data_business_name_placeid_dict.json";
 
+import goodHighlightsProcessed_BundledReviewsDict from "../../data/processed/identifyGoodHighlightsPrompt_processedBundledReviewsDict.json";
+import issuesProcessed_BundledReviewsDict from "../../data/processed/identifyIssuesPrompt_processedBundledReviewsDict.json";
+import productsProcessed_BundledReviewsDict from "../../data/processed/identifyProductsPrompt_processedBundledReviewsDict.json";
+
+import goodHighlightsProcessed_MonthlySplitReviewsDict from "../../data/processed/identifyGoodHighlightsPromptprocessedMonthSplitReviewsDict.json";
+import issuesProcessed_MonthlySplitReviewsDict from "../../data/processed/identifyIssuesPromptprocessedMonthSplitReviewsDict.json";
+import productsProcessed_MonthlySplitReviewsDict from "../../data/processed/identifyProductsPromptprocessedMonthSplitReviewsDict.json";
+import { promptSelectionObject } from "../helpers/promptSelection";
+
 export const companyNamesArray = Object.keys(shopsData);
 export const companyNamesObjectWithBranchArray = (() => {
   let companyBranches = {};
@@ -186,8 +195,71 @@ export const asyncBranchLatLng_LocationHighlighter = async (
       };
     });
 
-  return  [
+  return [
     ...userOptedStoreLatLngArray,
     ...competitorStoresWithDistanceMeasured,
   ];
+};
+
+export const mapVizInsightsProcessor = (
+  place_id,
+  prompt,
+  identifyGoodProducts = false
+) => {
+  let processedData = "";
+  goodHighlightsProcessed_BundledReviewsDict;
+  issuesProcessed_BundledReviewsDict;
+  productsProcessed_BundledReviewsDict;
+
+  if (promptSelectionObject.insightsQuestionGoodHighlightsPrompt === prompt) {
+    let branchData = goodHighlightsProcessed_BundledReviewsDict[place_id];
+
+    let dataArray = ["4_star", "5_star"].map((item) => branchData[item]);
+
+    processedData = dataArray.flat().toString();
+  } else if (promptSelectionObject.insightsQuestionIssuesMentioned === prompt) {
+    let branchData = issuesProcessed_BundledReviewsDict[place_id];
+
+    let dataArray = ["1_star", "2_star", "3_star"].map(
+      (item) => branchData[item]
+    );
+
+    processedData = dataArray.flat().toString();
+  } else if (
+    promptSelectionObject.insightsQuestionIdentifyProductsPrompt === prompt
+  ) {
+    if (identifyGoodProducts) {
+      let branchData = productsProcessed_BundledReviewsDict[place_id];
+
+      let dataArray = ["4_star", "5_star"].map((item) => branchData[item]);
+
+      processedData = dataArray.flat().toString();
+    } else {
+      let branchData = productsProcessed_BundledReviewsDict[place_id];
+
+      let dataArray = ["1_star", "2_star", "3_star"].map(
+        (item) => branchData[item]
+      );
+
+      processedData = dataArray.flat().toString();
+    }
+  } else if (
+    promptSelectionObject.insightsQuestionProvideImprovementTips === prompt
+  ) {
+    let branchDataGoodHighlights =
+      goodHighlightsProcessed_BundledReviewsDict[place_id];
+    let branchDataIssues = issuesProcessed_BundledReviewsDict[place_id];
+
+    let ratingArray = ["1_star", "2_star", "3_star", "4_star", "5_star"];
+    let dataArrayGoodHighlights = ratingArray
+      .map((item) => branchDataGoodHighlights[item])
+      .flat();
+    let dataArrayIssues = ratingArray
+      .map((item) => branchDataIssues[item])
+      .flat();
+
+    processedData = dataArrayGoodHighlights.concat(dataArrayIssues).toString();
+  }
+
+  return processedData;
 };

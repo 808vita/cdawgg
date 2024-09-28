@@ -1,4 +1,13 @@
-import { systemSafeGuardInstructions, identifyProductsPromptWithoutGuard, identifyIssuesPromptWithoutGuard, identifyGoodHighlightsPromptWithoutGuard } from "./prompts";
+import {
+  systemSafeGuardInstructions,
+  identifyProductsPromptWithoutGuard,
+  identifyIssuesPromptWithoutGuard,
+  identifyGoodHighlightsPromptWithoutGuard,
+  insightsQuestionGoodHighlightsPromptWithoutGuard,
+  insightsQuestionIdentifyProductsPromptWithoutGuard,
+  insightsQuestionIssuesMentionedPromptWithoutGuard,
+  insightsQuestionProvideImprovementTipsPromptWithoutGuard,
+} from "./prompts";
 
 export const systemPromptsObject = {
   identifyProductsPrompt: {
@@ -14,6 +23,24 @@ export const systemPromptsObject = {
   identifyGoodHighlightsPrompt: {
     text: `${systemSafeGuardInstructions}
     ${identifyGoodHighlightsPromptWithoutGuard}`,
+  },
+
+  insightsQuestionGoodHighlightsPrompt: {
+    text: `${systemSafeGuardInstructions}
+    ${insightsQuestionGoodHighlightsPromptWithoutGuard}`,
+  },
+
+  insightsQuestionIdentifyProductsPrompt: {
+    text: `${systemSafeGuardInstructions}
+    ${insightsQuestionIdentifyProductsPromptWithoutGuard}`,
+  },
+  insightsQuestionIssuesMentioned: {
+    text: `${systemSafeGuardInstructions}
+    ${insightsQuestionIssuesMentionedPromptWithoutGuard}`,
+  },
+  insightsQuestionProvideImprovementTips: {
+    text: `${systemSafeGuardInstructions}
+    ${insightsQuestionProvideImprovementTipsPromptWithoutGuard}`,
   },
 };
 

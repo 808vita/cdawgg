@@ -12,6 +12,7 @@ import MapVizAiInsightsSelectorComponent, {
 import { useEffect, useState } from "react";
 import { backend_call_genani_ai_insights } from "@/utils/fetchHandlers/fetch_gemini_api_call_ai_insights";
 import { promptSelectionObject } from "@/utils/helpers/promptSelection";
+import { mapVizInsightsProcessor } from "@/utils/jsonUtils/jsonUtils";
 
 export default function PopupTabComponent({ waypointData }) {
   const [selectorValue, setSelectorValue] = useState(new Set([]));
@@ -29,9 +30,29 @@ export default function PopupTabComponent({ waypointData }) {
   ];
 
   const ai_insights_call_handler = async () => {
+    let selectedPrompt =
+      availableQuestions?.[Array.from(selectorValue)?.[0] as number]?.[
+        "prompt"
+      ];
+
+    let identifyGoodProductsBool =
+      availableQuestions?.[Array.from(selectorValue)?.[0] as number]?.[
+        "name"
+      ] === "Which products received good reviews?";
+
+    let requiredBranchData = mapVizInsightsProcessor(
+      waypointData.place_id,
+      selectedPrompt,
+      identifyGoodProductsBool
+    );
+
+    console.log(selectedPrompt, "selectedPrompt");
+    console.log(identifyGoodProductsBool, "identifyGoodProductsBool");
+    console.log(requiredBranchData, "requiredBranchData");
+
     const responseFromGemini = await backend_call_genani_ai_insights(
-      branchData.toString(),
-      promptSelectionObject.identifyIssuesPrompt,
+      requiredBranchData,
+      promptSelectionObject[selectedPrompt],
       setLoadingState
     );
 
@@ -40,7 +61,7 @@ export default function PopupTabComponent({ waypointData }) {
       console.log(responseFromGemini, "responseFromGemini");
       console.log(waypointData, "waypointData");
       console.log(responseFromGemini?.test_content, "responseFromGemini");
-      setFetchedInsightsData(responseFromGemini?.test_content);
+      setFetchedInsightsData(responseFromGemini?.text_content);
     }
 
     if (responseFromGemini?.error) {

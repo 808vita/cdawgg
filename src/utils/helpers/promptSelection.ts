@@ -5,6 +5,12 @@ export const promptSelectionObject = {
   identifyProductsPrompt: "identifyProductsPrompt",
   identifyIssuesPrompt: "identifyIssuesPrompt",
   identifyGoodHighlightsPrompt: "identifyGoodHighlightsPrompt",
+  insightsQuestionGoodHighlightsPrompt: "insightsQuestionGoodHighlightsPrompt",
+  insightsQuestionIdentifyProductsPrompt:
+    "insightsQuestionIdentifyProductsPrompt",
+  insightsQuestionIssuesMentioned: "insightsQuestionIssuesMentioned",
+  insightsQuestionProvideImprovementTips:
+    "insightsQuestionProvideImprovementTips",
 };
 
 /**
