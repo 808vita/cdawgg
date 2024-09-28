@@ -9,7 +9,7 @@ import {
 import MapVizAiInsightsSelectorComponent, {
   availableQuestions,
 } from "./MapVizAiInsightsSelectorComponent";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { backend_call_genani_ai_insights } from "@/utils/fetchHandlers/fetch_gemini_api_call_ai_insights";
 import { promptSelectionObject } from "@/utils/helpers/promptSelection";
 
@@ -189,6 +189,12 @@ export default function PopupTabComponent({ waypointData }) {
       ),
     },
   ];
+
+  useEffect(() => {
+    console.log(selectorValue, "useEffect selectorvalue");
+
+    setFetchedInsightsData("");
+  }, [selectorValue]);
 
   return (
     <div className="flex w-full flex-col">
