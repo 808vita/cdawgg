@@ -15,9 +15,8 @@ import "leaflet-control-geocoder";
 
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 
-import { Icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { markerPath } from "@/utils/leafletConfig";
+
 import { routingUtilExported } from "@/utils/routingUtil";
 import { geocodingUtilExported } from "@/utils/geocodingUtil";
 import * as h3 from "h3-js";
@@ -29,23 +28,19 @@ import {
 
 import {
   asyncBranchLatLng_LocationHighlighter,
-  asyncStoreLatLng_LocationHighlighter,
   companyNamesArray,
   companyNamesObjectWithBranchArray,
   companyNamesToIndexArray,
-  getCompanyStoresLatLng,
-  getMultipleCompanyStoresLatLng,
   getStoreLatLng,
 } from "@/utils/jsonUtils/jsonUtils";
 
-import PopupTabComponent from "../uiComponents/PopupTabComponent";
 import MenuRadiusSlider from "../uiComponents/MenuRadiusSlider";
 import MenuShowMarkerLabels from "../uiComponents/MenuShowMarkerLabels";
 import MenuStoreDropdown from "../uiComponents/MenuStoreDropdown";
-import MapVizMarkerComponent from "../uiComponents/MapVizMarkerComponent";
-import MenuShowOnlyGapMarkers from "../uiComponents/MenushowOnlyGapMarkers";
+
 import MenuBranchDropdown from "../uiComponents/MenuBranchDropdown";
 import ForecastVizMarkerComponent from "../uiComponents/ForecastVizMarkerComponent";
+import { uniqueArrayPlaceIdObjectsOnly } from "@/utils/forecastVizHelpers/forecastVizHelpers";
 
 // const markerPath = "/marker-icon.png";
 
@@ -281,9 +276,17 @@ const ForecastVizController = (props: any) => {
       //   "distance"
       // );
 
-      setWaypoints(index0storesLatLng);
+      const selectedBranchWithOtherStoresInRange = index0storesLatLng.filter(
+        (item) => item?.userOpted || (item?.closestStore < radius && item)
+      );
+
+      const uniqueValues = uniqueArrayPlaceIdObjectsOnly(
+        selectedBranchWithOtherStoresInRange
+      );
+      console.log("selectedBranchWithOtherStoresInRange", uniqueValues);
+      setWaypoints(uniqueValues);
     })();
-  }, [...stateCompanySelectorArray, branchDropdownSelectedKeys]);
+  }, [...stateCompanySelectorArray, branchDropdownSelectedKeys, radius]);
 
   useEffect(() => {
     console.log(waypoints, "useeffect waypoints");
