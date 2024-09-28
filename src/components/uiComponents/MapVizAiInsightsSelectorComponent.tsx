@@ -24,17 +24,19 @@ export const availableQuestions = [
   },
 ];
 
-export default function MapVizAiInsightsSelectorComponent() {
-  const [value, setValue] = useState(new Set([]));
+export default function MapVizAiInsightsSelectorComponent({
+  selectorValue,
+  setSelectorValue,
+}) {
   return (
     <div className="flex w-full max-w-lg flex-col gap-2">
       <Select
         items={availableQuestions}
         label="Available Questions"
         placeholder="Select a question"
-        selectedKeys={value}
-        //@ts-ignore
-        onSelectionChange={setValue}
+        selectedKeys={selectorValue}
+        // @ts-ignore
+        onSelectionChange={setSelectorValue}
         labelPlacement="outside"
         classNames={{
           base: "max-w-lg",
@@ -62,8 +64,10 @@ export default function MapVizAiInsightsSelectorComponent() {
       </Select>
       <p className="text-small text-default-500">
         Selected:{" "}
-        {`${Array.from(value)?.[0]} - ${
-          availableQuestions?.[Array.from(value)?.[0]]?.["name"]
+        {`${Array.from(selectorValue)?.[0]} - ${
+          availableQuestions?.[Array.from(selectorValue)?.[0] as number]?.[
+            "name"
+          ]
         }`}
       </p>
     </div>

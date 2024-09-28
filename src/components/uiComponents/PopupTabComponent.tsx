@@ -1,7 +1,10 @@
 import { Tabs, Tab, Card, CardBody, CardHeader } from "@nextui-org/react";
 import MapVizAiInsightsSelectorComponent from "./MapVizAiInsightsSelectorComponent";
+import { useState } from "react";
 
 export default function PopupTabComponent({ waypointData }) {
+  const [selectorValue, setSelectorValue] = useState(new Set([]));
+
   let tabs = [
     {
       id: "general",
@@ -97,7 +100,10 @@ export default function PopupTabComponent({ waypointData }) {
       label: "AI Insights",
       content: (
         <>
-          <MapVizAiInsightsSelectorComponent />
+          <MapVizAiInsightsSelectorComponent
+            selectorValue={selectorValue}
+            setSelectorValue={setSelectorValue}
+          />
           <>
             "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
             officia deserunt mollit anim id est laborum.",
