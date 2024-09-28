@@ -1,23 +1,14 @@
 import React, { useEffect, useState } from "react";
 
-import {
-  Marker,
-  Popup,
-  Tooltip,
-  useMap,
-  useMapEvents,
-  Polygon,
-  Circle,
-} from "react-leaflet";
+import { useMap, useMapEvents, Polygon } from "react-leaflet";
 import L from "leaflet";
 import "leaflet-routing-machine";
 import "leaflet-control-geocoder";
 
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 
-import { Icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { markerPath } from "@/utils/leafletConfig";
+
 import { routingUtilExported } from "@/utils/routingUtil";
 import { geocodingUtilExported } from "@/utils/geocodingUtil";
 import * as h3 from "h3-js";
@@ -31,16 +22,13 @@ import {
   asyncStoreLatLng_LocationHighlighter,
   companyNamesArray,
   companyNamesToIndexArray,
-  getCompanyStoresLatLng,
-  getMultipleCompanyStoresLatLng,
 } from "@/utils/jsonUtils/jsonUtils";
 
-import PopupTabComponent from "../uiComponents/PopupTabComponent";
 import MenuRadiusSlider from "../uiComponents/MenuRadiusSlider";
 import MenuShowMarkerLabels from "../uiComponents/MenuShowMarkerLabels";
 import MenuStoreDropdown from "../uiComponents/MenuStoreDropdown";
 import MapVizMarkerComponent from "../uiComponents/MapVizMarkerComponent";
-import MenuShowOnlyGapMarkers from "../uiComponents/MenushowOnlyGapMarkers";
+import MenuShowOnlyGapMarkers from "../uiComponents/MenuShowOnlyGapMarkers";
 
 // const markerPath = "/marker-icon.png";
 
