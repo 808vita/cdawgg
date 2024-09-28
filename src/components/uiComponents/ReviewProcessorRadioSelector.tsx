@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { RadioGroup, Radio } from "@nextui-org/react";
 import { availablePromptsArray } from "@/utils/helpers/promptSelection";
 
