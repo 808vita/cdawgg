@@ -1,4 +1,11 @@
-import { Tabs, Tab, Card, CardBody, CardHeader } from "@nextui-org/react";
+import {
+  Tabs,
+  Tab,
+  Card,
+  CardBody,
+  CardHeader,
+  Button,
+} from "@nextui-org/react";
 import MapVizAiInsightsSelectorComponent from "./MapVizAiInsightsSelectorComponent";
 import { useState } from "react";
 
@@ -105,8 +112,29 @@ export default function PopupTabComponent({ waypointData }) {
             setSelectorValue={setSelectorValue}
           />
           <>
-            "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-            officia deserunt mollit anim id est laborum.",
+            {(Array.from(selectorValue)?.[0] as number) >= 0 && (
+              <>
+                <Button
+                  variant="shadow"
+                  color="primary"
+                  size="md"
+                  className="m-4"
+                  onClick={() =>
+                    console.log(
+                      "oof",
+                      Array.from(selectorValue)?.[0],
+                      waypointData
+                    )
+                  }
+                >
+                  ASK AI
+                </Button>
+              </>
+            )}
+            <div>
+              "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+              officia deserunt mollit anim id est laborum.",
+            </div>
           </>
         </>
       ),
