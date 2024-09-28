@@ -1,18 +1,7 @@
 import React, { useEffect } from "react";
+import { Select, SelectItem } from "@nextui-org/react";
 import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-  Button,
-  Select,
-  SelectItem,
-} from "@nextui-org/react";
-import {
-  companyNamesArray,
   companyNamesObjectWithBranchArray,
-  companyNamesToIndexArray,
-  companyNamesToIndexObj,
   getStoreBranchData,
 } from "@/utils/jsonUtils/jsonUtils";
 
@@ -44,7 +33,14 @@ export default function MenuBranchDropdown({
           ))}
       </Select>
       <p className="text-small text-default-500">
-        Selected: {["district","pincode"].map(item => getStoreBranchData(Array.from(dropdownSelectedKeys)[0],Array.from(branchDropdownSelectedKeys)[0])?.[item]+" ")}
+        Selected:
+        {["district", "pincode"].map(
+          (item) =>
+            getStoreBranchData(
+              Array.from(dropdownSelectedKeys)[0],
+              Array.from(branchDropdownSelectedKeys)[0]
+            )?.[item] + " "
+        )}
       </p>
     </div>
   );
