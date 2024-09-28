@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import {
-  Marker,
-  Popup,
-  Tooltip,
-  useMap,
-  useMapEvents,
-  Polygon,
-  Circle,
-} from "react-leaflet";
+import { useMap, useMapEvents, Polygon } from "react-leaflet";
 import L from "leaflet";
 import "leaflet-routing-machine";
 import "leaflet-control-geocoder";
@@ -86,28 +78,6 @@ const ForecastVizController = (props: any) => {
    */
   const [showMenu, setShowMenu] = useState<boolean>(true);
 
-  /**
-   * h3index gets stored here
-   */
-  const [h3IndexList, setH3IndexList] = useState<[] | any[] | string[]>([]);
-
-  /**
-   * hexCenterCoordinates gets stored here
-   * list of [lat,lng]
-   */
-  const [hexCenterCoordinatesList, setHexCenterCoordinatesList] = useState<
-    [] | any[] | L.LatLng[]
-  >([]);
-
-  /**
-   * hexBoundary gets stored here
-   * list of latlng boundary data
-   *  [[lat,lng]]
-   */
-  const [hexBoundaryList, setHexBoundaryList] = useState<
-    [] | any[] | [L.LatLng[]]
-  >([]);
-
   const [radius, setRadius] = useState(2000);
   const [showMarkerLabels, setShowMarkerLabels] = useState(true);
 
@@ -132,77 +102,6 @@ const ForecastVizController = (props: any) => {
    * leaflet mapref used for various operations
    */
   const mapRef: L.Map = useMap();
-
-  /**
-   * routing util to trigger routing machine path geneartions
-   */
-  const routingUtil = () => {
-    routeControl2 = routingUtilExported(waypoints, mapRef);
-  };
-
-  /**
-   *
-   * @param latLng
-   *
-   * triggers geocodingUtilExported
-   *
-   * tries to reverse geocode from latlng and then stores the string value to state
-   */
-  const geocodingUtil = (latLng: any) => {
-    geocodingUtilExported(
-      L,
-      mapRef,
-      latLng,
-      reverseCodedWaypoints,
-      setReverseCodedWaypoints
-    );
-  };
-
-  /**
-   * clear markers , paths from the map
-   */
-  const clearUtil = () => {
-    mapRef.removeControl(routeControl2 as L.Routing.Control);
-  };
-
-  /**
-   * reset the waypoint states
-   *
-   * empty out - waypoints , reversecodedwaypoints , indexlist , hexcenters , hexboundarylist
-   */
-  const resetWaypointStates = () => {
-    setWaypoints([]);
-    setReverseCodedWaypoints([]);
-    setH3IndexList([]);
-    setHexCenterCoordinatesList([]);
-    setHexBoundaryList([]);
-  };
-
-  /**
-   *
-   * @param latLng
-   *
-   * h3combo util
-   *
-   * generate h3index from latlng and store to state
-   *
-   * generate hex center coordiantes and store to state
-   *
-   * generate hex boundary [[lat,lng]] using h3index string and store to state.
-   */
-  const h3ComboUtil = (latLng: L.LatLng) => {
-    // modified version for mapvize
-    // setting setH3IndexList empty before each generation
-    setH3IndexList([]);
-    const h3Index: string = h3indexUtil(latLng, setH3IndexList, 11);
-
-    const hexCenterCoordinates: h3.CoordPair = hexCenterCoordinatesUtil(
-      h3Index,
-      setHexCenterCoordinatesList
-    );
-
-    hexBoundaryUtil(h3Index, setHexBoundaryList);
-  };
 
   /**
    *
@@ -236,29 +135,9 @@ const ForecastVizController = (props: any) => {
 
   useEffect(() => {
     (async () => {
-      // const index0storesLatLng = getCompanyStoresLatLng(1);
-
       const selectedStoresArray = stateCompanySelectorArray;
       let company = Array.from(dropdownSelectedKeys)?.[0] as string;
       let branchId = Array.from(branchDropdownSelectedKeys)?.[0] as string;
-      // const selectedStoresArray = [0, 1, 2, 3];
-
-      // const selectedStoresArray = [1, 0, 2, 3];
-
-      // const index0storesLatLng =  getMultipleCompanyStoresLatLng(
-      //   selectedStoresArray
-      // );
-
-      // const index0storesLatLng = Promise.all(
-      //   await asyncStoreLatLng_LocationHighlighter(selectedStoresArray, mapRef)
-      // ).then((values) => {
-      //   setWaypoints(values);
-      // });
-
-      // const index0storesLatLng = await asyncStoreLatLng_LocationHighlighter(
-      //   selectedStoresArray,
-      //   mapRef
-      // );
 
       const index0storesLatLng = await asyncBranchLatLng_LocationHighlighter(
         selectedStoresArray,
@@ -268,13 +147,6 @@ const ForecastVizController = (props: any) => {
       );
 
       console.log(index0storesLatLng);
-      // add h3 layer for the marker
-      // index0storesLatLng?.map((item: any) => h3ComboUtil(item));
-
-      // console.log(
-      //   mapRef.distance(index0storesLatLng[0], index0storesLatLng[1]),
-      //   "distance"
-      // );
 
       const selectedBranchWithOtherStoresInRange = index0storesLatLng.filter(
         (item) => item?.userOpted || (item?.closestStore < radius && item)
@@ -321,13 +193,9 @@ const ForecastVizController = (props: any) => {
     console.log(branchLatLng, "branchLatLng");
 
     if (branchLatLng[0]) {
-      mapRef.setView(branchLatLng, 16);
+      mapRef.setView(branchLatLng, 14);
     }
   }, [branchDropdownSelectedKeys]);
-
-  useEffect(() => {
-    console.log(hexBoundaryList, "useeffect hexBoundaryList");
-  }, [hexBoundaryList]);
 
   return (
     <>
@@ -360,7 +228,7 @@ const ForecastVizController = (props: any) => {
           }}
         >
           <div className={`p-3 align-middle text-center text-lg font-thin`}>
-            Identify Location Gaps
+            Demand Analysis
             <hr />
           </div>
 
@@ -390,32 +258,14 @@ const ForecastVizController = (props: any) => {
         </div>
       )}
 
-      {
-        // showMenu &&
-
-        waypoints.map((waypointData: any, idx: any) => (
-          <ForecastVizMarkerComponent
-            key={`marker-${idx}`}
-            waypointData={waypointData}
-            showMarkerLabels={showMarkerLabels}
-            radius={radius}
-          />
-        ))
-      }
-
-      {hexBoundaryList?.length > 0 &&
-        hexBoundaryList?.map((singileHexCoordinates, idx) => (
-          <Polygon
-            key={`hex-${idx}`}
-            pathOptions={{ color: "red" }}
-            positions={
-              singileHexCoordinates as
-                | L.LatLngExpression[]
-                | L.LatLngExpression[][]
-                | L.LatLngExpression[][][]
-            }
-          />
-        ))}
+      {waypoints.map((waypointData: any, idx: any) => (
+        <ForecastVizMarkerComponent
+          key={`marker-${idx}`}
+          waypointData={waypointData}
+          showMarkerLabels={showMarkerLabels}
+          radius={radius}
+        />
+      ))}
     </>
   );
 };
