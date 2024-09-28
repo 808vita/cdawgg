@@ -224,7 +224,10 @@ const ForecastVizController = (props: any) => {
           </div>
 
           <MenuRadiusSlider radius={radius} setRadius={setRadius} />
-
+          <p className="text-small text-default-500">
+            (Data Augmentation Search Radius)
+          </p>
+          <br />
           <MenuShowMarkerLabels
             showMarkerLabels={showMarkerLabels}
             setShowMarkerLabels={setShowMarkerLabels}
