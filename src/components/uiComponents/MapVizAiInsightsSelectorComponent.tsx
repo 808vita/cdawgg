@@ -1,36 +1,31 @@
 import { promptSelectionObject } from "@/utils/helpers/promptSelection";
-import { Select, SelectItem, Avatar } from "@nextui-org/react";
-import { useState } from "react";
+import { Select, SelectItem } from "@nextui-org/react";
 
 export const availableQuestions = [
   {
     id: 0,
     name: "Good highlights about the branch?",
-    prompt:promptSelectionObject.insightsQuestionGoodHighlightsPrompt
+    prompt: promptSelectionObject.insightsQuestionGoodHighlightsPrompt,
   },
   {
     id: 1,
     name: "Which products received good reviews?",
-    prompt:promptSelectionObject.insightsQuestionIdentifyProductsPrompt
-
+    prompt: promptSelectionObject.insightsQuestionIdentifyProductsPrompt,
   },
   {
     id: 2,
     name: "Which products received bad reviews?",
-    prompt:promptSelectionObject.insightsQuestionIdentifyProductsPrompt
-
+    prompt: promptSelectionObject.insightsQuestionIdentifyProductsPrompt,
   },
   {
     id: 3,
     name: "Common issues mentioned by customers?",
-    prompt:promptSelectionObject.insightsQuestionIssuesMentioned
-
+    prompt: promptSelectionObject.insightsQuestionIssuesMentioned,
   },
   {
     id: 4,
     name: "Provide improvements tips.",
-    prompt:promptSelectionObject.insightsQuestionProvideImprovementTips
-
+    prompt: promptSelectionObject.insightsQuestionProvideImprovementTips,
   },
 ];
 
@@ -72,7 +67,6 @@ export default function MapVizAiInsightsSelectorComponent({
           </SelectItem>
         )}
       </Select>
-
     </div>
   );
 }
