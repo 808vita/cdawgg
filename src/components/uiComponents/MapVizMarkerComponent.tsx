@@ -6,11 +6,7 @@ import { Icon } from "leaflet";
 import { markerPath } from "@/utils/leafletConfig";
 import PopupTabComponent from "./PopupTabComponent";
 
-const MapVizMarkerComponent = ({
-  waypointData,
-  showMarkerLabels,
-  radius,
-}) => {
+const MapVizMarkerComponent = ({ waypointData, showMarkerLabels, radius }) => {
   return (
     <Marker
       position={[waypointData.lat, waypointData.lng]}

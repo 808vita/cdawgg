@@ -62,14 +62,7 @@ export default function MapVizAiInsightsSelectorComponent({
           </SelectItem>
         )}
       </Select>
-      <p className="text-small text-default-500">
-        Selected:{" "}
-        {`${Array.from(selectorValue)?.[0]} - ${
-          availableQuestions?.[Array.from(selectorValue)?.[0] as number]?.[
-            "name"
-          ]
-        }`}
-      </p>
+
     </div>
   );
 }
