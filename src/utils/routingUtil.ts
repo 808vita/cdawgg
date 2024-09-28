@@ -13,9 +13,16 @@ import Line from "leaflet-routing-machine/src/line";
  */
 export const routingUtilExported = (waypoints: any[], mapRef: L.Map) => {
   let routeControl: L.Routing.Control = L.Routing.control({
-  //   router: L.Routing.osrmv1({
-  //     serviceUrl: 'https://routing.openstreetmap.de/routed-car/route/v1',
-  // }),
+    //   router: L.Routing.osrmv1({
+    //     serviceUrl: 'https://routing.openstreetmap.de/routed-car/route/v1',
+    // }),
+
+    // alternate routing url for demo-
+    // either use above or this or commment this out for default url
+
+    router: L.Routing.osrmv1({
+      serviceUrl: "https://routing.openstreetmap.de/routed-bike/route/v1/",
+    }),
     waypoints: waypoints,
     // routeWhileDragging: true,
     // showAlternatives: false,

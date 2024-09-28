@@ -48,7 +48,7 @@ You will be provided with reviews of a retail electronic appliances store. You a
 
     **Your response must always be a valid JSON object with the following structure:
       
-      * **text_content:** string text data - important please only provide a very precise & concise summary for all items combined`;
+      * **text_content:** string text data - important please only provide a very precise & concise summary for all items combined.300 words is the maximum limit`;
 
 /**
  * insights Question identify products Prompt
@@ -68,7 +68,7 @@ You will be provided with reviews of a retail electronic appliances store. You a
 
     **Your response must always be a valid JSON object with the following structure:
       
-      * **text_content:** string text data - important please only provide a very precise & concise summary for all items combined`;
+      * **text_content:** string text data - important please only provide a very precise & concise summary for all items combined.300 words is the maximum limit`;
 
 /**
  * insights Question issues mentioned Prompt
@@ -78,4 +78,4 @@ You will be provided with reviews data of a retail electronic appliances store. 
 
     **Your response must always be a valid JSON object with the following structure:
       
-      * **text_content:** string text data - important please only provide a very precise & concise summary for all items combined`;
+      * **text_content:** string text data - important please only provide a very precise & concise summary for all items combined.300 words is the maximum limit`;
