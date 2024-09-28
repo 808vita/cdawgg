@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { backend_call_genani_ai_insights } from "@/utils/fetchHandlers/fetch_gemini_api_call_ai_insights";
 import { promptSelectionObject } from "@/utils/helpers/promptSelection";
 import { mapVizInsightsProcessor } from "@/utils/jsonUtils/jsonUtils";
+import Markdown from "react-markdown";
 
 export default function PopupTabComponent({ waypointData }) {
   const [selectorValue, setSelectorValue] = useState(new Set([]));
@@ -208,8 +209,10 @@ export default function PopupTabComponent({ waypointData }) {
               </>
             )}
 
-            <div>
-              <h4 className="font-extralight">{fetchedInsightsData}</h4>
+            <div className="max-h-60">
+              <h4 className="font-extralight">
+                <Markdown>{fetchedInsightsData}</Markdown>
+              </h4>
             </div>
           </>
         </>
