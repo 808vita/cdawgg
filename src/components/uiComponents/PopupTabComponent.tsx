@@ -1,4 +1,5 @@
 import { Tabs, Tab, Card, CardBody, CardHeader } from "@nextui-org/react";
+import MapVizAiInsightsSelectorComponent from "./MapVizAiInsightsSelectorComponent";
 
 export default function PopupTabComponent({ waypointData }) {
   let tabs = [
@@ -45,11 +46,11 @@ export default function PopupTabComponent({ waypointData }) {
           <br />
           <hr />
 
-          <h4 className="font-thin text-lg mt-2 mb-2">{`Total Reviews`}</h4>
+          <h5 className="font-thin text mt-1 mb-1">{`Total Reviews`}</h5>
           {
-            <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
+            <h6 className="font-thin text bg-blue-200 p-1 text-center">
               {`${waypointData?.reviews}`}
-            </h5>
+            </h6>
           }
           <br />
           <hr />
@@ -94,8 +95,15 @@ export default function PopupTabComponent({ waypointData }) {
     {
       id: "ai_insights",
       label: "AI Insights",
-      content:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      content: (
+        <>
+          <MapVizAiInsightsSelectorComponent />
+          <>
+            "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+            officia deserunt mollit anim id est laborum.",
+          </>
+        </>
+      ),
     },
   ];
 
