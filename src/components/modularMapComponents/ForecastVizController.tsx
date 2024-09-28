@@ -202,7 +202,7 @@ const ForecastVizController = (props: any) => {
           }}
         >
           <div className={`p-3 align-middle text-center text-lg font-thin`}>
-            Demand Analysis
+            Demand Analysis & Forecast
             <hr />
           </div>
 
