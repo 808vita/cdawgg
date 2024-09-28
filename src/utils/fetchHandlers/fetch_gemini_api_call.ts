@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import {
   availablePromptsArray,
   // genTypesKeys2LoadingState,
@@ -18,16 +17,21 @@ import { jsonrepair } from "jsonrepair";
  */
 export async function backend_call_genani(
   currentSelectedReviewsState: string,
-  selectedGenType: string,placeid,
-  processingKey,handleSetLoadingStates
+  selectedGenType: string,
+  placeid,
+  processingKey,
+  handleSetLoadingStates
 ) {
-  if (!currentSelectedReviewsState || !availablePromptsArray.includes(selectedGenType)) {
+  if (
+    !currentSelectedReviewsState ||
+    !availablePromptsArray.includes(selectedGenType)
+  ) {
     return;
   }
 
   // update loading state
   //set loading to true here
-  handleSetLoadingStates(placeid, processingKey, true)
+  handleSetLoadingStates(placeid, processingKey, true);
 
   let response = "" as any;
 
@@ -61,11 +65,10 @@ export async function backend_call_genani(
   if (response) {
     // update loading state
     //set loading to false here
-    handleSetLoadingStates(placeid, processingKey, false)
+    handleSetLoadingStates(placeid, processingKey, false);
   }
 
   console.log({ response }, "from v2", selectedGenType);
- 
 
   if (response.error) {
     console.log(response);
