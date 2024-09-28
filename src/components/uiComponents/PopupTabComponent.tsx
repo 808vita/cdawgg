@@ -5,6 +5,8 @@ import {
   CardBody,
   CardHeader,
   Button,
+  Accordion,
+  AccordionItem,
 } from "@nextui-org/react";
 import MapVizAiInsightsSelectorComponent, {
   availableQuestions,
@@ -123,40 +125,44 @@ export default function PopupTabComponent({ waypointData }) {
           <br />
           <hr />
 
-          <h5 className="font-thin text mt-1 mb-1">{`5 Star Reviews`}</h5>
-          {
-            <h6 className="font-thin text bg-blue-200 p-1 text-center">
-              {`${waypointData?.reviews_stats?.["5_star"]}`}
-            </h6>
-          }
+          <Accordion>
+            <AccordionItem key="1" aria-label="Details" title="Details">
+              <h5 className="font-thin text mt-1 mb-1">{`5 Star Reviews`}</h5>
+              {
+                <h6 className="font-thin text bg-blue-200 p-1 text-center">
+                  {`${waypointData?.reviews_stats?.["5_star"]}`}
+                </h6>
+              }
 
-          <h5 className="font-thin text mt-1 mb-1">{`4 Star Reviews`}</h5>
-          {
-            <h6 className="font-thin text bg-blue-200 p-1 text-center">
-              {`${waypointData?.reviews_stats?.["4_star"]}`}
-            </h6>
-          }
+              <h5 className="font-thin text mt-1 mb-1">{`4 Star Reviews`}</h5>
+              {
+                <h6 className="font-thin text bg-blue-200 p-1 text-center">
+                  {`${waypointData?.reviews_stats?.["4_star"]}`}
+                </h6>
+              }
 
-          <h5 className="font-thin text mt-1 mb-1">{`3 Star Reviews`}</h5>
-          {
-            <h6 className="font-thin text bg-blue-200 p-1 text-center">
-              {`${waypointData?.reviews_stats?.["3_star"]}`}
-            </h6>
-          }
+              <h5 className="font-thin text mt-1 mb-1">{`3 Star Reviews`}</h5>
+              {
+                <h6 className="font-thin text bg-blue-200 p-1 text-center">
+                  {`${waypointData?.reviews_stats?.["3_star"]}`}
+                </h6>
+              }
 
-          <h5 className="font-thin text mt-1 mb-1">{`2 Star Reviews`}</h5>
-          {
-            <h6 className="font-thin text bg-blue-200 p-1 text-center">
-              {`${waypointData?.reviews_stats?.["2_star"]}`}
-            </h6>
-          }
+              <h5 className="font-thin text mt-1 mb-1">{`2 Star Reviews`}</h5>
+              {
+                <h6 className="font-thin text bg-blue-200 p-1 text-center">
+                  {`${waypointData?.reviews_stats?.["2_star"]}`}
+                </h6>
+              }
 
-          <h5 className="font-thin text mt-1 mb-1">{`1 Star Reviews`}</h5>
-          {
-            <h6 className="font-thin text bg-blue-200 p-1 text-center">
-              {`${waypointData?.reviews_stats?.["1_star"]}`}
-            </h6>
-          }
+              <h5 className="font-thin text mt-1 mb-1">{`1 Star Reviews`}</h5>
+              {
+                <h6 className="font-thin text bg-blue-200 p-1 text-center">
+                  {`${waypointData?.reviews_stats?.["1_star"]}`}
+                </h6>
+              }
+            </AccordionItem>
+          </Accordion>
         </>
       ),
     },
