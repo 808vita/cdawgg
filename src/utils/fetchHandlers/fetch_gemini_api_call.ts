@@ -12,7 +12,7 @@ import { jsonrepair } from "jsonrepair";
  *
  * function used to call backend api route endpoint "api/mutli_segement_prompting"
  *
- *
+ *this is used for review processing in review processor page
  * the api calls segemented into smaller chunks to aviod nextjs route api timeout limitiation of 10secs
  */
 export async function backend_call_genani(

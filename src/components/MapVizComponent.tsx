@@ -20,7 +20,7 @@ import MapVizController from "./modularMapComponents/MapVizController";
  *
  * @returns JSX.Element
  *
- * map component
+ * map component - gap location module
  */
 const MapComponentViz: () => JSX.Element = () => {
   return (

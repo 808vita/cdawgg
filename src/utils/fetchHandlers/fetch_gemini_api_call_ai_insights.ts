@@ -13,7 +13,7 @@ import { escapeSpecialChars } from "./fetchHelpers/fetchHelpers";
  *
  * function used to call backend api route endpoint "api/mutli_segement_prompting"
  *
- *
+ * this is used for ai insights - handles for multiple prompts
  * the api calls segemented into smaller chunks to aviod nextjs route api timeout limitiation of 10secs
  */
 export async function backend_call_genani_ai_insights(

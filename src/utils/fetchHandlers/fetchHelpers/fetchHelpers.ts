@@ -1,4 +1,13 @@
-export const escapeSpecialChars = function (text) {
+/**
+ *
+ * @param text
+ * @returns string text
+ *
+ * takes in stringed text data
+ * properly inserts escape characters
+ * this is to avoid gemini api call errors about text
+ */
+export const escapeSpecialChars = function (text: string) {
   return text
     .replace(/\\n/g, "\\n")
     .replace(/\\'/g, "\\'")

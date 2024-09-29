@@ -22,6 +22,14 @@ let errorsBundledReviewsArray = [];
 
 let processedMonthSplitReviewsDict = {};
 
+/**
+ * 
+ * @returns page jsx
+ * 
+ * review processor page
+ * this holds the module for data pre-processing  |
+ * the raw reviews where sent to gemini api to process & consolidate it for the using it in other modules.
+ */
 const ReviewsProcessor = () => {
   const [promptSelectorState, setPromptSelectorState] = useState(
     availablePromptsArray[0]

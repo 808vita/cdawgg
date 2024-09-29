@@ -10,7 +10,14 @@ import issuesProcessed_MonthlySplitReviewsDict from "../../data/processed/identi
 import productsProcessed_MonthlySplitReviewsDict from "../../data/processed/identifyProductsPromptprocessedMonthSplitReviewsDict.json";
 import { promptSelectionObject } from "../helpers/promptSelection";
 
+/**
+ * shops name array
+ */
 export const companyNamesArray = Object.keys(shopsData);
+
+/**
+ * company name as key with array of branches
+ */
 export const companyNamesObjectWithBranchArray = (() => {
   let companyBranches = {};
 
@@ -21,17 +28,39 @@ export const companyNamesObjectWithBranchArray = (() => {
   return companyBranches;
 })();
 
-export const getStoreLatLng = (company, branch) => {
+/**
+ *
+ * @param company string
+ * @param branch string
+ * @returns [lat,lng]
+ *
+ * takes in company name (string) & branch (place_id - string)
+ * returns [lat,lng]
+ */
+export const getStoreLatLng = (company: string, branch: string) => {
   const branchData = shopsData[company][branch];
   const latlng: [number, number] = [branchData?.lat, branchData?.lng];
   return latlng;
 };
 
-export const getStoreBranchData = (company, branch) => {
+/**
+ *
+ * @param company string
+ * @param branch string
+ * @returns { complete place_id data }
+ *
+ * takes in company name (string) & branch (place_id - string)
+ * { complete place_id data }
+ */
+export const getStoreBranchData = (company: string, branch: string) => {
   const branchData = shopsData[company][branch];
   return branchData;
 };
-
+/**
+ *
+ * @returns {companyName:index}
+ * returns an object of {companyName:index}
+ */
 export const makeCompanyNamesToIndexObj = () => {
   let companyObj = {};
   companyNamesArray.forEach((company, index) => {
@@ -40,10 +69,25 @@ export const makeCompanyNamesToIndexObj = () => {
   return companyObj;
 };
 
+/**
+ * an object of {companyName:index}
+ */
 export const companyNamesToIndexObj = makeCompanyNamesToIndexObj();
 
+/**
+ * an array of index values from Object.values({companyName:index})
+ *
+ */
 export const companyNamesToIndexArray = Object.values(companyNamesToIndexObj);
 
+/**
+ *
+ * @param companyNameIndex index
+ * @returns {complete place_id data}
+ *
+ * takes in index
+ * and returns {complete place_id data}
+ */
 export const getCompanyStoresLatLng = (companyNameIndex) => {
   const selectedCompany = companyNamesArray[companyNameIndex];
   const storesLatLngArray = Object?.values(shopsData[selectedCompany]);

@@ -30,20 +30,21 @@ import { uniqueArrayPlaceIdObjectsOnly } from "@/utils/forecastVizHelpers/foreca
  * @param props
  * @returns jsx
  *
- * Routing machine
+ * holds all the components which makes up forecast module & acts as the controller point.
  *
- * holds waypoints & reverseCodedWaypoints states -- currently --might alter later
+ * has menu component - company dropdown , branch selector ,sliders , display labels toggle
  *
- * has menu component - trigger routing , clear markers
+ * marker popup - for general information , ratings details and AI insights
  *
- * controls map events - double click to place markers ,reverse geocode and then use it routing path
+ * controls map events - double click to place markers
+ *
+ * holds the main states
  *
  */
 const ForecastVizController = (props: any) => {
   /**
-   * waypoints on double click stored here
-   *
-   * later used for reverse geocoidng and routing machine
+   * waypoints - holds the store location data
+   * and is used for plotting of markers on to the map.
    */
   const [waypoints, setWaypoints] = useState<L.LatLng[] | [] | any[]>([]);
 

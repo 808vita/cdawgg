@@ -20,7 +20,7 @@ import ForecastVizController from "./modularMapComponents/ForecastVizController"
  *
  * @returns JSX.Element
  *
- * map component
+ * map component - forecast module
  */
 const ForecastVizComponent: () => JSX.Element = () => {
   return (
