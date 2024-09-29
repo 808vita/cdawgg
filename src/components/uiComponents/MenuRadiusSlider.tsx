@@ -1,5 +1,13 @@
 import { Slider } from "@nextui-org/react";
 
+/**
+ * 
+ * @param ({ radius, setRadius }) 
+ * @returns jsx component
+ * 
+ * slider component for selecting range
+ * controls and sets range of radius 
+ */
 export default function MenuRadiusSlider({ radius, setRadius }) {
   return (
     <div className="flex flex-col gap-6 w-full max-w-md">

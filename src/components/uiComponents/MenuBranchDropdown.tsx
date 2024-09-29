@@ -5,6 +5,19 @@ import {
   getStoreBranchData,
 } from "@/utils/jsonUtils/jsonUtils";
 
+/**
+ *
+ * @param ({
+  branchDropdownSelectedKeys,
+  setBranchDropdownSelectedKeys,
+  dropdownSelectedKeys,
+})
+ * @returns jsx component
+ *
+ * branch dropdown selector
+ * handles & sets states for critical useEffect side effects
+ *
+ */
 export default function MenuBranchDropdown({
   branchDropdownSelectedKeys,
   setBranchDropdownSelectedKeys,
@@ -36,10 +49,10 @@ export default function MenuBranchDropdown({
         Selected:
         {["district", "pincode"].map(
           (item) =>
-            getStoreBranchData(
-              Array.from(dropdownSelectedKeys)[0],
-              Array.from(branchDropdownSelectedKeys)[0]
-            )?.[item] + " "
+            (getStoreBranchData(
+              Array.from(dropdownSelectedKeys)[0] as string,
+              Array.from(branchDropdownSelectedKeys)[0]?.[item]
+            ) as string) + " "
         )}
       </p>
     </div>

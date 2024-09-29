@@ -12,6 +12,19 @@ import {
   companyNamesToIndexObj,
 } from "@/utils/jsonUtils/jsonUtils";
 
+/**
+ *
+ * @param ({
+  dropdownSelectedKeys,
+  setDropdownSelectedKeys,
+  setStateCompanySelectorArray,
+})
+ * @returns jsx component
+ *
+ * company dropdown
+ * handles & sets states for critical useEffect side effects
+ *
+ */
 export default function MenuStoreDropdown({
   dropdownSelectedKeys,
   setDropdownSelectedKeys,

@@ -5,7 +5,18 @@ import { Icon } from "leaflet";
 
 import { markerPath } from "@/utils/leafletConfig";
 import PopupTabComponent from "./PopupTabComponent";
-
+/**
+ *
+ * @param ({
+  waypointData,
+  showMarkerLabels,
+  radius,
+}) 
+ * @returns jsx component
+ *
+ * forecast viz marker component
+ * handles marker , tooltip , popup & conditionally renders the circle range
+ */
 const ForecastVizMarkerComponent = ({
   waypointData,
   showMarkerLabels,
@@ -37,13 +48,6 @@ const ForecastVizMarkerComponent = ({
           <Popup>
             <PopupTabComponent waypointData={waypointData} />
           </Popup>
-
-          {/**
-           * raise radius meters to state variable
-           * latLng?.closestStore < 500 --this will display stores in range of lesser than 500meters
-           * latLng?.closestStore ? 500 --this will display stores in range of greater than 500meters
-           */}
-          {/* {latLng?.closestStore !==undefined && latLng?.closestStore < 500 && */}
 
           {waypointData?.userOpted && (
             <Circle

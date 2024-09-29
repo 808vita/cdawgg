@@ -15,7 +15,15 @@ import { backend_call_genani_ai_insights } from "@/utils/fetchHandlers/fetch_gem
 import { promptSelectionObject } from "@/utils/helpers/promptSelection";
 import { mapVizInsightsProcessor } from "@/utils/jsonUtils/jsonUtils";
 import Markdown from "react-markdown";
-
+/**
+ *
+ * @param ({ waypointData })
+ * @returns jsx component
+ *
+ * popup component displays - general information , rating details & ai insights
+ * 
+ * for ai insights - gemini api calls - fetch requests handler function exists here
+ */
 export default function PopupTabComponent({ waypointData }) {
   const [selectorValue, setSelectorValue] = useState(new Set([]));
   const [loadingState, setLoadingState] = useState(false);

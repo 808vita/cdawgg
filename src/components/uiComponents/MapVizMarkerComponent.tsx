@@ -6,6 +6,14 @@ import { Icon } from "leaflet";
 import { markerPath } from "@/utils/leafletConfig";
 import PopupTabComponent from "./PopupTabComponent";
 
+/**
+ *
+ * @param  ({ waypointData, showMarkerLabels, radius })
+ * @returns jsx component
+ *
+ * map viz - gap location module - marker component
+ * handles marker , tooltip , popup & conditionally renders the circle range
+ */
 const MapVizMarkerComponent = ({ waypointData, showMarkerLabels, radius }) => {
   return (
     <Marker

@@ -28,7 +28,17 @@ export const availableQuestions = [
     prompt: promptSelectionObject.insightsQuestionProvideImprovementTips,
   },
 ];
-
+/**
+ *
+ * @param   ({
+  selectorValue,
+  setSelectorValue,
+})
+ * @returns jsx component
+ *
+ * question selector component used in AI insights popup tab
+ * sets states which later controls the prompts for gemini api call
+ */
 export default function MapVizAiInsightsSelectorComponent({
   selectorValue,
   setSelectorValue,
