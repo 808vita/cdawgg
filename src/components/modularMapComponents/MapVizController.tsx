@@ -20,6 +20,7 @@ import MenuShowMarkerLabels from "../uiComponents/MenuShowMarkerLabels";
 import MenuStoreDropdown from "../uiComponents/MenuStoreDropdown";
 import MapVizMarkerComponent from "../uiComponents/MapVizMarkerComponent";
 import MenuShowOnlyGapMarkers from "../uiComponents/MenuShowOnlyGapMarkers";
+import MenuGoHomeComponent from "../uiComponents/MenuGoHomeComponent";
 
 /**
  *
@@ -150,6 +151,7 @@ const MapVizController = (props: any) => {
             zIndex: 500,
           }}
         >
+          <MenuGoHomeComponent />
           <div className={`p-3 align-middle text-center text-lg font-thin`}>
             Identify Location Gaps
             <hr />

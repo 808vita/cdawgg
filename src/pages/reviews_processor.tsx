@@ -12,6 +12,7 @@ import {
 } from "@/utils/helpers/promptSelection";
 import ReviewProcessorRadioSelector from "@/components/uiComponents/ReviewProcessorRadioSelector";
 import { produce } from "immer";
+import MenuGoHomeComponent from "@/components/uiComponents/MenuGoHomeComponent";
 
 const loadingStateTemplate = {};
 
@@ -23,9 +24,9 @@ let errorsBundledReviewsArray = [];
 let processedMonthSplitReviewsDict = {};
 
 /**
- * 
+ *
  * @returns page jsx
- * 
+ *
  * review processor page
  * this holds the module for data pre-processing  |
  * the raw reviews where sent to gemini api to process & consolidate it for the using it in other modules.
@@ -222,7 +223,7 @@ const ReviewsProcessor = () => {
 
       index++;
       if (index === placeIdArray.length) {
-      // if (index === 3) {
+        // if (index === 3) {
         // for testing - a limited number
         // change the conditional to check for the length of the array
         clearInterval(interval);
@@ -235,6 +236,9 @@ const ReviewsProcessor = () => {
 
   return (
     <div>
+      <div className="m-2 max-w-sm">
+        <MenuGoHomeComponent />
+      </div>
       <ReviewProcessorRadioSelector
         promptSelectorState={promptSelectorState}
         setPromptSelectorState={setPromptSelectorState}

@@ -24,6 +24,7 @@ import MenuStoreDropdown from "../uiComponents/MenuStoreDropdown";
 import MenuBranchDropdown from "../uiComponents/MenuBranchDropdown";
 import ForecastVizMarkerComponent from "../uiComponents/ForecastVizMarkerComponent";
 import { uniqueArrayPlaceIdObjectsOnly } from "@/utils/forecastVizHelpers/forecastVizHelpers";
+import MenuGoHomeComponent from "../uiComponents/MenuGoHomeComponent";
 
 /**
  *
@@ -202,6 +203,7 @@ const ForecastVizController = (props: any) => {
             zIndex: 500,
           }}
         >
+          <MenuGoHomeComponent />
           <div className={`p-3 align-middle text-center text-lg font-thin`}>
             Demand Analysis & Forecast
             <hr />

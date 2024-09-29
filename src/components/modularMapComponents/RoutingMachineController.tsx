@@ -28,6 +28,7 @@ import {
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import { booleanPointInPolygonUtil } from "@/utils/booleanPointInPolygonUtil";
+import MenuGoHomeComponent from "../uiComponents/MenuGoHomeComponent";
 
 // const markerPath = "/marker-icon.png";
 
@@ -554,6 +555,7 @@ const RoutingMachineController = (props: any) => {
             zIndex: 500,
           }}
         >
+          <MenuGoHomeComponent />
           <div className={`p-3 align-middle text-center text-lg font-thin`}>
             {waypoints.length == 0
               ? "Double Click To Mark"
@@ -603,20 +605,21 @@ const RoutingMachineController = (props: any) => {
               Selected Cordinates:
             </div>
           )}
-
-          {waypoints.map((waypoint: any, idx: any) => (
-            <div
-              key={`waypoints-${idx}`}
-              className="p-2 align-middle text-start text-xs md:text-sm font-thin"
-            >
-              {/* {`${idx} Lat: ${waypoint.lat} , Lng: ${waypoint.lng}`} */}
-              {`${
-                reverseCodedWaypoints?.[idx] == undefined
-                  ? `~Geocoding Please Wait~ Lat:${waypoint.lat} , Lng:${waypoint.lng}`
-                  : reverseCodedWaypoints?.[idx]
-              }`}
-            </div>
-          ))}
+          <div className="max-h-72 overflow-auto">
+            {waypoints.map((waypoint: any, idx: any) => (
+              <div
+                key={`waypoints-${idx}`}
+                className="p-2 align-middle text-start text-xs md:text-sm font-thin"
+              >
+                {/* {`${idx} Lat: ${waypoint.lat} , Lng: ${waypoint.lng}`} */}
+                {`${
+                  reverseCodedWaypoints?.[idx] == undefined
+                    ? `~Geocoding Please Wait~ Lat:${waypoint.lat} , Lng:${waypoint.lng}`
+                    : reverseCodedWaypoints?.[idx]
+                }`}
+              </div>
+            ))}
+          </div>
 
           {waypoints.length >= 2 && (
             <div className="text-center">
