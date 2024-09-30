@@ -19,6 +19,7 @@ import React from "react";
 import ForecastAiInsightsSelectorComponent, {
   foreCastAvailableQuestions,
 } from "./ForecastAiInsightsSelectorComponent";
+import ForecastMonthSelectorComponent from "./ForecastMonthSelectorComponent";
 /**
  *
  * @param ({ waypointData })
@@ -30,6 +31,7 @@ import ForecastAiInsightsSelectorComponent, {
  */
 export default function ForecastPopupTabComponent({ waypointData }) {
   const [selectorValue, setSelectorValue] = useState(new Set([]));
+  const [monthSelectorValue, setMonthSelectorValue] = useState(new Set([]));
   const [loadingState, setLoadingState] = useState(false);
   const [fetchedInsightsData, setFetchedInsightsData] = useState("");
 
@@ -81,10 +83,17 @@ export default function ForecastPopupTabComponent({ waypointData }) {
       content: (
         <>
           {!loadingState && (
-            <ForecastAiInsightsSelectorComponent
-              selectorValue={selectorValue}
-              setSelectorValue={setSelectorValue}
-            />
+            <>
+              <ForecastMonthSelectorComponent
+                monthSelectorValue={monthSelectorValue}
+                setMonthSelectorValue={setMonthSelectorValue}
+              />
+
+              <ForecastAiInsightsSelectorComponent
+                selectorValue={selectorValue}
+                setSelectorValue={setSelectorValue}
+              />
+            </>
           )}
           {(Array.from(selectorValue)?.[0] as number) >= 0 && (
             <p className="text-small text-default-500">
