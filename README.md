@@ -3,6 +3,9 @@
 ## Customer Data Anlytics Weighted By Geospatial & Using GenAI
 ![v2 cover image cdawgg](https://github.com/user-attachments/assets/4757bff0-5e53-4aab-9f45-5865e77dfe6d)
 
+[`CDAWGG Demo Video`](https://drive.google.com/file/d/1scRXFMOxK1mjKi938ZdaijKhMRynr_5P/view?usp=sharing)
+
+
 ### Deployed link : [`Live Site`](https://cdawgg.oofdev.com/)
 
 ### Deployed docs path: [`Deployed Docs`](https://cdawgg.oofdev.com/docs/index.html)
