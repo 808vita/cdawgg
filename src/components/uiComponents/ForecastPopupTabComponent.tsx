@@ -19,7 +19,9 @@ import React from "react";
 import ForecastAiInsightsSelectorComponent, {
   foreCastAvailableQuestions,
 } from "./ForecastAiInsightsSelectorComponent";
-import ForecastMonthSelectorComponent from "./ForecastMonthSelectorComponent";
+import ForecastMonthSelectorComponent, {
+  monthsArray,
+} from "./ForecastMonthSelectorComponent";
 /**
  *
  * @param ({ waypointData })
@@ -102,6 +104,9 @@ export default function ForecastPopupTabComponent({ waypointData }) {
                 foreCastAvailableQuestions?.[
                   Array.from(selectorValue)?.[0] as number
                 ]?.["name"]
+              } ${
+                monthsArray[Array.from(monthSelectorValue)?.[0]]["name"] &&
+                "in " + monthsArray[Array.from(monthSelectorValue)?.[0]]["name"]+" ?"
               }`}
             </p>
           )}

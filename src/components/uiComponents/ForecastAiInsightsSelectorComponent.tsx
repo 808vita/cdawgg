@@ -8,12 +8,12 @@ export const foreCastAvailableQuestions = [
   //   prompt: promptSelectionObject.insightsQuestionGoodHighlightsPrompt,
   // },
   {
-    id: 1,
+    id: 0,
     name: "Which products received good reviews",
     prompt: promptSelectionObject.insightsQuestionIdentifyProductsPrompt,
   },
   {
-    id: 2,
+    id:1,
     name: "Which products received bad reviews",
     prompt: promptSelectionObject.insightsQuestionIdentifyProductsPrompt,
   },
