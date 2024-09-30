@@ -49,10 +49,10 @@ export default function MenuBranchDropdown({
         Selected:
         {["district", "pincode"].map(
           (item) =>
-            (getStoreBranchData(
+            getStoreBranchData(
               Array.from(dropdownSelectedKeys)[0] as string,
-              Array.from(branchDropdownSelectedKeys)[0]?.[item]
-            ) as string) + " "
+              Array.from(branchDropdownSelectedKeys)[0] as string
+            )?.[item] + " "
         )}
       </p>
     </div>
