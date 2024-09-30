@@ -11,7 +11,7 @@
 ### Deployed docs path: [`Deployed Docs`](https://cdawgg.oofdev.com/docs/index.html)
 
 You can also access docs on local server by navigating to "/docs/index.html"
-
+- Note For Judges: Gemini API free tier is used - limits of RPM can be reached at times.
 
 
 ## Getting Started
