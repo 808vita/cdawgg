@@ -106,7 +106,9 @@ export default function ForecastPopupTabComponent({ waypointData }) {
                 ]?.["name"]
               } ${
                 monthsArray[Array.from(monthSelectorValue)?.[0]]["name"] &&
-                "in " + monthsArray[Array.from(monthSelectorValue)?.[0]]["name"]+" ?"
+                "in " +
+                  monthsArray[Array.from(monthSelectorValue)?.[0]]["name"] +
+                  " for the current region ?"
               }`}
             </p>
           )}
