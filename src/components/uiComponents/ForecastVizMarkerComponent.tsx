@@ -4,7 +4,8 @@ import { Marker, Popup, Tooltip, Circle } from "react-leaflet";
 import { Icon } from "leaflet";
 
 import { markerPath } from "@/utils/leafletConfig";
-import PopupTabComponent from "./PopupTabComponent";
+
+import ForecastPopupTabComponent from "./ForecastPopupTabComponent";
 /**
  *
  * @param ({
@@ -46,7 +47,7 @@ const ForecastVizMarkerComponent = ({
             </Tooltip>
           )}
           <Popup>
-            <PopupTabComponent waypointData={waypointData} />
+            <ForecastPopupTabComponent waypointData={waypointData} />
           </Popup>
 
           {waypointData?.userOpted && (

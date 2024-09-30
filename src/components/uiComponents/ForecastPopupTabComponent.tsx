@@ -16,16 +16,19 @@ import { promptSelectionObject } from "@/utils/helpers/promptSelection";
 import { mapVizInsightsProcessor } from "@/utils/jsonUtils/jsonUtils";
 import Markdown from "react-markdown";
 import React from "react";
+import ForecastAiInsightsSelectorComponent, {
+  foreCastAvailableQuestions,
+} from "./ForecastAiInsightsSelectorComponent";
 /**
  *
  * @param ({ waypointData })
  * @returns jsx component
  *
  * popup component displays - general information , rating details & ai insights
- * 
+ *
  * for ai insights - gemini api calls - fetch requests handler function exists here
  */
-export default function PopupTabComponent({ waypointData }) {
+export default function ForecastPopupTabComponent({ waypointData }) {
   const [selectorValue, setSelectorValue] = useState(new Set([]));
   const [loadingState, setLoadingState] = useState(false);
   const [fetchedInsightsData, setFetchedInsightsData] = useState("");
@@ -73,6 +76,58 @@ export default function PopupTabComponent({ waypointData }) {
 
   let tabs = [
     {
+      id: "forecast_insights",
+      label: "Demand Forecast",
+      content: (
+        <>
+          {!loadingState && (
+            <ForecastAiInsightsSelectorComponent
+              selectorValue={selectorValue}
+              setSelectorValue={setSelectorValue}
+            />
+          )}
+          {(Array.from(selectorValue)?.[0] as number) >= 0 && (
+            <p className="text-small text-default-500">
+              Selected:
+              {`${Array.from(selectorValue)?.[0]} - ${
+                foreCastAvailableQuestions?.[
+                  Array.from(selectorValue)?.[0] as number
+                ]?.["name"]
+              }`}
+            </p>
+          )}
+          <>
+            {(Array.from(selectorValue)?.[0] as number) >= 0 && (
+              <>
+                {!loadingState ? (
+                  <Button
+                    variant="shadow"
+                    color="primary"
+                    size="md"
+                    className="m-4"
+                    onClick={ai_insights_call_handler}
+                  >
+                    ASK AI
+                  </Button>
+                ) : (
+                  <Button color="secondary" isLoading>
+                    Processing
+                  </Button>
+                )}
+              </>
+            )}
+
+            <div className="max-h-60">
+              <h4 className="font-extralight">
+                <Markdown>{fetchedInsightsData}</Markdown>
+              </h4>
+            </div>
+          </>
+        </>
+      ),
+    },
+    ,
+    {
       id: "general",
       label: "General",
       content: (
@@ -101,70 +156,7 @@ export default function PopupTabComponent({ waypointData }) {
         </>
       ),
     },
-    {
-      id: "ratings",
-      label: "Ratings",
-      content: (
-        <>
-          <h4 className="font-thin text-lg mt-2 mb-2">{`Rating`}</h4>
-          {
-            <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
-              {`${waypointData?.rating}`}
-            </h5>
-          }
-          <br />
-          <hr />
 
-          <h5 className="font-thin text mt-1 mb-1">{`Total Reviews`}</h5>
-          {
-            <h6 className="font-thin text bg-blue-200 p-1 text-center">
-              {`${waypointData?.reviews}`}
-            </h6>
-          }
-          <br />
-          <hr />
-
-          <Accordion>
-            <AccordionItem key="1" aria-label="Details" title="Details">
-              <h5 className="font-thin text mt-1 mb-1">{`5 Star Reviews`}</h5>
-              {
-                <h6 className="font-thin text bg-blue-200 p-1 text-center">
-                  {`${waypointData?.reviews_stats?.["5_star"]}`}
-                </h6>
-              }
-
-              <h5 className="font-thin text mt-1 mb-1">{`4 Star Reviews`}</h5>
-              {
-                <h6 className="font-thin text bg-blue-200 p-1 text-center">
-                  {`${waypointData?.reviews_stats?.["4_star"]}`}
-                </h6>
-              }
-
-              <h5 className="font-thin text mt-1 mb-1">{`3 Star Reviews`}</h5>
-              {
-                <h6 className="font-thin text bg-blue-200 p-1 text-center">
-                  {`${waypointData?.reviews_stats?.["3_star"]}`}
-                </h6>
-              }
-
-              <h5 className="font-thin text mt-1 mb-1">{`2 Star Reviews`}</h5>
-              {
-                <h6 className="font-thin text bg-blue-200 p-1 text-center">
-                  {`${waypointData?.reviews_stats?.["2_star"]}`}
-                </h6>
-              }
-
-              <h5 className="font-thin text mt-1 mb-1">{`1 Star Reviews`}</h5>
-              {
-                <h6 className="font-thin text bg-blue-200 p-1 text-center">
-                  {`${waypointData?.reviews_stats?.["1_star"]}`}
-                </h6>
-              }
-            </AccordionItem>
-          </Accordion>
-        </>
-      ),
-    },
     {
       id: "ai_insights",
       label: "AI Insights",
