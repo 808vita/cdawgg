@@ -156,7 +156,70 @@ export default function ForecastPopupTabComponent({ waypointData }) {
         </>
       ),
     },
+    {
+      id: "ratings",
+      label: "Ratings",
+      content: (
+        <>
+          <h4 className="font-thin text-lg mt-2 mb-2">{`Rating`}</h4>
+          {
+            <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
+              {`${waypointData?.rating}`}
+            </h5>
+          }
+          <br />
+          <hr />
 
+          <h5 className="font-thin text mt-1 mb-1">{`Total Reviews`}</h5>
+          {
+            <h6 className="font-thin text bg-blue-200 p-1 text-center">
+              {`${waypointData?.reviews}`}
+            </h6>
+          }
+          <br />
+          <hr />
+
+          <Accordion>
+            <AccordionItem key="1" aria-label="Details" title="Details">
+              <h5 className="font-thin text mt-1 mb-1">{`5 Star Reviews`}</h5>
+              {
+                <h6 className="font-thin text bg-blue-200 p-1 text-center">
+                  {`${waypointData?.reviews_stats?.["5_star"]}`}
+                </h6>
+              }
+
+              <h5 className="font-thin text mt-1 mb-1">{`4 Star Reviews`}</h5>
+              {
+                <h6 className="font-thin text bg-blue-200 p-1 text-center">
+                  {`${waypointData?.reviews_stats?.["4_star"]}`}
+                </h6>
+              }
+
+              <h5 className="font-thin text mt-1 mb-1">{`3 Star Reviews`}</h5>
+              {
+                <h6 className="font-thin text bg-blue-200 p-1 text-center">
+                  {`${waypointData?.reviews_stats?.["3_star"]}`}
+                </h6>
+              }
+
+              <h5 className="font-thin text mt-1 mb-1">{`2 Star Reviews`}</h5>
+              {
+                <h6 className="font-thin text bg-blue-200 p-1 text-center">
+                  {`${waypointData?.reviews_stats?.["2_star"]}`}
+                </h6>
+              }
+
+              <h5 className="font-thin text mt-1 mb-1">{`1 Star Reviews`}</h5>
+              {
+                <h6 className="font-thin text bg-blue-200 p-1 text-center">
+                  {`${waypointData?.reviews_stats?.["1_star"]}`}
+                </h6>
+              }
+            </AccordionItem>
+          </Accordion>
+        </>
+      ),
+    },
     {
       id: "ai_insights",
       label: "AI Insights",
@@ -218,7 +281,14 @@ export default function ForecastPopupTabComponent({ waypointData }) {
 
   return (
     <div className="flex w-full flex-col">
-      <Tabs aria-label="Dynamic tabs" items={tabs}>
+      <Tabs
+        aria-label="Dynamic tabs"
+        items={
+          waypointData?.userOpted
+            ? tabs.filter((item) => item.id !== "general")
+            : tabs.filter((item) => item.id !== "forecast_insights")
+        }
+      >
         {(item) => (
           <Tab key={item.id} title={item.label}>
             <Card>
