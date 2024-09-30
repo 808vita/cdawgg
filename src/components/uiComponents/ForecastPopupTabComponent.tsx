@@ -39,14 +39,14 @@ export default function ForecastPopupTabComponent({ waypointData }) {
 
   const ai_insights_call_handler = async () => {
     let selectedPrompt =
-      availableQuestions?.[Array.from(selectorValue)?.[0] as number]?.[
+    foreCastAvailableQuestions?.[Array.from(selectorValue)?.[0] as number]?.[
         "prompt"
       ];
 
     let identifyGoodProductsBool =
-      availableQuestions?.[Array.from(selectorValue)?.[0] as number]?.[
+    foreCastAvailableQuestions?.[Array.from(selectorValue)?.[0] as number]?.[
         "name"
-      ] === "Which products received good reviews?";
+      ] === "Which products received good reviews";
 
     let requiredBranchData = mapVizInsightsProcessor(
       waypointData.place_id,
@@ -251,7 +251,7 @@ export default function ForecastPopupTabComponent({ waypointData }) {
             <p className="text-small text-default-500">
               Selected:
               {`${Array.from(selectorValue)?.[0]} - ${
-                availableQuestions?.[
+                foreCastAvailableQuestions?.[
                   Array.from(selectorValue)?.[0] as number
                 ]?.["name"]
               }`}
