@@ -1,6 +1,6 @@
 **CDAWGG - License**
 
-Copyright 2024 808vita / CDAWGG
+Copyright 2024 [`808vita`](https://github.com/808vita)
 
 Permission is granted to the judges of the Gen AI Exchange Hackathon , held on Sep2024, to evaluate and review the source code and related materials of the CDAWGG project solely for the purpose of judging the competition.
 
