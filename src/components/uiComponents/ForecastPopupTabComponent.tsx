@@ -37,22 +37,35 @@ export default function ForecastPopupTabComponent({ waypointData }) {
   const [loadingState, setLoadingState] = useState(false);
   const [fetchedInsightsData, setFetchedInsightsData] = useState("");
 
-  const ai_insights_call_handler = async () => {
-    let selectedPrompt =
-      foreCastAvailableQuestions?.[Array.from(selectorValue)?.[0] as number]?.[
-        "prompt"
-      ];
+  const modesDict = {
+    demand: "demand",
+    ai_insights: "ai_insights",
+  };
+  const ai_insights_call_handler = async (mode) => {
+    let selectedPrompt = "";
 
-    let identifyGoodProductsBool =
-      foreCastAvailableQuestions?.[Array.from(selectorValue)?.[0] as number]?.[
-        "name"
-      ] === "Which products received good reviews";
+    let identifyGoodProductsBool = false;
+    if (mode === modesDict.demand) {
+      selectedPrompt =
+        foreCastAvailableQuestions?.[
+          Array.from(selectorValue)?.[0] as number
+        ]?.["prompt"];
 
-    if (selectedPrompt === undefined) {
+      identifyGoodProductsBool =
+        foreCastAvailableQuestions?.[
+          Array.from(selectorValue)?.[0] as number
+        ]?.["name"] === "Which products received good reviews";
+    }
+
+    if (mode === modesDict.ai_insights) {
       selectedPrompt =
         availableQuestions?.[Array.from(selectorValue)?.[0] as number]?.[
           "prompt"
         ];
+
+      identifyGoodProductsBool = availableQuestions?.[
+        Array.from(selectorValue)?.[0] as number
+      ]?.["name"].includes("Which products received good reviews");
     }
 
     let requiredBranchData = mapVizInsightsProcessor(
@@ -131,7 +144,7 @@ export default function ForecastPopupTabComponent({ waypointData }) {
                     color="primary"
                     size="md"
                     className="m-4"
-                    onClick={ai_insights_call_handler}
+                    onClick={() => ai_insights_call_handler(modesDict.demand)}
                   >
                     ASK AI
                   </Button>
@@ -276,7 +289,9 @@ export default function ForecastPopupTabComponent({ waypointData }) {
                     color="primary"
                     size="md"
                     className="m-4"
-                    onClick={ai_insights_call_handler}
+                    onClick={() =>
+                      ai_insights_call_handler(modesDict.ai_insights)
+                    }
                   >
                     ASK AI
                   </Button>
