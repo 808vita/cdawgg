@@ -39,14 +39,21 @@ export default function ForecastPopupTabComponent({ waypointData }) {
 
   const ai_insights_call_handler = async () => {
     let selectedPrompt =
-    foreCastAvailableQuestions?.[Array.from(selectorValue)?.[0] as number]?.[
+      foreCastAvailableQuestions?.[Array.from(selectorValue)?.[0] as number]?.[
         "prompt"
       ];
 
     let identifyGoodProductsBool =
-    foreCastAvailableQuestions?.[Array.from(selectorValue)?.[0] as number]?.[
+      foreCastAvailableQuestions?.[Array.from(selectorValue)?.[0] as number]?.[
         "name"
       ] === "Which products received good reviews";
+
+    if (selectedPrompt === undefined) {
+      selectedPrompt =
+        availableQuestions?.[Array.from(selectorValue)?.[0] as number]?.[
+          "prompt"
+        ];
+    }
 
     let requiredBranchData = mapVizInsightsProcessor(
       waypointData.place_id,
@@ -91,27 +98,30 @@ export default function ForecastPopupTabComponent({ waypointData }) {
                 setMonthSelectorValue={setMonthSelectorValue}
               />
 
-              <ForecastAiInsightsSelectorComponent
-                selectorValue={selectorValue}
-                setSelectorValue={setSelectorValue}
-              />
+              {Array.from(monthSelectorValue)?.[0] && (
+                <ForecastAiInsightsSelectorComponent
+                  selectorValue={selectorValue}
+                  setSelectorValue={setSelectorValue}
+                />
+              )}
             </>
           )}
-          {(Array.from(selectorValue)?.[0] as number) >= 0 && (
-            <p className="text-small text-default-500">
-              Selected:
-              {`${Array.from(selectorValue)?.[0]} - ${
-                foreCastAvailableQuestions?.[
-                  Array.from(selectorValue)?.[0] as number
-                ]?.["name"]
-              } ${
-                monthsArray[Array.from(monthSelectorValue)?.[0]]["name"] &&
-                "in " +
-                  monthsArray[Array.from(monthSelectorValue)?.[0]]["name"] +
-                  " for the current region ?"
-              }`}
-            </p>
-          )}
+          {(Array.from(selectorValue)?.[0] as number) >= 0 &&
+            Array.from(monthSelectorValue)?.[0] && (
+              <p className="text-small text-default-500">
+                Selected:
+                {`${Array.from(selectorValue)?.[0]} - ${
+                  foreCastAvailableQuestions?.[
+                    Array.from(selectorValue)?.[0] as number
+                  ]?.["name"]
+                } ${
+                  monthsArray[Array.from(monthSelectorValue)?.[0]]["name"] &&
+                  "in " +
+                    monthsArray[Array.from(monthSelectorValue)?.[0]]["name"] +
+                    " for the current region ?"
+                }`}
+              </p>
+            )}
           <>
             {(Array.from(selectorValue)?.[0] as number) >= 0 && (
               <>
@@ -251,7 +261,7 @@ export default function ForecastPopupTabComponent({ waypointData }) {
             <p className="text-small text-default-500">
               Selected:
               {`${Array.from(selectorValue)?.[0]} - ${
-                foreCastAvailableQuestions?.[
+                availableQuestions?.[
                   Array.from(selectorValue)?.[0] as number
                 ]?.["name"]
               }`}
