@@ -1,7 +1,5 @@
 import HomeCardComponent from "@/components/uiComponents/HomeCardComponent";
 
-import { testGroundedDataV2 } from "@/utils/vetexaiHelpers/testGroundedDataV2";
-import { Button } from "@nextui-org/react";
 import React from "react";
 
 export const pagesWithLinksArray = [
@@ -43,9 +41,6 @@ const index = () => {
         <h1 className="m-8 text-yellow-500 text-5xl md:text-8xl font-thin tracking-wide">
           CDAWGG
         </h1>
-        <Button onClick={() => testGroundedDataV2("oof", "oof", "oof")}>
-          V2testGroundedDataV
-        </Button>
       </div>
       <div className="flex flex-col md:flex-row gap-2 lg:gap-3 justify-center content-center">
         {pagesWithLinksArray.map((pageItem) => (

@@ -1,19 +1,15 @@
 import { jsonrepair } from "jsonrepair";
 /**
- * 
- * @param selectedQuestion 
- * @param pincode 
- * @param district 
- * @returns 
- * 
- * v2 - much safer 
+ *
+ * @param selectedQuestion
+ * @param pincode
+ * @param district
+ * @returns
+ *
+ * v2 - much safer
  * abstracted into api endpoint
  */
-export const testGroundedDataV2 = async (
-  selectedQuestion,
-  pincode,
-  district
-) => {
+export const testGroundedDataV2 = async (selectedQuestion, setLoadingState) => {
   let newAccessToken: any = "";
   try {
     const response = await fetch("/api/gen-token");
@@ -29,16 +25,13 @@ export const testGroundedDataV2 = async (
   //   const token = `Bearer ${accessToken.access_token}`;
   const token = `Bearer ${newAccessToken}`;
 
-  // if (
-  //   !currentSelectedReviewsState ||
-  //   !availablePromptsArray.includes(selectedGenType)
-  // ) {
-  //   return;
-  // }
+  if (selectedQuestion === "") {
+    return;
+  }
 
   // update loading state
   //set loading to true here
-  // setLoadingState(true);
+  setLoadingState(true);
 
   let response = "" as any;
 
@@ -48,8 +41,6 @@ export const testGroundedDataV2 = async (
       body: JSON.stringify({
         token,
         selectedQuestion,
-        pincode,
-        district,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +65,7 @@ export const testGroundedDataV2 = async (
   if (response) {
     // update loading state
     //set loading to false here
-    // setLoadingState(false);
+    setLoadingState(false);
   }
 
   console.log(response, "from v2");

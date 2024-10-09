@@ -10,18 +10,18 @@ export const apiVertexAICall_grounded = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  const { token, selectedQuestion, pincode, district } = req.body;
+  const { token, selectedQuestion } = req.body;
 
-  const questionText = "when is diwali in 2024?";
-
-
+  if (selectedQuestion === "" || typeof selectedQuestion !== "string") {
+    return res.status(400).json({ error: "fill all fields" });
+  }
   const reqBody = JSON.stringify({
     contents: [
       {
         role: "user",
         parts: [
           {
-            text: questionText,
+            text: selectedQuestion,
           },
         ],
       },
@@ -29,7 +29,10 @@ export const apiVertexAICall_grounded = async (
     systemInstruction: {
       parts: [
         {
-          text: "you are helpful",
+          text: `Important you need to be very precise and concise. Do not be verbose. 
+          Please provide only key points as lists. Important do not provide any additional suggestions , improvements, explanation.
+          Only answer the question as is, and be as concise as possible.
+          `,
         },
       ],
     },

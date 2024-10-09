@@ -6,6 +6,7 @@ import {
   Button,
   Accordion,
   AccordionItem,
+  Link,
 } from "@nextui-org/react";
 import MapVizAiInsightsSelectorComponent, {
   availableQuestions,
@@ -16,6 +17,10 @@ import { promptSelectionObject } from "@/utils/helpers/promptSelection";
 import { mapVizInsightsProcessor } from "@/utils/jsonUtils/jsonUtils";
 import Markdown from "react-markdown";
 import React from "react";
+import MapVizSelectorPhase2Component, {
+  availablePhase2Questions,
+} from "./MapVizSelectorPhase2Component";
+import { testGroundedDataV2 } from "@/utils/vetexaiHelpers/testGroundedDataV2";
 /**
  *
  * @param ({ waypointData })
@@ -27,8 +32,11 @@ import React from "react";
  */
 export default function PopupTabComponent({ waypointData }) {
   const [selectorValue, setSelectorValue] = useState(new Set([]));
+  const [selectorPhase2Value, setSelectorPhase2Value] = useState(new Set([]));
   const [loadingState, setLoadingState] = useState(false);
   const [fetchedInsightsData, setFetchedInsightsData] = useState("");
+  const [fetchedPhase2Data, setFetchedPhase2Data] = useState("");
+  const [citationData, setCitationData] = useState([]);
 
   const ai_insights_call_handler = async () => {
     let selectedPrompt =
@@ -68,6 +76,36 @@ export default function PopupTabComponent({ waypointData }) {
     if (responseFromGemini?.error) {
       console.log(responseFromGemini?.error, "responseFromGemini?.error");
       setFetchedInsightsData(`error occured please retry.`);
+    }
+  };
+
+  const phase2_insights_call_handler = async (selectedQuestion) => {
+    console.log(selectedQuestion, "selectedQuestion");
+    setCitationData([]);
+    const responseFromGemini = await testGroundedDataV2(
+      selectedQuestion,
+      setLoadingState
+    );
+
+    if (!responseFromGemini?.error) {
+      // set the sucess content to the correct state
+      console.log(responseFromGemini, "responseFromGemini");
+      console.log(waypointData, "waypointData");
+      console.log(
+        responseFromGemini?.candidates[0].content.parts[0].text,
+        "responseFromGemini"
+      );
+      setFetchedPhase2Data(
+        responseFromGemini?.candidates[0].content.parts[0].text
+      );
+      setCitationData(
+        responseFromGemini?.candidates[0].groundingMetadata.groundingChunks
+      );
+    }
+
+    if (responseFromGemini?.error) {
+      console.log(responseFromGemini?.error, "responseFromGemini?.error");
+      setFetchedPhase2Data(`error occured please retry.`);
     }
   };
 
@@ -166,11 +204,6 @@ export default function PopupTabComponent({ waypointData }) {
       ),
     },
     {
-      id: "spacer",
-      label: "Spacer",
-      content: <>spacer</>,
-    },
-    {
       id: "ai_insights",
       label: "AI Insights",
       content: (
@@ -183,8 +216,8 @@ export default function PopupTabComponent({ waypointData }) {
           )}
           {(Array.from(selectorValue)?.[0] as number) >= 0 && (
             <p className="text-small text-default-500">
-              Selected:
-              {`${Array.from(selectorValue)?.[0]} - ${
+              Selected -
+              {` ${
                 availableQuestions?.[
                   Array.from(selectorValue)?.[0] as number
                 ]?.["name"]
@@ -221,6 +254,84 @@ export default function PopupTabComponent({ waypointData }) {
         </>
       ),
     },
+    {
+      id: "spacer",
+      label: "*Phase 2*",
+      content: (
+        <>
+          {!loadingState && (
+            <MapVizSelectorPhase2Component
+              selectorPhase2Value={selectorPhase2Value}
+              setSelectorPhase2Value={setSelectorPhase2Value}
+            />
+          )}
+          {(Array.from(selectorPhase2Value)?.[0] as number) >= 0 && (
+            <p className="text-small text-default-500">
+              Selected -
+              {` ${
+                availablePhase2Questions?.[
+                  Array.from(selectorPhase2Value)?.[0] as number
+                ]?.["name"]
+              } in ${waypointData.district + " " + waypointData.pincode} ?`}
+            </p>
+          )}
+          <>
+            {(Array.from(selectorPhase2Value)?.[0] as number) >= 0 && (
+              <>
+                {!loadingState ? (
+                  <Button
+                    variant="shadow"
+                    color="primary"
+                    size="md"
+                    className="m-4"
+                    onClick={() =>
+                      (Array.from(selectorPhase2Value)?.[0] as number) >= 0 &&
+                      phase2_insights_call_handler(
+                        `${
+                          availablePhase2Questions?.[
+                            Array.from(selectorPhase2Value)?.[0] as number
+                          ]?.["name"]
+                        } in ${
+                          waypointData.district + " " + waypointData.pincode
+                        } ?`
+                      )
+                    }
+                  >
+                    ASK AI
+                  </Button>
+                ) : (
+                  <Button color="secondary" isLoading>
+                    Processing
+                  </Button>
+                )}
+              </>
+            )}
+
+            <div className="max-h-60">
+              <h4 className="font-extralight">
+                <Markdown>{fetchedPhase2Data}</Markdown>
+              </h4>
+              <div className="flex-col">
+                {citationData?.map((citation) => (
+                  <div key={citation?.web?.uri}>
+                    <Link
+                      className="text-xs font-extralight"
+                      href={citation?.web?.uri}
+                      target="_blank"
+                    >
+                      {citation?.web?.title}
+                    </Link>
+                  </div>
+                ))}
+              </div>
+              <p className="font-extralight text-xs">
+                Grounding with Google Search
+              </p>
+            </div>
+          </>
+        </>
+      ),
+    },
   ];
 
   useEffect(() => {
@@ -228,6 +339,13 @@ export default function PopupTabComponent({ waypointData }) {
 
     setFetchedInsightsData("");
   }, [selectorValue]);
+
+  useEffect(() => {
+    console.log(selectorValue, "useEffect selectorvalue");
+
+    setFetchedPhase2Data("");
+    setCitationData([]);
+  }, [selectorPhase2Value]);
 
   return (
     <div className="flex w-full flex-col">
