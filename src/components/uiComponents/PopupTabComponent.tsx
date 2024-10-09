@@ -22,7 +22,7 @@ import React from "react";
  * @returns jsx component
  *
  * popup component displays - general information , rating details & ai insights
- * 
+ *
  * for ai insights - gemini api calls - fetch requests handler function exists here
  */
 export default function PopupTabComponent({ waypointData }) {
@@ -77,93 +77,98 @@ export default function PopupTabComponent({ waypointData }) {
       label: "General",
       content: (
         <>
-          <h4 className="font-thin text-lg mt-2 mb-2">{`Company:`}</h4>
-          {
-            <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
-              {`${waypointData?.company}`}
-            </h5>
-          }
-          <br />
-          <hr />
-          <h4 className="font-thin text-lg mt-2 mb-2">{`District - Pincode:`}</h4>
-          {
-            <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
-              {`${waypointData?.district} - ${waypointData?.pincode}`}
-            </h5>
-          }
-          <br />
-          <hr />
-          <h4 className="font-thin text-lg mt-2 mb-2">{`Marker LatLng:`}</h4>
-          <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
-            {`Lat:${waypointData?.lat} , Lng:${waypointData?.lng}`}
-          </h5>
-          <br />
-        </>
-      ),
-    },
-    {
-      id: "ratings",
-      label: "Ratings",
-      content: (
-        <>
-          <h4 className="font-thin text-lg mt-2 mb-2">{`Rating`}</h4>
-          {
-            <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
-              {`${waypointData?.rating}`}
-            </h5>
-          }
-          <br />
-          <hr />
-
-          <h5 className="font-thin text mt-1 mb-1">{`Total Reviews`}</h5>
-          {
-            <h6 className="font-thin text bg-blue-200 p-1 text-center">
-              {`${waypointData?.reviews}`}
-            </h6>
-          }
-          <br />
-          <hr />
-
-          <Accordion>
-            <AccordionItem key="1" aria-label="Details" title="Details">
-              <h5 className="font-thin text mt-1 mb-1">{`5 Star Reviews`}</h5>
+          <Accordion defaultExpandedKeys={["general"]}>
+            <AccordionItem key="general" aria-label="general" title="General">
+              <h4 className="font-thin text mt-1 mb-1">{`Company:`}</h4>
               {
-                <h6 className="font-thin text bg-blue-200 p-1 text-center">
-                  {`${waypointData?.reviews_stats?.["5_star"]}`}
-                </h6>
+                <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
+                  {`${waypointData?.company}`}
+                </h5>
               }
-
-              <h5 className="font-thin text mt-1 mb-1">{`4 Star Reviews`}</h5>
+              <br />
+              <hr />
+              <h4 className="font-thin text mt-1 mb-1">{`District - Pincode:`}</h4>
               {
-                <h6 className="font-thin text bg-blue-200 p-1 text-center">
-                  {`${waypointData?.reviews_stats?.["4_star"]}`}
-                </h6>
+                <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
+                  {`${waypointData?.district} - ${waypointData?.pincode}`}
+                </h5>
               }
+              <br />
+              <hr />
+              <h4 className="font-thin text mt-1 mb-1">{`Marker LatLng:`}</h4>
+              <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
+                {`Lat:${waypointData?.lat} , Lng:${waypointData?.lng}`}
+              </h5>
+              <br />
+            </AccordionItem>
+            <AccordionItem key="rating" aria-label="rating" title="Ratings">
+              <>
+                <h4 className="font-thin text mt-1 mb-1">{`Rating`}</h4>
+                {
+                  <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
+                    {`${waypointData?.rating}`}
+                  </h5>
+                }
+                <br />
+                <hr />
 
-              <h5 className="font-thin text mt-1 mb-1">{`3 Star Reviews`}</h5>
-              {
-                <h6 className="font-thin text bg-blue-200 p-1 text-center">
-                  {`${waypointData?.reviews_stats?.["3_star"]}`}
-                </h6>
-              }
+                <h5 className="font-thin text mt-1 mb-1">{`Total Reviews`}</h5>
+                {
+                  <h6 className="font-thin text bg-blue-200 p-1 text-center">
+                    {`${waypointData?.reviews}`}
+                  </h6>
+                }
+                <br />
+                <hr />
 
-              <h5 className="font-thin text mt-1 mb-1">{`2 Star Reviews`}</h5>
-              {
-                <h6 className="font-thin text bg-blue-200 p-1 text-center">
-                  {`${waypointData?.reviews_stats?.["2_star"]}`}
-                </h6>
-              }
+                <Accordion>
+                  <AccordionItem key="1" aria-label="Details" title="Details">
+                    <h5 className="font-thin text mt-1 mb-1">{`5 Star Reviews`}</h5>
+                    {
+                      <h6 className="font-thin text bg-blue-200 p-1 text-center">
+                        {`${waypointData?.reviews_stats?.["5_star"]}`}
+                      </h6>
+                    }
 
-              <h5 className="font-thin text mt-1 mb-1">{`1 Star Reviews`}</h5>
-              {
-                <h6 className="font-thin text bg-blue-200 p-1 text-center">
-                  {`${waypointData?.reviews_stats?.["1_star"]}`}
-                </h6>
-              }
+                    <h5 className="font-thin text mt-1 mb-1">{`4 Star Reviews`}</h5>
+                    {
+                      <h6 className="font-thin text bg-blue-200 p-1 text-center">
+                        {`${waypointData?.reviews_stats?.["4_star"]}`}
+                      </h6>
+                    }
+
+                    <h5 className="font-thin text mt-1 mb-1">{`3 Star Reviews`}</h5>
+                    {
+                      <h6 className="font-thin text bg-blue-200 p-1 text-center">
+                        {`${waypointData?.reviews_stats?.["3_star"]}`}
+                      </h6>
+                    }
+
+                    <h5 className="font-thin text mt-1 mb-1">{`2 Star Reviews`}</h5>
+                    {
+                      <h6 className="font-thin text bg-blue-200 p-1 text-center">
+                        {`${waypointData?.reviews_stats?.["2_star"]}`}
+                      </h6>
+                    }
+
+                    <h5 className="font-thin text mt-1 mb-1">{`1 Star Reviews`}</h5>
+                    {
+                      <h6 className="font-thin text bg-blue-200 p-1 text-center">
+                        {`${waypointData?.reviews_stats?.["1_star"]}`}
+                      </h6>
+                    }
+                  </AccordionItem>
+                </Accordion>
+              </>
             </AccordionItem>
           </Accordion>
         </>
       ),
+    },
+    {
+      id: "spacer",
+      label: "Spacer",
+      content: <>spacer</>,
     },
     {
       id: "ai_insights",
