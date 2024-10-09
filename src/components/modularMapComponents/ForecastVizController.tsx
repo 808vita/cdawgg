@@ -244,6 +244,7 @@ const ForecastVizController = (props: any) => {
           waypointData={waypointData}
           showMarkerLabels={showMarkerLabels}
           radius={radius}
+          uniqueWaypointsCurrentRegion={waypoints}
         />
       ))}
     </>

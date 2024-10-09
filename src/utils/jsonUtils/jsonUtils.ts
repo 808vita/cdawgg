@@ -307,3 +307,73 @@ export const mapVizInsightsProcessor = (
 
   return processedData;
 };
+
+export const monthSplitProcessor = (
+  place_id,
+  month,
+  prompt,
+  identifyGoodProducts = false
+) => {
+  let processedData = "";
+
+  if (promptSelectionObject.insightsQuestionIssuesMentioned === prompt) {
+    let branchData = issuesProcessed_MonthlySplitReviewsDict[place_id]?.[month];
+
+    let dataArray = branchData;
+
+    processedData = branchData ? dataArray.toString() : "";
+  } else if (
+    promptSelectionObject.insightsQuestionIdentifyProductsPrompt === prompt
+  ) {
+    if (identifyGoodProducts) {
+      let branchData =
+        productsProcessed_MonthlySplitReviewsDict[place_id]?.[month];
+
+      let dataArray = branchData;
+
+      processedData = branchData ? dataArray.toString() : "";
+    } else {
+      let branchData =
+        productsProcessed_MonthlySplitReviewsDict[place_id]?.[month];
+
+      let dataArray = branchData;
+
+      processedData = branchData ? dataArray.toString() : "";
+    }
+  }
+
+  return processedData;
+};
+
+export const analysisInsightsProcessor = (
+  uniqueWaypointsCurrentRegion,
+  month,
+  prompt,
+  identifyGoodProducts
+) => {
+  let processedData = "";
+
+  uniqueWaypointsCurrentRegion.map((store) =>
+    console.log(
+      "analysis insights",
+      store.place_id,
+      month,
+      prompt,
+      identifyGoodProducts
+    )
+  );
+
+  uniqueWaypointsCurrentRegion.map(
+    (store) =>
+      (processedData =
+        processedData +
+        monthSplitProcessor(
+          store.place_id,
+          month,
+          prompt,
+          identifyGoodProducts
+        ))
+  );
+
+  return processedData;
+};

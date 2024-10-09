@@ -38,6 +38,8 @@ export default function ForecastMonthSelectorComponent({
     <div className="flex w-full max-w-lg flex-col gap-2">
       <Select
         items={monthsArray}
+        //pass index to disable keys
+        disabledKeys={[]}
         label="Select A Month"
         placeholder="Select Month"
         selectedKeys={monthSelectorValue}

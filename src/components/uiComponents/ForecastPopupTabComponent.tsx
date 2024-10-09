@@ -13,7 +13,10 @@ import MapVizAiInsightsSelectorComponent, {
 import { useEffect, useState } from "react";
 import { backend_call_genani_ai_insights } from "@/utils/fetchHandlers/fetch_gemini_api_call_ai_insights";
 import { promptSelectionObject } from "@/utils/helpers/promptSelection";
-import { mapVizInsightsProcessor } from "@/utils/jsonUtils/jsonUtils";
+import {
+  analysisInsightsProcessor,
+  mapVizInsightsProcessor,
+} from "@/utils/jsonUtils/jsonUtils";
 import Markdown from "react-markdown";
 import React from "react";
 import ForecastAiInsightsSelectorComponent, {
@@ -31,7 +34,10 @@ import ForecastMonthSelectorComponent, {
  *
  * for ai insights - gemini api calls - fetch requests handler function exists here
  */
-export default function ForecastPopupTabComponent({ waypointData }) {
+export default function ForecastPopupTabComponent({
+  waypointData,
+  uniqueWaypointsCurrentRegion,
+}) {
   const [selectorValue, setSelectorValue] = useState(new Set([]));
   const [monthSelectorValue, setMonthSelectorValue] = useState(new Set([]));
   const [loadingState, setLoadingState] = useState(false);
@@ -67,16 +73,38 @@ export default function ForecastPopupTabComponent({ waypointData }) {
         Array.from(selectorValue)?.[0] as number
       ]?.["name"].includes("Which products received good reviews");
     }
+    let month =
+      mode === modesDict.demand &&
+      Array.from(monthSelectorValue)?.[0] &&
+      monthsArray[Array.from(monthSelectorValue)?.[0]]["name"];
 
-    let requiredBranchData = mapVizInsightsProcessor(
-      waypointData.place_id,
-      selectedPrompt,
-      identifyGoodProductsBool
-    );
+    if (mode === modesDict.demand && !month) {
+      console.log(" skip function call");
+
+      return;
+    }
+
+    let requiredBranchData =
+      mode === modesDict.demand && month
+        ? analysisInsightsProcessor(
+            uniqueWaypointsCurrentRegion,
+            month,
+            selectedPrompt,
+            identifyGoodProductsBool
+          )
+        : mapVizInsightsProcessor(
+            waypointData.place_id,
+            selectedPrompt,
+            identifyGoodProductsBool
+          );
 
     console.log(selectedPrompt, "selectedPrompt");
     console.log(identifyGoodProductsBool, "identifyGoodProductsBool");
-    console.log(requiredBranchData, "requiredBranchData");
+    console.log(
+      requiredBranchData,
+      "requiredBranchData",
+      "selected mode " + mode
+    );
 
     const responseFromGemini = await backend_call_genani_ai_insights(
       requiredBranchData,
@@ -88,7 +116,7 @@ export default function ForecastPopupTabComponent({ waypointData }) {
       // set the sucess content to the correct state
       console.log(responseFromGemini, "responseFromGemini");
       console.log(waypointData, "waypointData");
-      console.log(responseFromGemini?.test_content, "responseFromGemini");
+      console.log(responseFromGemini?.text_content, "responseFromGemini");
       setFetchedInsightsData(responseFromGemini?.text_content);
     }
 
@@ -101,7 +129,7 @@ export default function ForecastPopupTabComponent({ waypointData }) {
   let tabs = [
     {
       id: "forecast_insights",
-      label: "Demand Forecast",
+      label: "Region Analysis",
       content: (
         <>
           {!loadingState && (
