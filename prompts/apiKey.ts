@@ -14,3 +14,8 @@ export const generationConfig = {
   maxOutputTokens: 600,
   responseMimeType: "application/json",
 };
+
+export const PROJECT_ID = process.env.PROJECT_ID as string;
+export const LOCATION_ID = process.env.LOCATION_ID as string;
+export const API_ENDPOINT = process.env.API_ENDPOINT as string;
+export const MODEL_ID = process.env.MODEL_ID as string;
