@@ -18,7 +18,7 @@ You can also access docs on local server by navigating to "/docs/index.html"
 
 Please run `npm install` to install all project required dependencies.
 
-Make sure to creare a ".evn.local" file in root level . (same level as .env.example). Follow the format mentioned in the .env.example file.
+Make sure to creare a ".env.local" file in root level . (same level as .env.example). Follow the format mentioned in the .env.example file.
 
 ## Phase 2 Setup Instructions:
 
@@ -45,5 +45,5 @@ npm run docs
 
 - use `npm run dev` to start the local server.
 - use `npm run build` to start the production build files.
-- use `npm run start` to start the local server using production build files (run yarn build first!).
+- use `npm run start` to start the local server using production build files (run npm build first!).
 - use `npm run docs` to reupdate the typedoc generated docs.
