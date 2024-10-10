@@ -33,13 +33,16 @@ export const monthsArray = months.map((month, index) => ({
 export default function ForecastMonthSelectorComponent({
   monthSelectorValue,
   setMonthSelectorValue,
+  disabledMonthKeys,
 }) {
+  console.log(disabledMonthKeys, "disabledMonthKeys month selector");
   return (
     <div className="flex w-full max-w-lg flex-col gap-2">
       <Select
         items={monthsArray}
         //pass index to disable keys
-        disabledKeys={[]}
+        disabledKeys={disabledMonthKeys}
+        // disabledKeys={["0","1"]}
         label="Select A Month"
         placeholder="Select Month"
         selectedKeys={monthSelectorValue}

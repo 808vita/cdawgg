@@ -9,14 +9,14 @@ export const foreCastAvailableQuestions = [
   // },
   {
     id: 0,
-    name: "Which products received good reviews",
+    name: "Which products were featured in reviews",
     prompt: promptSelectionObject.insightsQuestionIdentifyProductsPrompt,
   },
-  {
-    id:1,
-    name: "Which products received bad reviews",
-    prompt: promptSelectionObject.insightsQuestionIdentifyProductsPrompt,
-  },
+  // {
+  //   id:1,
+  //   name: "Which products received bad reviews",
+  //   prompt: promptSelectionObject.insightsQuestionIdentifyProductsPrompt,
+  // },
 ];
 /**
  *

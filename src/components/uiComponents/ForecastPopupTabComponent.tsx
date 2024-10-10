@@ -15,6 +15,7 @@ import { backend_call_genani_ai_insights } from "@/utils/fetchHandlers/fetch_gem
 import { promptSelectionObject } from "@/utils/helpers/promptSelection";
 import {
   analysisInsightsProcessor,
+  disabledMonthKeysFinder,
   mapVizInsightsProcessor,
 } from "@/utils/jsonUtils/jsonUtils";
 import Markdown from "react-markdown";
@@ -37,11 +38,13 @@ import ForecastMonthSelectorComponent, {
 export default function ForecastPopupTabComponent({
   waypointData,
   uniqueWaypointsCurrentRegion,
+  radius,
 }) {
   const [selectorValue, setSelectorValue] = useState(new Set([]));
   const [monthSelectorValue, setMonthSelectorValue] = useState(new Set([]));
   const [loadingState, setLoadingState] = useState(false);
   const [fetchedInsightsData, setFetchedInsightsData] = useState("");
+  const [disabledMonthKeys, setDisabledMonthKeys] = useState([]);
 
   const modesDict = {
     demand: "demand",
@@ -134,15 +137,15 @@ export default function ForecastPopupTabComponent({
         <>
           {!loadingState && (
             <>
-              <ForecastMonthSelectorComponent
-                monthSelectorValue={monthSelectorValue}
-                setMonthSelectorValue={setMonthSelectorValue}
+              <ForecastAiInsightsSelectorComponent
+                selectorValue={selectorValue}
+                setSelectorValue={setSelectorValue}
               />
-
-              {Array.from(monthSelectorValue)?.[0] && (
-                <ForecastAiInsightsSelectorComponent
-                  selectorValue={selectorValue}
-                  setSelectorValue={setSelectorValue}
+              {Array.from(selectorValue)?.[0] && disabledMonthKeys && (
+                <ForecastMonthSelectorComponent
+                  monthSelectorValue={monthSelectorValue}
+                  setMonthSelectorValue={setMonthSelectorValue}
+                  disabledMonthKeys={disabledMonthKeys}
                 />
               )}
             </>
@@ -164,7 +167,7 @@ export default function ForecastPopupTabComponent({
               </p>
             )}
           <>
-            {(Array.from(selectorValue)?.[0] as number) >= 0 && (
+            {(Array.from(monthSelectorValue)?.[0] as number) >= 0 && (
               <>
                 {!loadingState ? (
                   <Button
@@ -347,6 +350,15 @@ export default function ForecastPopupTabComponent({
 
     setFetchedInsightsData("");
   }, [selectorValue]);
+
+  useEffect(() => {
+    console.log(radius, "useEffect selectorvalue");
+
+    setMonthSelectorValue(new Set([]));
+    const disabledKeys = disabledMonthKeysFinder(uniqueWaypointsCurrentRegion);
+
+    setDisabledMonthKeys(disabledKeys);
+  }, [radius, uniqueWaypointsCurrentRegion]);
 
   return (
     <div className="flex w-full flex-col">

@@ -22,7 +22,7 @@ const ForecastVizMarkerComponent = ({
   waypointData,
   showMarkerLabels,
   radius,
-  uniqueWaypointsCurrentRegion
+  uniqueWaypointsCurrentRegion,
 }) => {
   return (
     <>
@@ -48,7 +48,11 @@ const ForecastVizMarkerComponent = ({
             </Tooltip>
           )}
           <Popup>
-            <ForecastPopupTabComponent waypointData={waypointData} uniqueWaypointsCurrentRegion ={uniqueWaypointsCurrentRegion} />
+            <ForecastPopupTabComponent
+              waypointData={waypointData}
+              uniqueWaypointsCurrentRegion={uniqueWaypointsCurrentRegion}
+              radius={radius}
+            />
           </Popup>
 
           {waypointData?.userOpted && (

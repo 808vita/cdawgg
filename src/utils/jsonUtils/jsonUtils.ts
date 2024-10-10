@@ -10,6 +10,9 @@ import issuesProcessed_MonthlySplitReviewsDict from "../../data/processed/identi
 import productsProcessed_MonthlySplitReviewsDict from "../../data/processed/identifyProductsPromptprocessedMonthSplitReviewsDict.json";
 import { promptSelectionObject } from "../helpers/promptSelection";
 
+import new_processed_branch_month_with_products from "../../data/new/new_processed_branch_month_with_products.json";
+import { months } from "@/components/uiComponents/ForecastMonthSelectorComponent";
+
 /**
  * shops name array
  */
@@ -376,4 +379,44 @@ export const analysisInsightsProcessor = (
   );
 
   return processedData;
+};
+
+export const monthToIndexObj = (() => {
+  let monthToIndex = {};
+  months.map((month, index) => {
+    monthToIndex[month] = index;
+  });
+  return monthToIndex;
+})();
+
+export const disabledMonthKeysFinder = (uniqueWaypointsCurrentRegion) => {
+  console.log(uniqueWaypointsCurrentRegion, "jsonutil");
+
+  const currentBranchIds = uniqueWaypointsCurrentRegion.map(
+    (store) => store.place_id
+  );
+  console.log(
+    new_processed_branch_month_with_products,
+    "new_processed_branch_month_with_products"
+  );
+  const monthsArray = currentBranchIds
+    .map((branchId) => new_processed_branch_month_with_products[branchId])
+    .flat();
+
+  console.log(monthsArray, "monthsArray");
+  //@ts-ignore
+  const uniqueMonthsArray = [...new Set(monthsArray)];
+
+  console.log(uniqueMonthsArray, "uniqueMonthsArray");
+
+  const disabledMonthArray = months.filter(
+    (month) => !uniqueMonthsArray.includes(month)
+  );
+
+  const disabledMonthToKeysArray = disabledMonthArray.map(
+    (item) => `${monthToIndexObj[item]}`
+  );
+
+  console.log(disabledMonthToKeysArray, "disabledMonthToKeysArray");
+  return disabledMonthToKeysArray;
 };
