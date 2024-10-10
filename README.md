@@ -1,20 +1,21 @@
 # CDAWGG:
 
 ## Customer Data Anlytics Weighted By Geospatial & Using GenAI
+
 ![v2 cover image cdawgg](https://github.com/user-attachments/assets/4757bff0-5e53-4aab-9f45-5865e77dfe6d)
 
 [`CDAWGG Demo Video`](https://drive.google.com/file/d/1scRXFMOxK1mjKi938ZdaijKhMRynr_5P/view?usp=sharing)
-
 
 ### Deployed link : [`Live Site`](https://cdawgg.oofdev.com/)
 
 ### Deployed docs path: [`Deployed Docs`](https://cdawgg.oofdev.com/docs/index.html)
 
 You can also access docs on local server by navigating to "/docs/index.html"
+
 - Note For Judges: Gemini API free tier is used - limits of RPM can be reached at times.
 
-
 ## Getting Started
+
 Please run `npm install` to install all project required dependencies.
 
 Make sure to creare a ".evn.local" file in root level . (same level as .env.example). Follow the format mentioned in the .env.example file.
@@ -27,7 +28,7 @@ Phase 2 requires Vertex AI for Google Search grounding (preview feature). To run
 2. **Enable APIs:** Enable the necessary Vertex AI APIs.
 3. **Service Account:** Create a service account.
 4. **Credentials:** Generate a JSON key file for the service account.
-5. **Environment Variables:** Add the key file path as an environment variable
+5. **Environment Variables:** Make use of the json file and fill environment variables (refer env.example)
 
 **Note for Judges:** Google Search grounding is a preview feature with API call limits. Avoid triggering multiple searches simultaneously.
 
