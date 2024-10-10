@@ -62,6 +62,19 @@ const index = () => {
               Grounding powered by Google Search to improve accuracy with
               citations. Demonstrating capabilities to connect relevant external
               data and scopes for expansion of custom requirements.
+              {[
+                {
+                  cardHeading: "Identify Location Gaps",
+                  description:
+                    "Module- Identifies ideal locations for new stores based on competitor presence.",
+                  pageLink: "/mapviz",
+                },
+              ].map((pageItem) => (
+                <HomeCardComponent
+                  key={pageItem.cardHeading}
+                  pageItem={pageItem}
+                />
+              ))}
             </AccordionItem>
             <AccordionItem
               key="2"
@@ -87,8 +100,22 @@ const index = () => {
                 />
               ))}
             </AccordionItem>
-            <AccordionItem key="3" aria-label="Accordion 3" title="Accordion 3">
-              oof3
+
+            <AccordionItem
+              key="3"
+              aria-label="Phase 2 - Improvements Video"
+              title="Phase 2 - Improvements Video"
+            >
+              Video showcasing the improvements made in Phase2.
+              <div className="flex-col justify-center content-center">
+                <video width="320" controls preload="none">
+                  <source
+                    src="/embed_phase2_cdawgg_trimmed.mp4"
+                    type="video/mp4"
+                  />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
             </AccordionItem>
           </Accordion>
         </div>
