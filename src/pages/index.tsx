@@ -1,4 +1,5 @@
 import HomeCardComponent from "@/components/uiComponents/HomeCardComponent";
+import { Accordion, AccordionItem } from "@nextui-org/react";
 
 import React from "react";
 
@@ -46,6 +47,51 @@ const index = () => {
         {pagesWithLinksArray.map((pageItem) => (
           <HomeCardComponent key={pageItem.cardHeading} pageItem={pageItem} />
         ))}
+      </div>
+      <div className="align-center">
+        <div className="mt-5 lg:max-w-5xl">
+          <Accordion variant="splitted">
+            <AccordionItem
+              key="1"
+              aria-label="Grounding With Google Search"
+              title="Grounding With GOOGLE Search"
+            >
+              Phase 2 - Part of Location Gaps Module - introduced new feature to
+              explore and connect with new data points like population for
+              region , commerical rent rates & ongoing realestate rates.
+              Grounding powered by Google Search to improve accuracy with
+              citations. Demonstrating capabilities to connect relevant external
+              data and scopes for expansion of custom requirements.
+            </AccordionItem>
+            <AccordionItem
+              key="2"
+              aria-label="Routing Simulator + Package Damage Detection"
+              title="Routing Simulator - Package Damage Detection"
+            >
+              Phase 2 - Expands upon Routing Module capabilities. After routing
+              a path Simulation can use triggered. Package Damage feature using
+              multimodal Gemini Model detects damages using the mock delivery
+              proof image. Pluggable - quickly add on damage detection as plugin
+              layer without disrupting the workflows & existing setups.
+              {[
+                {
+                  cardHeading: "V2 Routing + Simulator",
+                  description:
+                    "Module - Expands upon Routing Module brining simulation & package damage detection capabilities using Google Gemini AI",
+                  pageLink: "/routing-sim",
+                },
+              ].map((pageItem) => (
+                <HomeCardComponent
+                  key={pageItem.cardHeading}
+                  pageItem={pageItem}
+                />
+              ))}
+            </AccordionItem>
+            <AccordionItem key="3" aria-label="Accordion 3" title="Accordion 3">
+              oof3
+            </AccordionItem>
+          </Accordion>
+        </div>
       </div>
     </>
   );
