@@ -34,6 +34,7 @@ import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import { booleanPointInPolygonUtil } from "@/utils/booleanPointInPolygonUtil";
 import MenuGoHomeComponent from "../uiComponents/MenuGoHomeComponent";
+import { damageDetection } from "@/utils/vetexaiHelpers/damageDetection";
 
 // const markerPath = "/marker-icon.png";
 
@@ -595,18 +596,19 @@ const V2RoutingMachineControllerSimulator = (props: any) => {
     mapRef.addLayer(oofLayer);
 
     setReachedIndex([0, 1]);
-    oofSetter(2, 13000, "/tick.png");
-    oofSetter(3, 20000, "/tick.png");
-    oofSetter(4, 28000, "/tick.png");
-    oofSetter(5, 32000, "/tick.png");
+    oofSetter(2, 13000, "/delivery_1.jpg");
+    oofSetter(3, 20000, "/delivery_2.jpg");
+    oofSetter(4, 28000, "/delivery_3.jpg");
+    oofSetter(5, 32000, "/delivery_4.jpg");
   };
 
   function oofSetter(index, delay, imgUrl) {
     setTimeoutArray.push(
       setTimeout(async function () {
         setReachedIndex((prev) => [...prev, index]);
-
+        const evaluation =  await damageDetection(imgUrl)
         // evaluate ... the image ..
+        console.log("evaluation",evaluation)
       }, delay)
     );
   }
