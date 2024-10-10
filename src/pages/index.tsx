@@ -63,6 +63,10 @@ const index = () => {
               provide citations. It demonstrates the capability to connect
               relevant external data and the scope for expanding to meet custom
               requirements.
+              <hr />
+              Note for Judges: Google Search grounding is a preview feature with
+              API call limits. Avoid triggering multiple searches
+              simultaneously.
               {[
                 {
                   cardHeading: "Identify Location Gaps",
