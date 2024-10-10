@@ -56,12 +56,13 @@ const index = () => {
               aria-label="Grounding With Google Search"
               title="Grounding With GOOGLE Search"
             >
-              Phase 2 - Part of Location Gaps Module - introduced new feature to
-              explore and connect with new data points like population for
-              region , commerical rent rates & ongoing realestate rates.
-              Grounding powered by Google Search to improve accuracy with
-              citations. Demonstrating capabilities to connect relevant external
-              data and scopes for expansion of custom requirements.
+              Phase 2 of the Location Gaps module introduced a new feature to
+              explore and connect with new data points, such as regional
+              population, commercial rent rates, and current real estate rates.
+              This feature leverages Google Search to improve accuracy and
+              provide citations. It demonstrates the capability to connect
+              relevant external data and the scope for expanding to meet custom
+              requirements.
               {[
                 {
                   cardHeading: "Identify Location Gaps",
@@ -81,11 +82,12 @@ const index = () => {
               aria-label="Routing Simulator + Package Damage Detection"
               title="Routing Simulator - Package Damage Detection"
             >
-              Phase 2 - Expands upon Routing Module capabilities. After routing
-              a path Simulation can use triggered. Package Damage feature using
-              multimodal Gemini Model detects damages using the mock delivery
-              proof image. Pluggable - quickly add on damage detection as plugin
-              layer without disrupting the workflows & existing setups.
+              Phase 2 expands the Routing Module's capabilities. After routing a
+              path, a simulation can be triggered. The Package Damage feature,
+              using the multimodal Gemini model, detects damage using the mock
+              delivery proof image. This feature is pluggable—it can be quickly
+              added as a plugin layer without disrupting existing workflows or
+              setups.
               {[
                 {
                   cardHeading: "V2 Routing + Simulator",
@@ -106,7 +108,7 @@ const index = () => {
               aria-label="Phase 2 - Improvements Video"
               title="Phase 2 - Improvements Video"
             >
-              Video showcasing the improvements made in Phase2.
+              Video showcasing Phase 2 improvements.
               <div className="flex-col justify-center content-center">
                 <video width="320" controls preload="none">
                   <source
