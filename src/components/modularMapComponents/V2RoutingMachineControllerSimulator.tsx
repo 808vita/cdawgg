@@ -9,6 +9,7 @@ import {
   Polygon,
 } from "react-leaflet";
 import L from "leaflet";
+import "leaflet.motion/dist/leaflet.motion.js";
 import "leaflet-routing-machine";
 import "leaflet-control-geocoder";
 
@@ -16,7 +17,11 @@ import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 
 import { Icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { markerPath } from "@/utils/leafletConfig";
+import {
+  errorMarkerPath,
+  markerPath,
+  tickMarkerPath,
+} from "@/utils/leafletConfig";
 import { routingUtilExported } from "@/utils/routingUtil";
 import { geocodingUtilExported } from "@/utils/geocodingUtil";
 import * as h3 from "h3-js";
@@ -39,7 +44,8 @@ import MenuGoHomeComponent from "../uiComponents/MenuGoHomeComponent";
  *
  */
 let routeControl2: L.Routing.Control | null = null;
-
+let oofLayer = null;
+let setTimeoutArray = [];
 /**
  *
  * @param props
@@ -61,6 +67,17 @@ const V2RoutingMachineControllerSimulator = (props: any) => {
    * later used for reverse geocoidng and routing machine
    */
   const [waypoints, setWaypoints] = useState<L.LatLng[] | [] | any[]>([]);
+
+  /**
+   * coordinates from the itenary generated
+   */
+  const [coordinates, setCoordinates] = useState<L.LatLng[] | [] | any[]>([]);
+
+  /**
+   * reached index
+   * for motion to switch the markers
+   */
+  const [reachedIndex, setReachedIndex] = useState<any[] | []>([]);
 
   /**
    * reverse geocoded strings are stored here
@@ -159,7 +176,7 @@ const V2RoutingMachineControllerSimulator = (props: any) => {
    * routing util to trigger routing machine path geneartions
    */
   const routingUtil = () => {
-    routeControl2 = routingUtilExported(waypoints, mapRef);
+    routeControl2 = routingUtilExported(waypoints, mapRef, setCoordinates);
   };
 
   /**
@@ -198,6 +215,8 @@ const V2RoutingMachineControllerSimulator = (props: any) => {
     setH3IndexList([]);
     setHexCenterCoordinatesList([]);
     setHexBoundaryList([]);
+    setCoordinates([]);
+    setReachedIndex([]);
   };
 
   /**
@@ -213,6 +232,12 @@ const V2RoutingMachineControllerSimulator = (props: any) => {
     if (routeControl2 !== null) clearUtil();
 
     resetWaypointStates();
+    setReachedIndex([]);
+
+    if (oofLayer !== null) {
+      mapRef.removeLayer(oofLayer);
+    }
+    setTimeoutArray.map((item) => clearTimeout(item));
   };
 
   /**
@@ -525,6 +550,67 @@ const V2RoutingMachineControllerSimulator = (props: any) => {
     console.log(polygon2HexBoundaryList, "useeffect polygon2HexBoundaryList");
   }, [polygon2HexBoundaryList]);
 
+  const handleAddMarkerClick = () => {
+    if (coordinates.length == 0) {
+      return;
+    }
+
+    if (oofLayer !== null) {
+      mapRef.removeLayer(oofLayer);
+    }
+
+    //@ts-ignore
+    oofLayer = new L.motion.polyline(
+      // [
+      //   [28.55, 77.21],
+      //   [28.50, 77.20],
+      //   [28.49, 77.19]
+      // ],
+      coordinates,
+      {
+        color: "lime",
+      },
+      {
+        auto: true,
+        duration: 30000,
+        // easing: L.Motion.Ease.easeInOutQuart
+      },
+      {
+        removeOnEnd: true,
+        showMarker: true,
+        icon: L.divIcon({
+          // iconUrl:
+          //
+          //   /cdawgg_delivery.png,
+          html: "<img src='/cdawgg_delivery.png' class='w-full h-full' motion-base='-18'></img>",
+          // iconSize: L.point(65, 90),
+          // iconSize:[65, 90],
+          iconSize: [65, 90],
+          className: "",
+        }),
+      }
+    );
+
+    showMenuHandler();
+    mapRef.addLayer(oofLayer);
+
+    setReachedIndex([0, 1]);
+    oofSetter(2, 13000, "/tick.png");
+    oofSetter(3, 20000, "/tick.png");
+    oofSetter(4, 28000, "/tick.png");
+    oofSetter(5, 32000, "/tick.png");
+  };
+
+  function oofSetter(index, delay, imgUrl) {
+    setTimeoutArray.push(
+      setTimeout(async function () {
+        setReachedIndex((prev) => [...prev, index]);
+
+        // evaluate ... the image ..
+      }, delay)
+    );
+  }
+
   return (
     <>
       <button
@@ -654,64 +740,152 @@ const V2RoutingMachineControllerSimulator = (props: any) => {
               </button>
             </div>
           )}
+          {waypoints.length >= 4 && (
+            <div className="text-center">
+              <button
+                className="bg-blue-300 pt-2 pb-2 pr-4 pl-4 mb-4 w-52"
+                onClick={handleAddMarkerClick}
+              >
+                <p className="font-thin text-base md:text-xl text-white">
+                  Simulation
+                </p>
+              </button>
+            </div>
+          )}
         </div>
       )}
+      {
+        // showMenu &&
+
+        waypoints.map(
+          (latLng: any, idx: any) =>
+            //@ts-ignore
+            !reachedIndex.includes(idx) && (
+              <Marker
+                key={`maker-${idx}`}
+                position={[latLng.lat, latLng.lng]}
+                icon={
+                  new Icon({
+                    iconUrl: markerPath,
+                    // iconUrl: errorMarkerPath,
+                    // iconUrl: tickMarkerPath,
+                    iconSize: [25, 41],
+                    // iconSize: [80, 80],
+                    iconAnchor: [12, 41],
+                    className: "hue-rotate-90",
+                  })
+                }
+              >
+                <Tooltip permanent={true}>
+                  {idx === 0
+                    ? `Starting Point`
+                    : idx === 1
+                    ? `Pick up`
+                    : idx == waypoints?.length - 1
+                    ? `Final Delivery Point`
+                    : `Delivery Point ${idx - 1}`}
+                </Tooltip>
+                <Popup>
+                  <h4 className="font-thin text-lg mt-2 mb-2">{`Address:`}</h4>
+                  {
+                    <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
+                      {reverseCodedWaypoints?.[idx] == undefined
+                        ? "~Geocoding Please Wait~"
+                        : reverseCodedWaypoints?.[idx]}
+                    </h5>
+                  }
+                  <br />
+                  <hr />
+                  <h4 className="font-thin text-lg mt-2 mb-2">{`Marker LatLng:`}</h4>
+                  <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
+                    {`Lat:${latLng?.lat} , Lng:${latLng?.lng}`}
+                  </h5>
+                  <br />
+                  <hr />
+                  <h4 className="font-thin text-lg mt-2 mb-2">{`H3 index:`}</h4>
+                  <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
+                    {` ${h3IndexList?.[idx]}`}
+                  </h5>
+
+                  <br />
+                  <hr />
+                  <h4 className="font-thin text-lg mt-2 mb-2">{`H3 Center LatLng:`}</h4>
+                  <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
+                    {` ${hexCenterCoordinatesList?.[idx]}`}
+                  </h5>
+                  <br />
+                </Popup>
+              </Marker>
+            )
+        )
+      }
 
       {
         // showMenu &&
 
-        waypoints.map((latLng: any, idx: any) => (
-          <Marker
-            key={`maker-${idx}`}
-            position={[latLng.lat, latLng.lng]}
-            icon={
-              new Icon({
-                iconUrl: markerPath,
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                className: "hue-rotate-90",
-              })
-            }
-          >
-            <Tooltip permanent={true}>
-              {idx === 0
-                ? `Starting Point`
-                : idx == waypoints?.length - 1
-                ? `Final Point`
-                : `Point ${idx}`}
-            </Tooltip>
-            <Popup>
-              <h4 className="font-thin text-lg mt-2 mb-2">{`Address:`}</h4>
-              {
-                <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
-                  {reverseCodedWaypoints?.[idx] == undefined
-                    ? "~Geocoding Please Wait~"
-                    : reverseCodedWaypoints?.[idx]}
-                </h5>
-              }
-              <br />
-              <hr />
-              <h4 className="font-thin text-lg mt-2 mb-2">{`Marker LatLng:`}</h4>
-              <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
-                {`Lat:${latLng?.lat} , Lng:${latLng?.lng}`}
-              </h5>
-              <br />
-              <hr />
-              <h4 className="font-thin text-lg mt-2 mb-2">{`H3 index:`}</h4>
-              <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
-                {` ${h3IndexList?.[idx]}`}
-              </h5>
+        waypoints.map(
+          (latLng: any, idx: any) =>
+            ![0, 1].includes(idx) &&
+            //@ts-ignore
+            reachedIndex.includes(idx) && (
+              <Marker
+                key={`maker-${idx}`}
+                position={[latLng.lat, latLng.lng]}
+                icon={
+                  new Icon({
+                    // iconUrl: markerPath,
+                    iconUrl: idx === 3 ? errorMarkerPath : tickMarkerPath,
+                    // iconUrl: errorMarkerPath,
+                    // iconUrl: tickMarkerPath,
+                    // iconSize: [25, 41],
+                    iconSize: [80, 80],
+                    iconAnchor: idx === 3 ? [32, 50] : [12, 41],
+                    className: "hue-rotate-140",
+                  })
+                }
+              >
+                <Tooltip permanent={true}>
+                  {idx === 0
+                    ? `Starting Point`
+                    : idx === 1
+                    ? `Pick up`
+                    : idx == waypoints?.length - 1
+                    ? `Final Delivery Point`
+                    : `Delivery Point ${idx - 1}`}
+                </Tooltip>
+                <Popup>
+                  {![0, 1].includes(idx) && (
+                    <div className="min-w-96 p-2">
+                      <h3 className="font-thin text-lg mb-2">
+                        Delivery Proof:
+                      </h3>
+                      <img
+                        src={`/delivery_${idx - 1}.jpg`}
+                        // src={`/tick.png`}
+                        className="max-w-72"
+                      ></img>
+                    </div>
+                  )}
 
-              <br />
-              <hr />
-              <h4 className="font-thin text-lg mt-2 mb-2">{`H3 Center LatLng:`}</h4>
-              <h5 className="font-thin text-sm bg-blue-200 p-2 text-center">
-                {` ${hexCenterCoordinatesList?.[idx]}`}
-              </h5>
-              <br />
-            </Popup>
-          </Marker>
-        ))
+                  <br />
+                  <hr />
+                  <h3 className="font-thin text-lg mt-2 mb-2">
+                    Vertex AI Evaluation:
+                  </h3>
+                  {idx === 3 ? (
+                    <h4 className="font-thin text-xl bg-red-300 p-2 text-center">
+                      Package Damaged
+                    </h4>
+                  ) : (
+                    <h4 className="font-thin text-xl bg-green-300 p-2 text-center">
+                      Successful Delivery
+                    </h4>
+                  )}
+                  <br />
+                </Popup>
+              </Marker>
+            )
+        )
       }
 
       {hexBoundaryList?.length > 0 &&

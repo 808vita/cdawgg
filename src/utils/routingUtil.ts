@@ -11,7 +11,11 @@ import Line from "leaflet-routing-machine/src/line";
  *
  * routing util which uses routing to generates paths
  */
-export const routingUtilExported = (waypoints: any[], mapRef: L.Map) => {
+export const routingUtilExported = (
+  waypoints: any[],
+  mapRef: L.Map,
+  setCoordinates: any = () => {}
+) => {
   let routeControl: L.Routing.Control = L.Routing.control({
     //   router: L.Routing.osrmv1({
     //     serviceUrl: 'https://routing.openstreetmap.de/routed-car/route/v1',
@@ -43,6 +47,8 @@ export const routingUtilExported = (waypoints: any[], mapRef: L.Map) => {
       console.log(route, "route");
       console.log(options, "options");
       console.log(Object.keys(route), "route keys");
+      //@ts-ignore
+      setCoordinates(route["coordinates"]);
       Object.keys(route).map((key) => console.log(route[key], key));
 
       return new Line(route, options);

@@ -15,3 +15,5 @@ export const leafletConfig = {
   scaleControlPos: "bottomleft",
 };
 export const markerPath = "/marker-icon.png";
+export const tickMarkerPath = "/tick.png";
+export const errorMarkerPath = "/error.png";
