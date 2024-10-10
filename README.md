@@ -19,7 +19,19 @@ Please run `npm install` to install all project required dependencies.
 
 Make sure to creare a ".evn.local" file in root level . (same level as .env.example). Follow the format mentioned in the .env.example file.
 
-After installation - run the development server:
+## Phase 2 Setup Instructions:
+
+Phase 2 requires Vertex AI for Google Search grounding (preview feature). To run locally:
+
+1. **Create/Select Project:** Create a new Google Cloud project or select an existing one.
+2. **Enable APIs:** Enable the necessary Vertex AI APIs.
+3. **Service Account:** Create a service account.
+4. **Credentials:** Generate a JSON key file for the service account.
+5. **Environment Variables:** Add the key file path as an environment variable
+
+**Note for Judges:** Google Search grounding is a preview feature with API call limits. Avoid triggering multiple searches simultaneously.
+
+After installation & env setup - run the development server:
 
 ```bash
 
